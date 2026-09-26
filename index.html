@@ -25,7 +25,6 @@
             jetBlack: '#0A0A0C',
             cherryRed: '#E52E42',
             cherryDark: '#A81827',
-            crimsonGlow: 'rgba(229, 46, 66, 0.45)',
             surface0: '#0A0A0C',
             surface1: '#121216',
             surface2: '#18181F',
@@ -59,6 +58,8 @@
     * {
       box-sizing: border-box;
       user-select: none;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
     
     input, textarea, [contenteditable="true"] {
@@ -82,71 +83,54 @@
     }
 
     .glass-surface {
-      background: rgba(18, 18, 22, 0.78);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
+      background: rgba(18, 18, 22, 0.95);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       border: 1px solid var(--border);
     }
     
     .glass-card {
-      background: rgba(24, 24, 31, 0.7);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      background: rgba(24, 24, 31, 0.85);
       border: 1px solid var(--border);
     }
 
     .glass-modal {
-      background: rgba(10, 10, 12, 0.94);
-      backdrop-filter: blur(32px);
-      -webkit-backdrop-filter: blur(32px);
-      border: 1px solid rgba(229, 46, 66, 0.35);
-      box-shadow: 0 32px 80px rgba(0, 0, 0, 0.9), 0 0 40px rgba(229, 46, 66, 0.2);
-    }
-
-    .cherry-glow {
-      box-shadow: 0 0 20px rgba(229, 46, 66, 0.45);
-    }
-    .cherry-glow-intense {
-      box-shadow: 0 0 28px rgba(229, 46, 66, 0.65), 0 0 10px rgba(255, 255, 255, 0.2);
-    }
-    .cherry-border-glow:hover {
-      border-color: rgba(229, 46, 66, 0.65);
-      box-shadow: 0 0 16px rgba(229, 46, 66, 0.35);
+      background: rgba(12, 12, 16, 0.98);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9);
     }
 
     .btn-cherry-primary {
-      background: linear-gradient(135deg, #E52E42 0%, #A81827 100%);
+      background: #E52E42;
       color: #FFFFFF;
       font-weight: 700;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      transition: background-color 0.15s ease, border-color 0.15s ease;
+      border: 1px solid rgba(255, 255, 255, 0.12);
     }
     .btn-cherry-primary:hover {
-      box-shadow: 0 0 24px rgba(229, 46, 66, 0.65), 0 0 8px rgba(255, 255, 255, 0.4);
-      transform: translateY(-1px);
-      border-color: rgba(255, 255, 255, 0.4);
+      background: #D42438;
+      border-color: rgba(255, 255, 255, 0.25);
     }
     .btn-cherry-primary:active {
-      transform: translateY(0);
+      transform: translateY(1px);
     }
 
     .btn-secondary {
-      background: rgba(24, 24, 31, 0.85);
+      background: rgba(24, 24, 31, 0.9);
       border: 1px solid var(--border);
       color: #FFFFFF;
-      transition: all 0.2s ease;
+      transition: background-color 0.15s ease, border-color 0.15s ease;
     }
     .btn-secondary:hover {
-      background: rgba(32, 32, 42, 0.9);
-      border-color: rgba(229, 46, 66, 0.5);
-      box-shadow: 0 0 14px rgba(229, 46, 66, 0.25);
+      background: rgba(32, 32, 42, 0.95);
+      border-color: rgba(255, 255, 255, 0.2);
     }
 
     input[type="range"] {
       -webkit-appearance: none;
       height: 3px;
       border-radius: 2px;
-      background: linear-gradient(90deg, #E52E42, #FFFFFF);
+      background: #2E2E3C;
       outline: none;
     }
     input[type="range"]::-webkit-slider-thumb {
@@ -156,12 +140,11 @@
       border-radius: 50%;
       background: #FFFFFF;
       border: 2px solid #E52E42;
-      box-shadow: 0 0 10px rgba(229, 46, 66, 0.8);
       cursor: pointer;
-      transition: transform 0.15s ease;
+      transition: transform 0.1s ease;
     }
     input[type="range"]::-webkit-slider-thumb:hover {
-      transform: scale(1.3);
+      transform: scale(1.2);
     }
 
     input[type="color"] {
@@ -185,11 +168,10 @@
       color: var(--pure-white);
       font-size: 12px;
       outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
+      transition: border-color 0.15s ease;
     }
     select:focus, input[type="text"]:focus, input[type="password"]:focus, textarea:focus {
       border-color: var(--cherry-red);
-      box-shadow: 0 0 12px rgba(229, 46, 66, 0.4);
     }
 
     ::-webkit-scrollbar { width: 4px; height: 4px; }
@@ -203,10 +185,11 @@
       padding: 2px 7px;
       margin: 2px 2px;
       border-radius: 4px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.07);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       font-size: 12px;
       font-weight: 500;
+      color: #E2E2EA;
       cursor: pointer;
       transition: all 0.15s ease;
     }
@@ -214,35 +197,33 @@
       background: rgba(229, 46, 66, 0.15);
       border-color: rgba(229, 46, 66, 0.5);
       color: #FFFFFF;
-      transform: translateY(-1px);
     }
     .word-chip.active-karaoke {
       background: #E52E42;
       border-color: #FFFFFF;
       color: #FFFFFF;
-      box-shadow: 0 0 16px rgba(229, 46, 66, 0.7);
-      transform: scale(1.05);
       font-weight: 700;
+      transform: scale(1.04);
     }
 
     @keyframes popBounce {
-      0% { transform: scale(0.85); opacity: 0; }
-      60% { transform: scale(1.1); opacity: 1; }
+      0% { transform: scale(0.88); opacity: 0; }
+      65% { transform: scale(1.08); opacity: 1; }
       100% { transform: scale(1.0); opacity: 1; }
     }
     @keyframes slideUpFade {
-      0% { transform: translateY(16px); opacity: 0; }
+      0% { transform: translateY(14px); opacity: 0; }
       100% { transform: translateY(0); opacity: 1; }
     }
     @keyframes wiggleJitter {
       0%, 100% { transform: rotate(0deg) scale(1); }
-      25% { transform: rotate(-2.5deg) scale(1.06); }
-      75% { transform: rotate(2.5deg) scale(1.06); }
+      25% { transform: rotate(-2deg) scale(1.04); }
+      75% { transform: rotate(2deg) scale(1.04); }
     }
 
-    .anim-pop { animation: popBounce 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-    .anim-slideup { animation: slideUpFade 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-    .anim-wiggle { animation: wiggleJitter 0.2s ease-in-out infinite; }
+    .anim-pop { animation: popBounce 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+    .anim-slideup { animation: slideUpFade 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .anim-wiggle { animation: wiggleJitter 0.18s ease-in-out infinite; }
 
     .timeline-track {
       position: relative;
@@ -255,8 +236,8 @@
       position: absolute;
       top: 4px;
       bottom: 4px;
-      background: linear-gradient(90deg, #E52E42, #A81827);
-      border: 1px solid rgba(255, 255, 255, 0.35);
+      background: #E52E42;
+      border: 1px solid rgba(255, 255, 255, 0.3);
       border-radius: 4px;
       font-size: 11px;
       font-weight: 700;
@@ -267,16 +248,15 @@
       overflow: hidden;
       white-space: nowrap;
       cursor: grab;
-      transition: box-shadow 0.15s, border-color 0.15s;
+      transition: border-color 0.15s;
     }
     .caption-segment:hover {
-      box-shadow: 0 0 16px rgba(229, 46, 66, 0.65);
       border-color: #FFFFFF;
       z-index: 5;
     }
     .caption-segment.active-seg {
       border: 1.5px solid #FFFFFF;
-      box-shadow: 0 0 22px rgba(229, 46, 66, 0.9);
+      background: #FF3850;
       z-index: 10;
     }
     .caption-segment .handle {
@@ -298,7 +278,6 @@
       bottom: 0;
       width: 2px;
       background: #E52E42;
-      box-shadow: 0 0 14px #E52E42, 0 0 28px #E52E42;
       z-index: 40;
       pointer-events: none;
     }
@@ -311,7 +290,6 @@
       height: 12px;
       background: #E52E42;
       clip-path: polygon(50% 100%, 0% 0%, 100% 0%);
-      box-shadow: 0 0 10px #E52E42;
     }
 
     .template-card {
@@ -322,18 +300,15 @@
       cursor: pointer;
       background: var(--surface-2);
       border: 1px solid var(--border);
-      transition: all 0.2s ease;
+      transition: border-color 0.15s ease, background-color 0.15s ease;
       overflow: hidden;
     }
     .template-card:hover {
-      border-color: var(--cherry-red);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 18px rgba(229, 46, 66, 0.3);
+      border-color: rgba(255, 255, 255, 0.25);
     }
     .template-card.active {
       border-color: #E52E42;
-      background: rgba(229, 46, 66, 0.1);
-      box-shadow: 0 0 20px rgba(229, 46, 66, 0.35);
+      background: rgba(229, 46, 66, 0.12);
     }
 
     .audio-bar {
@@ -351,7 +326,7 @@
   
   <div class="flex items-center gap-3">
     <div class="flex items-center gap-2.5">
-      <div class="w-8 h-8 rounded-lg btn-cherry-primary flex items-center justify-center font-brand-display text-lg tracking-wider cherry-glow">
+      <div class="w-8 h-8 rounded-lg btn-cherry-primary flex items-center justify-center font-brand-display text-lg tracking-wider">
         S
       </div>
       <div class="flex flex-col">
@@ -374,7 +349,7 @@
 
   <div class="flex items-center gap-3">
     <div class="flex items-center p-1 rounded-lg bg-[var(--surface-2)] border border-[var(--border)] gap-1">
-      <button id="ar916" class="px-3 py-1 text-xs font-semibold rounded bg-[var(--surface-3)] text-white border border-[#E52E42]/50 shadow-sm flex items-center gap-1.5 transition-all">
+      <button id="ar916" class="px-3 py-1 text-xs font-semibold rounded bg-[var(--surface-3)] text-white border border-[#E52E42]/60 flex items-center gap-1.5 transition-all">
         <i class="ph-bold ph-device-mobile text-[#E52E42]"></i> 9:16 <span class="font-technical-mono text-[10px] opacity-60">SHORTS</span>
       </button>
       <button id="ar169" class="px-3 py-1 text-xs font-medium rounded text-[var(--text-muted)] hover:text-white flex items-center gap-1.5 transition-all">
@@ -389,7 +364,7 @@
     </div>
 
     <div id="statusBadge" class="flex items-center gap-2 px-3 py-1 rounded-md bg-[var(--surface-2)] border border-white/5 font-technical-mono text-[11px] text-[var(--text-muted)]">
-      <span id="statusDot" class="w-2 h-2 rounded-full bg-[#E52E42] animate-pulse"></span>
+      <span id="statusDot" class="w-2 h-2 rounded-full bg-[#E52E42]"></span>
       <span id="statusTxt" class="text-white">SYSTEM READY</span>
     </div>
   </div>
@@ -410,7 +385,7 @@
       <i class="ph-bold ph-lightning text-[#E52E42]"></i> DEMO
     </button>
 
-    <button id="openExportModalBtn" class="btn-cherry-primary text-xs font-brand-display tracking-wider uppercase px-4 py-1.5 rounded-md flex items-center gap-2 cherry-glow">
+    <button id="openExportModalBtn" class="btn-cherry-primary text-xs font-brand-display tracking-wider uppercase px-4 py-1.5 rounded-md flex items-center gap-2">
       <i class="ph-bold ph-export text-white text-sm"></i>
       <span>EXPORT MASTER</span>
     </button>
@@ -429,7 +404,7 @@
           <h2 class="font-brand-display text-sm uppercase tracking-wider text-white">TRANSCRIPT MATRIX</h2>
         </div>
         <div class="flex items-center gap-1">
-          <span id="wordCountBadge" class="px-2 py-0.5 rounded bg-surface3 font-technical-mono text-[10px] text-[#E52E42]">0 WORDS</span>
+          <span id="wordCountBadge" class="px-2 py-0.5 rounded bg-surface3 font-technical-mono text-[10px] text-[#E52E42] font-semibold">0 WORDS</span>
           <button id="batchToolsBtn" class="p-1 rounded text-[var(--text-muted)] hover:text-white hover:bg-surface2">
             <i class="ph-bold ph-dots-three-vertical"></i>
           </button>
@@ -457,7 +432,7 @@
         </div>
         <div class="text-xs">
           <p class="font-semibold text-white">NO TRANSCRIPT GENERATED</p>
-          <p class="font-technical-mono text-[10px] text-white/40 mt-1">INITIALIZE AI TRANSCRIPTION OR PASTE SCRIPT</p>
+          <p class="font-technical-mono text-[10px] text-white/50 mt-1">INITIALIZE AI TRANSCRIPTION OR PASTE SCRIPT</p>
         </div>
       </div>
     </div>
@@ -508,13 +483,13 @@
         <video id="video" class="w-full h-full object-cover pointer-events-none" playsinline preload="auto"></video>
         
         <div id="emptyState" class="absolute inset-0 flex flex-col items-center justify-center text-center p-6 bg-[#0A0A0C] text-[var(--text-muted)]">
-          <div class="w-16 h-16 rounded-2xl bg-[var(--surface-2)] border border-white/10 flex items-center justify-center text-[#E52E42] text-3xl mb-3 shadow-xl">
+          <div class="w-16 h-16 rounded-2xl bg-[var(--surface-2)] border border-white/10 flex items-center justify-center text-[#E52E42] text-3xl mb-3">
             <i class="ph-bold ph-video-camera"></i>
           </div>
           <h3 class="font-brand-display text-lg text-white tracking-wider uppercase">NO FOOTAGE DETECTED</h3>
-          <p class="font-technical-mono text-xs text-white/40 max-w-[220px] mt-1 mb-4">IMPORT MEDIA OR INITIALIZE THE HIGH-ENERGY DEMO SYNTHESIZER.</p>
+          <p class="font-technical-mono text-xs text-white/50 max-w-[220px] mt-1 mb-4">IMPORT MEDIA OR INITIALIZE THE HIGH-ENERGY DEMO SYNTHESIZER.</p>
           <div class="flex items-center gap-2">
-            <label class="btn-cherry-primary font-brand-display tracking-wider text-xs px-4 py-1.5 rounded-md cursor-pointer uppercase cherry-glow">
+            <label class="btn-cherry-primary font-brand-display tracking-wider text-xs px-4 py-1.5 rounded-md cursor-pointer uppercase">
               UPLOAD FOOTAGE
               <input id="emptyFileInput" type="file" accept="video/*" class="hidden">
             </label>
@@ -558,11 +533,11 @@
     </div>
 
     <!-- Center Playback Bar -->
-    <div class="glass-surface flex items-center gap-3 px-4 py-2 rounded-xl border border-white/10 shadow-xl z-20 mt-1">
+    <div class="glass-surface flex items-center gap-3 px-4 py-2 rounded-xl border border-white/10 z-20 mt-1">
       <button id="skipBack" class="p-1.5 rounded-md text-[var(--text-muted)] hover:text-white hover:bg-surface2 transition-all">
         <i class="ph-bold ph-skip-back text-base"></i>
       </button>
-      <button id="playBtn" class="w-9 h-9 rounded-lg btn-cherry-primary flex items-center justify-center text-white cherry-glow transition-transform active:scale-95">
+      <button id="playBtn" class="w-9 h-9 rounded-lg btn-cherry-primary flex items-center justify-center text-white transition-transform active:scale-95">
         <i id="playIcon" class="ph-fill ph-play text-base"></i>
       </button>
       <button id="skipFwd" class="p-1.5 rounded-md text-[var(--text-muted)] hover:text-white hover:bg-surface2 transition-all">
@@ -592,7 +567,7 @@
   <!-- RIGHT PANEL: MODULAR INSPECTOR -->
   <aside class="glass-surface w-[340px] shrink-0 flex flex-col border-l border-[var(--border)] z-10">
     <div class="flex border-b border-[var(--border)] p-1.5 gap-1 bg-[var(--surface-1)]">
-      <button data-tab="text" class="inspector-tab active flex-1 py-1.5 px-2 rounded-md text-xs font-semibold flex items-center justify-center gap-1.5 transition-all bg-surface2 text-white border border-[#E52E42]/50 shadow-sm">
+      <button data-tab="text" class="inspector-tab active flex-1 py-1.5 px-2 rounded-md text-xs font-semibold flex items-center justify-center gap-1.5 transition-all bg-surface2 text-white border border-[#E52E42]/60">
         <i class="ph-bold ph-text-t text-[#E52E42]"></i> Type
       </button>
       <button data-tab="styles" class="inspector-tab flex-1 py-1.5 px-2 rounded-md text-xs font-medium text-[var(--text-muted)] hover:text-white flex items-center justify-center gap-1.5 transition-all">
@@ -713,9 +688,32 @@
         <div class="glass-card p-3 rounded-lg space-y-3">
           <div class="flex items-center justify-between">
             <span class="text-xs font-bold text-white flex items-center gap-1.5">
-              <i class="ph-bold ph-sun text-[#E52E42]"></i> Multi-Pass Glow
+              <i class="ph-bold ph-circle-dashed text-[#E52E42]"></i> Outer Stroke
             </span>
-            <input id="glowOn" type="checkbox" checked class="w-4 h-4 rounded accent-[#E52E42] cursor-pointer">
+            <input id="strokeOn" type="checkbox" checked class="w-4 h-4 rounded accent-[#E52E42] cursor-pointer">
+          </div>
+
+          <div class="grid grid-cols-3 gap-2 items-center">
+            <div class="col-span-2">
+              <div class="flex justify-between font-technical-mono text-[10px] text-[var(--text-muted)] mb-1">
+                <span>WIDTH</span>
+                <span id="strokeWVal" class="text-[#E52E42]">3px</span>
+              </div>
+              <input id="strokeWidth" type="range" min="1" max="16" value="3" class="w-full">
+            </div>
+            <div class="col-span-1">
+              <label class="font-technical-mono text-[9px] text-[var(--text-muted)] block mb-1">COLOR</label>
+              <input id="strokeColor" type="color" value="#000000">
+            </div>
+          </div>
+        </div>
+
+        <div class="glass-card p-3 rounded-lg space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-white flex items-center gap-1.5">
+              <i class="ph-bold ph-sun text-[#E52E42]"></i> Glow / Atmospheric Aura
+            </span>
+            <input id="glowOn" type="checkbox" class="w-4 h-4 rounded accent-[#E52E42] cursor-pointer">
           </div>
 
           <div class="grid grid-cols-2 gap-2">
@@ -732,32 +730,9 @@
           <div>
             <div class="flex justify-between font-technical-mono text-[10px] text-[var(--text-muted)] mb-1">
               <span>RADIUS</span>
-              <span id="glowRVal" class="text-[#E52E42]">16px</span>
+              <span id="glowRVal" class="text-[#E52E42]">12px</span>
             </div>
-            <input id="glowRadius" type="range" min="0" max="40" value="16" class="w-full">
-          </div>
-        </div>
-
-        <div class="glass-card p-3 rounded-lg space-y-3">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-bold text-white flex items-center gap-1.5">
-              <i class="ph-bold ph-circle-dashed text-[#E52E42]"></i> Outer Stroke
-            </span>
-            <input id="strokeOn" type="checkbox" checked class="w-4 h-4 rounded accent-[#E52E42] cursor-pointer">
-          </div>
-
-          <div class="grid grid-cols-3 gap-2 items-center">
-            <div class="col-span-2">
-              <div class="flex justify-between font-technical-mono text-[10px] text-[var(--text-muted)] mb-1">
-                <span>WIDTH</span>
-                <span id="strokeWVal" class="text-[#E52E42]">5px</span>
-              </div>
-              <input id="strokeWidth" type="range" min="1" max="16" value="5" class="w-full">
-            </div>
-            <div class="col-span-1">
-              <label class="font-technical-mono text-[9px] text-[var(--text-muted)] block mb-1">COLOR</label>
-              <input id="strokeColor" type="color" value="#000000">
-            </div>
+            <input id="glowRadius" type="range" min="0" max="40" value="12" class="w-full">
           </div>
         </div>
       </div>
@@ -767,31 +742,31 @@
         <p class="font-technical-mono text-[10px] text-[var(--text-muted)]">SHADITZ BRAND PRESET MATRIX:</p>
         <div class="grid grid-cols-2 gap-2.5" id="presetsGrid">
           <div class="template-card active" data-preset="shaditz_signature">
-            <div class="font-brand-display text-sm text-white uppercase tracking-wider" style="-webkit-text-stroke: 1.5px #000; text-shadow: 0 0 16px #E52E42;">
+            <div class="font-brand-display text-sm text-white uppercase tracking-wider" style="-webkit-text-stroke: 1.5px #000;">
               SHADITZ CHERRY
             </div>
             <span class="font-technical-mono text-[9px] text-[#E52E42] block mt-1">Official Brand Look</span>
           </div>
 
           <div class="template-card" data-preset="hormozi">
-            <div class="font-black text-sm text-yellow-300 uppercase tracking-wide" style="font-family: 'Bebas Neue'; text-shadow: 0 0 10px rgba(0,0,0,0.8);">
+            <div class="font-black text-sm text-yellow-300 uppercase tracking-wide" style="font-family: 'Bebas Neue'; -webkit-text-stroke: 1.5px #000;">
               HORMOZI PUNCH
             </div>
-            <span class="font-technical-mono text-[9px] text-white/50 block mt-1">Yellow Pop · 1-Word</span>
+            <span class="font-technical-mono text-[9px] text-white/60 block mt-1">Yellow Pop · 1-Word</span>
           </div>
 
           <div class="template-card" data-preset="monolithic">
             <div class="font-brand-display text-xs text-white" style="-webkit-text-stroke: 2px #E52E42;">
               MONOLITHIC RED
             </div>
-            <span class="font-technical-mono text-[9px] text-white/50 block mt-1">Crimson Outer Stroke</span>
+            <span class="font-technical-mono text-[9px] text-white/60 block mt-1">Crimson Outer Stroke</span>
           </div>
 
           <div class="template-card" data-preset="minimal">
             <div class="font-semibold text-xs text-white" style="font-family: 'Plus Jakarta Sans';">
               Kinetic Minimal
             </div>
-            <span class="font-technical-mono text-[9px] text-white/50 block mt-1">Stark Clean Fade</span>
+            <span class="font-technical-mono text-[9px] text-white/60 block mt-1">Stark Clean Fade</span>
           </div>
         </div>
       </div>
@@ -885,7 +860,7 @@
   </div>
 
   <div id="timelineWrapper" class="relative rounded-lg bg-[#0A0A0C] border border-white/5 overflow-x-auto overflow-y-hidden cursor-crosshair">
-    <div id="timelineRuler" class="h-5 border-b border-white/5 relative font-technical-mono text-[9.5px] text-white/40"></div>
+    <div id="timelineRuler" class="h-5 border-b border-white/5 relative font-technical-mono text-[9.5px] text-white/50"></div>
     <div id="playhead" style="left: 0%;"></div>
 
     <div id="tracksStack" class="p-1 space-y-1 relative" style="min-width: 100%;">
@@ -915,7 +890,7 @@
     </button>
 
     <div class="flex items-center gap-3">
-      <div class="w-10 h-10 rounded-lg btn-cherry-primary flex items-center justify-center text-white text-xl cherry-glow">
+      <div class="w-10 h-10 rounded-lg btn-cherry-primary flex items-center justify-center text-white text-xl">
         <i class="ph-bold ph-sparkle"></i>
       </div>
       <div>
@@ -977,7 +952,7 @@
     </div>
 
     <div class="flex items-center gap-3 pt-2">
-      <button id="startAiTranscribeBtn" class="btn-cherry-primary font-brand-display tracking-wider uppercase flex-1 py-2.5 rounded-md text-xs flex items-center justify-center gap-2 cherry-glow">
+      <button id="startAiTranscribeBtn" class="btn-cherry-primary font-brand-display tracking-wider uppercase flex-1 py-2.5 rounded-md text-xs flex items-center justify-center gap-2">
         <i class="ph-bold ph-lightning"></i>
         <span>TRANSCRIBE WITH WHISPER</span>
       </button>
@@ -1006,7 +981,7 @@
     </button>
 
     <div class="flex items-center gap-3">
-      <div class="w-10 h-10 rounded-lg btn-cherry-primary flex items-center justify-center text-white text-xl cherry-glow">
+      <div class="w-10 h-10 rounded-lg btn-cherry-primary flex items-center justify-center text-white text-xl">
         <i class="ph-bold ph-film-strip"></i>
       </div>
       <div>
@@ -1044,7 +1019,7 @@
     </div>
 
     <div class="pt-2">
-      <button id="startRenderBtn" class="btn-cherry-primary font-brand-display tracking-wider uppercase w-full py-3 rounded-md text-xs flex items-center justify-center gap-2 cherry-glow">
+      <button id="startRenderBtn" class="btn-cherry-primary font-brand-display tracking-wider uppercase w-full py-3 rounded-md text-xs flex items-center justify-center gap-2">
         <i class="ph-bold ph-download-simple"></i>
         <span>START HIGH-FIDELITY RENDER</span>
       </button>
@@ -1079,12 +1054,12 @@ const AppState = {
     lineHeight: 1.1,
     letterSpacing: 1,
     posY: 14,
-    glowOn: true,
-    glowRadius: 16,
+    glowOn: false,
+    glowRadius: 12,
     glowColorA: '#E52E42',
     glowColorB: '#A81827',
     strokeOn: true,
-    strokeWidth: 5,
+    strokeWidth: 3,
     strokeColor: '#000000',
     gradOn: false,
     gradColor1: '#FFFFFF',
@@ -1214,13 +1189,13 @@ function loadDemoSample() {
       50, 
       540, 960, 1100
     );
-    grad.addColorStop(0, '#1A0E12');
+    grad.addColorStop(0, '#161013');
     grad.addColorStop(0.6, '#0A0A0C');
     grad.addColorStop(1, '#050507');
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, 1080, 1920);
 
-    ctx.strokeStyle = 'rgba(229, 46, 66, 0.12)';
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
     ctx.lineWidth = 1.5;
     for (let x = 0; x < 1080; x += 135) {
       ctx.beginPath();
@@ -1237,7 +1212,7 @@ function loadDemoSample() {
 
     ctx.beginPath();
     ctx.arc(540, 800, 160, 0, Math.PI * 2);
-    ctx.strokeStyle = 'rgba(229, 46, 66, 0.3)';
+    ctx.strokeStyle = 'rgba(229, 46, 66, 0.25)';
     ctx.lineWidth = 2;
     ctx.stroke();
 
@@ -1278,12 +1253,12 @@ Object.keys(arButtons).forEach(btnId => {
   document.getElementById(btnId).addEventListener('click', () => {
     Object.keys(arButtons).forEach(id => {
       const b = document.getElementById(id);
-      b.classList.remove('bg-[var(--surface-3)]', 'text-white', 'border', 'border-[#E52E42]/50', 'shadow-sm');
+      b.classList.remove('bg-[var(--surface-3)]', 'text-white', 'border', 'border-[#E52E42]/60');
       b.classList.add('text-[var(--text-muted)]', 'font-medium');
     });
     
     const activeBtn = document.getElementById(btnId);
-    activeBtn.classList.add('bg-[var(--surface-3)]', 'text-white', 'border', 'border-[#E52E42]/50', 'shadow-sm');
+    activeBtn.classList.add('bg-[var(--surface-3)]', 'text-white', 'border', 'border-[#E52E42]/60');
     activeBtn.classList.remove('text-[var(--text-muted)]');
     
     AppState.aspectRatio = arButtons[btnId].ratio;
@@ -1452,7 +1427,7 @@ function buildTranscriptPanel() {
         </div>
         <div class="text-xs">
           <p class="font-semibold text-white">NO TRANSCRIPT GENERATED</p>
-          <p class="font-technical-mono text-[10px] text-white/40 mt-1">INITIALIZE AI TRANSCRIPTION OR PASTE SCRIPT</p>
+          <p class="font-technical-mono text-[10px] text-white/50 mt-1">INITIALIZE AI TRANSCRIPTION OR PASTE SCRIPT</p>
         </div>
       </div>`;
     return;
@@ -1469,7 +1444,7 @@ function buildTranscriptPanel() {
       <div class="flex items-center justify-between font-technical-mono text-[10px] text-[var(--text-muted)] mb-1">
         <span class="flex items-center gap-1.5 text-white/70">
           <i class="ph-bold ph-play-circle text-[#E52E42]"></i> BLOCK ${li + 1}
-          <span class="text-[9px] opacity-40">${formatTimecode(line[0].start).substring(3, 8)}</span>
+          <span class="text-[9px] opacity-50">${formatTimecode(line[0].start).substring(3, 8)}</span>
         </span>
         <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
           <button data-line-del="${li}" class="p-1 rounded text-[#E52E42] hover:bg-[#E52E42]/10">
@@ -1584,13 +1559,15 @@ function renderLiveCaptionOverlay(currentTime) {
     if (AppState.style.strokeOn) {
       span.style.webkitTextStroke = `${AppState.style.strokeWidth}px ${AppState.style.strokeColor}`;
       span.style.paintOrder = 'stroke fill';
+    } else {
+      span.style.webkitTextStroke = '0px transparent';
     }
 
     if (AppState.style.glowOn) {
       const r = AppState.style.glowRadius;
-      span.style.textShadow = `0 0 ${r}px ${AppState.style.glowColorA}, 0 0 ${r * 2}px ${AppState.style.glowColorB}, 0 4px 14px rgba(0, 0, 0, 0.9)`;
+      span.style.textShadow = `0 0 ${r}px ${AppState.style.glowColorA}, 0 0 ${r * 2}px ${AppState.style.glowColorB}`;
     } else {
-      span.style.textShadow = '0 3px 8px rgba(0, 0, 0, 0.8)';
+      span.style.textShadow = 'none';
     }
 
     if (AppState.style.boxBgOn) {
@@ -1602,10 +1579,9 @@ function renderLiveCaptionOverlay(currentTime) {
     if (isCurrent) {
       if (AppState.style.motion === 'pop') {
         span.className = 'anim-pop';
-        span.style.transform = 'scale(1.1)';
+        span.style.transform = 'scale(1.08)';
       } else if (AppState.style.motion === 'karaoke') {
-        span.style.transform = 'scale(1.06)';
-        span.style.filter = 'brightness(1.2)';
+        span.style.transform = 'scale(1.05)';
       } else if (AppState.style.motion === 'slideup') {
         span.className = 'anim-slideup';
       } else if (AppState.style.motion === 'wiggle') {
@@ -1703,7 +1679,7 @@ function buildTimelineTracks() {
   vt.innerHTML = '';
   for (let i = 0; i < 20; i++) {
     const frame = document.createElement('div');
-    frame.className = 'flex-1 border-r border-black/40 flex items-center justify-center font-technical-mono text-[8px] text-white/20';
+    frame.className = 'flex-1 border-r border-black/40 flex items-center justify-center font-technical-mono text-[8px] text-white/30';
     frame.style.background = i % 2 ? '#121216' : '#1A1A22';
     frame.textContent = `00:${String(i).padStart(2, '0')}`;
     vt.appendChild(frame);
@@ -1762,10 +1738,10 @@ document.getElementById('addWordSegmentBtn').addEventListener('click', () => {
 document.querySelectorAll('.inspector-tab').forEach(tab => {
   tab.addEventListener('click', () => {
     document.querySelectorAll('.inspector-tab').forEach(t => {
-      t.classList.remove('active', 'bg-surface2', 'text-white', 'border', 'border-[#E52E42]/50', 'shadow-sm');
+      t.classList.remove('active', 'bg-surface2', 'text-white', 'border', 'border-[#E52E42]/60');
       t.classList.add('text-[var(--text-muted)]');
     });
-    tab.classList.add('active', 'bg-surface2', 'text-white', 'border', 'border-[#E52E42]/50', 'shadow-sm');
+    tab.classList.add('active', 'bg-surface2', 'text-white', 'border', 'border-[#E52E42]/60');
     tab.classList.remove('text-[var(--text-muted)]');
     
     const target = tab.dataset.tab;
@@ -1866,15 +1842,15 @@ document.getElementById('strokeColor').addEventListener('input', (e) => {
 const PRESETS = {
   shaditz_signature: {
     fontFamily: 'Anton', fontSize: 38, casing: 'caps', textColor: '#FFFFFF', activeWordColor: '#E52E42',
-    strokeOn: true, strokeWidth: 5, strokeColor: '#000000', glowOn: true, glowRadius: 18, glowColorA: '#E52E42', glowColorB: '#A81827', gradOn: false, motion: 'pop'
+    strokeOn: true, strokeWidth: 3, strokeColor: '#000000', glowOn: false, glowRadius: 12, glowColorA: '#E52E42', glowColorB: '#A81827', gradOn: false, motion: 'pop'
   },
   hormozi: {
     fontFamily: 'Bebas Neue', fontSize: 42, casing: 'caps', textColor: '#FFFFFF', activeWordColor: '#fde047',
-    strokeOn: true, strokeWidth: 5, strokeColor: '#000000', glowOn: false, gradOn: false, motion: 'pop'
+    strokeOn: true, strokeWidth: 3, strokeColor: '#000000', glowOn: false, gradOn: false, motion: 'pop'
   },
   monolithic: {
     fontFamily: 'Anton', fontSize: 34, casing: 'caps', textColor: '#FFFFFF', activeWordColor: '#FFFFFF',
-    strokeOn: true, strokeWidth: 4, strokeColor: '#E52E42', glowOn: true, glowRadius: 14, glowColorA: '#E52E42', glowColorB: '#000000', gradOn: false, motion: 'karaoke'
+    strokeOn: true, strokeWidth: 3, strokeColor: '#E52E42', glowOn: false, glowRadius: 10, glowColorA: '#E52E42', glowColorB: '#000000', gradOn: false, motion: 'karaoke'
   },
   minimal: {
     fontFamily: 'Plus Jakarta Sans', fontSize: 28, casing: 'none', textColor: '#FFFFFF', activeWordColor: '#E52E42',
@@ -1893,6 +1869,8 @@ document.querySelectorAll('[data-preset]').forEach(card => {
       document.getElementById('fontSize').value = AppState.style.fontSize;
       document.getElementById('fontSizeVal').textContent = `${AppState.style.fontSize}px`;
       document.getElementById('strokeOn').checked = AppState.style.strokeOn;
+      document.getElementById('strokeWidth').value = AppState.style.strokeWidth;
+      document.getElementById('strokeWVal').textContent = `${AppState.style.strokeWidth}px`;
       document.getElementById('glowOn').checked = AppState.style.glowOn;
       renderLiveCaptionOverlay(DOM.video.currentTime || AppState.currentTime);
       DOM.statusTxt.textContent = `PRESET: ${presetName.toUpperCase()}`;
@@ -2054,7 +2032,7 @@ DOM.startRenderBtn.addEventListener('click', async () => {
         renderCanvas.width / 2, renderCanvas.height / 2, 80,
         renderCanvas.width / 2, renderCanvas.height / 2, renderCanvas.height
       );
-      grad.addColorStop(0, '#1A0E12');
+      grad.addColorStop(0, '#161013');
       grad.addColorStop(0.6, '#0A0A0C');
       grad.addColorStop(1, '#050507');
       ctx.fillStyle = grad;
@@ -2082,6 +2060,9 @@ DOM.startRenderBtn.addEventListener('click', async () => {
       if (AppState.style.glowOn) {
         ctx.shadowColor = AppState.style.glowColorA;
         ctx.shadowBlur = AppState.style.glowRadius * scaleFactor;
+      } else {
+        ctx.shadowColor = 'transparent';
+        ctx.shadowBlur = 0;
       }
 
       if (AppState.style.strokeOn) {
