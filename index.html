@@ -226,6 +226,36 @@
       box-shadow: 0 0 10px rgba(229, 46, 66, 0.5) !important;
     }
 
+    /* Clean Raw Transcript Prose (No Premature Styling) */
+    .transcript-clean-prose {
+      font-family: 'Poppins', 'Montserrat', 'Plus Jakarta Sans', sans-serif;
+      font-size: 12.5px;
+      line-height: 1.75;
+      color: #FFFFFF;
+      font-weight: 400;
+      text-transform: none;
+      letter-spacing: 0.01em;
+    }
+    .transcript-clean-word {
+      display: inline;
+      color: #FFFFFF;
+      padding: 1px 2px;
+      margin: 0 1px;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: background-color 0.12s ease, color 0.12s ease;
+    }
+    .transcript-clean-word:hover {
+      background: rgba(255, 255, 255, 0.18);
+      color: #FFFFFF;
+    }
+    .transcript-clean-word.active-karaoke {
+      background: #E52E42;
+      color: #FFFFFF;
+      font-weight: 600;
+      border-radius: 3px;
+    }
+
     @keyframes filmcomPop {
       0% { transform: scale(0.85); opacity: 0; }
       60% { transform: scale(1.08); opacity: 1; }
@@ -651,28 +681,31 @@
       <div class="p-3 border-b border-[var(--border)] space-y-2.5 bg-[#14141C]">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2">
-            <i class="ph-bold ph-terminal-window text-[#E52E42] text-base"></i>
-            <h2 class="font-brand-display text-sm uppercase tracking-wider text-white">TRANSCRIPT SCRIPT VIEW</h2>
+            <i class="ph-bold ph-article text-[#E52E42] text-base"></i>
+            <h2 class="font-brand-display text-sm uppercase tracking-wider text-white">TRANSCRIPT VIEW</h2>
           </div>
-          <div class="flex items-center gap-1">
+          <div class="flex items-center gap-1.5">
             <span id="wordCountBadge" class="px-2 py-0.5 rounded bg-[#22222D] border border-[var(--border)] font-technical-mono text-[10px] text-[#E52E42] font-bold">0 WORDS</span>
+            <button id="openCreateCaptionsModalBtn" class="px-2 py-1 rounded bg-[#181820] border border-[#E52E42] text-white font-technical-mono font-bold text-xs hover:bg-[#E52E42] transition-colors flex items-center gap-1 shadow-sm" title="Create Captions [CC]">
+              <i class="ph-bold ph-closed-captioning text-[#E52E42] group-hover:text-white"></i> [CC]
+            </button>
           </div>
         </div>
 
         <div class="flex items-center gap-1.5">
           <div class="relative flex-1">
             <i class="ph-bold ph-magnifying-glass absolute left-2.5 top-1/2 -translate-y-1/2 text-xs text-[#B0B2C3]"></i>
-            <input id="searchTranscriptInput" type="text" placeholder="Search words or timings..." class="!pl-7 !py-1 w-full !text-xs font-technical-mono">
+            <input id="searchTranscriptInput" type="text" placeholder="Search raw transcript..." class="!pl-7 !py-1 w-full !text-xs font-technical-mono">
           </div>
           <button id="addEmojiBtn" class="p-1.5 rounded-md bg-[#181820] border border-[var(--border)] text-[#B0B2C3] hover:text-[#E52E42] hover:border-white/30" title="Auto Inject Viral Emojis 🔥⚡">
             <i class="ph-bold ph-fire text-xs"></i>
           </button>
         </div>
 
-        <!-- DEDICATED CONVERT TO CAPTIONS / SYNC TIMELINE BUTTON -->
-        <button id="syncToCaptionsBtn" class="w-full btn-cherry-primary py-2.5 rounded-md font-brand-display tracking-wider uppercase text-xs flex items-center justify-center gap-2 transition-transform active:scale-98">
-          <i class="ph-bold ph-lightning text-white text-sm"></i>
-          <span>CONVERT TO CAPTIONS (SYNC TO TIMELINE)</span>
+        <!-- DEDICATED CONVERT TO CAPTIONS / PREMIERE PRO CC BUTTON -->
+        <button id="syncToCaptionsBtn" class="w-full btn-cherry-primary py-2.5 rounded-md font-brand-display tracking-wider uppercase text-xs flex items-center justify-center gap-2 transition-transform active:scale-98 shadow-md">
+          <i class="ph-bold ph-closed-captioning text-white text-base"></i>
+          <span>CREATE CAPTIONS (PARAMETRIC SYNC) [CC]</span>
         </button>
       </div>
 
@@ -1304,23 +1337,161 @@
   </div>
 </div>
 
+<!-- PREMIERE PRO STYLE [CC] CREATE CAPTIONS MODAL -->
+<div id="createCaptionsModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+  <div class="glass-modal w-full max-w-[460px] rounded-xl p-5 space-y-4 relative border border-[var(--border)] shadow-2xl bg-[#0E0E14]">
+    <!-- Modal Header -->
+    <div class="flex items-center justify-between border-b border-[var(--border)] pb-3">
+      <div class="flex items-center gap-2.5">
+        <div class="w-7 h-7 rounded-lg bg-[#E52E42]/15 border border-[#E52E42]/40 flex items-center justify-center">
+          <i class="ph-bold ph-closed-captioning text-[#E52E42] text-base"></i>
+        </div>
+        <div>
+          <h3 class="font-semibold text-sm text-white tracking-wide">Create captions</h3>
+          <p class="font-technical-mono text-[9px] text-[#8C8E9F]">Premiere Pro Speech-to-Captions Engine</p>
+        </div>
+      </div>
+      <button id="closeCreateCaptionsBtn" class="p-1.5 rounded-md text-[#B0B2C3] hover:text-white hover:bg-white/10 transition-colors">
+        <i class="ph-bold ph-x text-base"></i>
+      </button>
+    </div>
+
+    <!-- Modal Body -->
+    <div class="space-y-3.5 text-xs">
+      <!-- Caption preset -->
+      <div class="space-y-1.5">
+        <label class="block font-medium text-[#B0B2C3] text-[11px]">Caption preset</label>
+        <div class="flex items-center gap-2">
+          <select id="ccPresetSelect" class="flex-1 bg-[#181822] border border-[var(--border)] rounded-md px-3 py-2 text-xs text-white focus:border-[#E52E42] focus:outline-none">
+            <option value="default" selected>Subtitle default</option>
+            <option value="filmcom">Filmcom Basic Text (Viral Punch)</option>
+            <option value="mogrt_master">MOGRT Master Glow</option>
+            <option value="hormozi">Hormozi 1-Word Snappy</option>
+            <option value="minimalist">Minimalist Crisp</option>
+          </select>
+          <button class="p-2 rounded-md bg-[#181822] border border-[var(--border)] text-[#B0B2C3] hover:text-white" title="Preset options">
+            <i class="ph-bold ph-dots-three text-base"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Collapsible Preferences Accordion -->
+      <details id="ccPreferencesDetails" open class="group rounded-lg bg-[#14141D] border border-[var(--border)] overflow-hidden">
+        <summary class="flex items-center justify-between px-3 py-2.5 cursor-pointer font-medium text-white text-xs select-none hover:bg-white/5 transition-colors">
+          <span class="flex items-center gap-2">
+            <i class="ph-bold ph-caret-down group-open:rotate-0 -rotate-90 transition-transform text-[#E52E42]"></i>
+            <span class="font-semibold">Preferences</span>
+            <span class="text-[#8C8E9F] font-normal text-[11px]">(format, max/min length, lines)</span>
+          </span>
+        </summary>
+        
+        <div class="p-3 pt-2.5 space-y-3.5 border-t border-[var(--border)]/60 bg-[#12121A]">
+          <!-- Format, Stream, Style -->
+          <div>
+            <label class="block font-medium text-[#8C8E9F] text-[10px] uppercase tracking-wider mb-1">Format</label>
+            <select id="ccFormatSelect" class="w-full bg-[#181822] border border-[var(--border)] rounded-md px-2.5 py-1.5 text-xs text-white">
+              <option value="subtitle" selected>Subtitle</option>
+              <option value="teletext">Teletext</option>
+              <option value="cea708">CEA-708</option>
+            </select>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block font-medium text-[#8C8E9F] text-[10px] uppercase tracking-wider mb-1">Stream</label>
+              <select id="ccStreamSelect" class="w-full bg-[#181822] border border-[var(--border)] rounded-md px-2.5 py-1.5 text-xs text-[#8C8E9F]" disabled>
+                <option value="none" selected>None</option>
+                <option value="stream1">Stream 1</option>
+              </select>
+            </div>
+            <div>
+              <label class="block font-medium text-[#8C8E9F] text-[10px] uppercase tracking-wider mb-1">Style</label>
+              <select id="ccStyleSelect" class="w-full bg-[#181822] border border-[var(--border)] rounded-md px-2.5 py-1.5 text-xs text-white">
+                <option value="none" selected>None</option>
+                <option value="filmcom">Filmcom Pop</option>
+                <option value="glow">Neon Glow</option>
+                <option value="karaoke">Karaoke Highlight</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Maximum length in characters Slider -->
+          <div class="space-y-1">
+            <div class="flex items-center justify-between text-xs">
+              <label class="text-[#B0B2C3] font-medium">Maximum length in characters</label>
+              <span id="ccMaxCharsVal" class="font-technical-mono text-white font-bold bg-[#181822] px-2 py-0.5 rounded border border-[var(--border)]">32</span>
+            </div>
+            <input id="ccMaxChars" type="range" min="10" max="60" value="32" class="w-full accent-[#E52E42] cursor-pointer">
+          </div>
+
+          <!-- Minimum duration in seconds Slider -->
+          <div class="space-y-1">
+            <div class="flex items-center justify-between text-xs">
+              <label class="text-[#B0B2C3] font-medium">Minimum duration in seconds</label>
+              <span id="ccMinDurVal" class="font-technical-mono text-white font-bold bg-[#181822] px-2 py-0.5 rounded border border-[var(--border)]">1.5s</span>
+            </div>
+            <input id="ccMinDur" type="range" min="0.5" max="5.0" step="0.1" value="1.5" class="w-full accent-[#E52E42] cursor-pointer">
+          </div>
+
+          <!-- Gap between captions (frames) Slider -->
+          <div class="space-y-1">
+            <div class="flex items-center justify-between text-xs">
+              <label class="text-[#B0B2C3] font-medium">Gap between captions (frames)</label>
+              <span id="ccGapFramesVal" class="font-technical-mono text-white font-bold bg-[#181822] px-2 py-0.5 rounded border border-[var(--border)]">0</span>
+            </div>
+            <input id="ccGapFrames" type="range" min="0" max="10" step="1" value="0" class="w-full accent-[#E52E42] cursor-pointer">
+          </div>
+
+          <!-- Lines Selector: Single vs Double -->
+          <div class="space-y-1.5 pt-1">
+            <label class="block text-[#B0B2C3] font-medium">Lines</label>
+            <div class="flex items-center gap-6">
+              <label class="flex items-center gap-2 cursor-pointer text-white hover:text-[#E52E42] transition-colors">
+                <input type="radio" name="ccLinesChoice" value="single" class="accent-[#E52E42] w-4 h-4 cursor-pointer">
+                <span class="text-xs">Single</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer text-white hover:text-[#E52E42] transition-colors">
+                <input type="radio" name="ccLinesChoice" value="double" checked class="accent-[#E52E42] w-4 h-4 cursor-pointer">
+                <span class="text-xs">Double</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </details>
+    </div>
+
+    <!-- Modal Footer Actions -->
+    <div class="flex items-center justify-end gap-2.5 pt-3 border-t border-[var(--border)]">
+      <button id="cancelCreateCaptionsBtn" class="px-4 py-1.5 rounded-full bg-[#181822] border border-[var(--border)] text-xs font-semibold text-[#B0B2C3] hover:text-white hover:border-white/30 transition-all">
+        Cancel
+      </button>
+      <button id="confirmCreateCaptionsBtn" class="btn-cherry-primary px-5 py-1.5 rounded-full text-xs font-semibold text-white tracking-wide shadow-md hover:brightness-110 active:scale-98 transition-all flex items-center gap-1.5">
+        <i class="ph-bold ph-closed-captioning"></i>
+        <span>Create captions</span>
+      </button>
+    </div>
+  </div>
+</div>
+
 <script>
 // ==================== DEFAULT BASE64 ENCODED GROQ API KEY ====================
 const GROQ_API_KEY = atob("Z3NrX3RydHlTamx5R3ZQQ1ZVV0RUYjVxV0dkeWIzRllWd0U5ZVVxQXZMdEZWSGl0ZmlWN2ZGUnM=");
 
-// ==================== GLOBAL APPLICATION STATE ====================
+// ==================== GLOBAL APPLICATION STATE (ZERO DEFAULT STATE) ====================
 const AppState = {
   mediaBin: [], // Array of { id, name, file, url, duration, type, thumbUrl }
   activeMediaId: null,
   activeFile: null,
   audioBuffer: null,
   waveformPeaks: [],
-  duration: 8.5,
+  duration: 0,
   currentTime: 0,
   isPlaying: false,
   aspectRatio: '9/16',
   videoTransform: { x: 0, y: 0, scale: 1.0 }, // Pan & zoom offsets
-  words: [], // Transcribed word timestamps: { id, text, start, end }
+  words: [], // Timeline generated caption blocks: { id, text, start, end }
+  rawTranscriptWords: [], // Unaltered raw speech recognition tokens: { id, text, start, end }
+  rawTranscriptText: '', // Clean prose transcript text
   
   timelineZoom: 1, // Ultra-precision timeline zoom multiplier (1x to 100x)
   
@@ -1331,19 +1502,19 @@ const AppState = {
   selectedWordIndex: null,
 
   style: {
-    fontFamily: 'Anton',
-    fontSize: 36,
-    casing: 'caps',
+    fontFamily: 'Poppins',
+    fontSize: 28,
+    casing: 'none',
     textColor: '#FFFFFF',
-    lineHeight: 1.1,
-    letterSpacing: 1,
+    lineHeight: 1.2,
+    letterSpacing: 0,
     posY: 14,
     glowOn: false,
     glowRadius: 12,
     glowColorA: '#E52E42',
     glowColorB: '#A81827',
-    strokeOn: true,
-    strokeWidth: 3,
+    strokeOn: false,
+    strokeWidth: 2,
     strokeColor: '#000000',
     gradOn: false,
     gradColor1: '#FFFFFF',
@@ -1352,10 +1523,10 @@ const AppState = {
     boxBgOn: false,
     boxBgColor: '#0A0A0C',
     boxBgOpacity: 85,
-    motion: 'mogrt_bounce',
-    scope: 'word',
+    motion: 'none',
+    scope: 'sentence',
     activeWordColor: '#E52E42',
-    dimInactive: true
+    dimInactive: false
   },
   snap: true
 };
@@ -1394,7 +1565,9 @@ const DOM = {
   transcriptBox: document.getElementById('transcriptBox'),
   applyTranscript: document.getElementById('applyTranscript'),
   syncToCaptionsBtn: document.getElementById('syncToCaptionsBtn'),
+  openCreateCaptionsModalBtn: document.getElementById('openCreateCaptionsModalBtn'),
   clearTranscriptBtn: document.getElementById('clearTranscriptBtn'),
+  searchTranscriptInput: document.getElementById('searchTranscriptInput'),
   wordCountBadge: document.getElementById('wordCountBadge'),
   timelineRuler: document.getElementById('timelineRuler'),
   playhead: document.getElementById('playhead'),
@@ -1447,7 +1620,21 @@ const DOM = {
   renderProgressBox: document.getElementById('renderProgressBox'),
   renderProgressBar: document.getElementById('renderProgressBar'),
   renderPercentTxt: document.getElementById('renderPercentTxt'),
-  renderStatusTxt: document.getElementById('renderStatusTxt')
+  renderStatusTxt: document.getElementById('renderStatusTxt'),
+  // Create Captions Modal Elements
+  createCaptionsModal: document.getElementById('createCaptionsModal'),
+  closeCreateCaptionsBtn: document.getElementById('closeCreateCaptionsBtn'),
+  cancelCreateCaptionsBtn: document.getElementById('cancelCreateCaptionsBtn'),
+  confirmCreateCaptionsBtn: document.getElementById('confirmCreateCaptionsBtn'),
+  ccPresetSelect: document.getElementById('ccPresetSelect'),
+  ccFormatSelect: document.getElementById('ccFormatSelect'),
+  ccStyleSelect: document.getElementById('ccStyleSelect'),
+  ccMaxChars: document.getElementById('ccMaxChars'),
+  ccMaxCharsVal: document.getElementById('ccMaxCharsVal'),
+  ccMinDur: document.getElementById('ccMinDur'),
+  ccMinDurVal: document.getElementById('ccMinDurVal'),
+  ccGapFrames: document.getElementById('ccGapFrames'),
+  ccGapFramesVal: document.getElementById('ccGapFramesVal')
 };
 
 // ==================== LEFT PANEL TABS ====================
@@ -2180,125 +2367,381 @@ function editCaptionInline(index) {
   }
 }
 
-// ==================== TRANSCRIPT MATRIX & ONE-CLICK SYNC ====================
-function buildTranscriptPanel() {
-  DOM.wordCountBadge.textContent = `${AppState.words.length} WORDS`;
-  if (!AppState.words.length) {
+// ==================== TRANSCRIPT MATRIX & PREMIERE PRO [CC] WORKFLOW ====================
+function buildTranscriptPanel(filterQuery = '') {
+  const wordsToDisplay = AppState.rawTranscriptWords.length ? AppState.rawTranscriptWords : AppState.words;
+  DOM.wordCountBadge.textContent = `${wordsToDisplay.length} WORDS`;
+
+  if (!wordsToDisplay.length) {
     DOM.transcriptPanel.innerHTML = `
       <div class="p-8 text-center text-[#B0B2C3] space-y-3">
-        <div class="w-12 h-12 rounded-xl bg-[#181820] border border-[var(--border)] mx-auto flex items-center justify-center text-[#E52E42] text-xl">
-          <i class="ph-bold ph-waveform"></i>
+        <div class="w-12 h-12 rounded-xl bg-[#181820] border border-[var(--border)] mx-auto flex items-center justify-center text-[#E52E42] text-xl shadow-inner">
+          <i class="ph-bold ph-closed-captioning"></i>
         </div>
-        <div class="text-xs">
-          <p class="font-semibold text-white">NO TRANSCRIPT GENERATED</p>
-          <p class="font-technical-mono text-[11px] text-[#B0B2C3] mt-1 font-medium">CLICK "TRANSCRIBE AUDIO TRACK" TO AUTO-GENERATE</p>
+        <div class="text-xs space-y-1">
+          <p class="font-semibold text-white">NO TRANSCRIPT YET</p>
+          <p class="font-technical-mono text-[10px] text-[#8C8E9F]">Upload video or audio & click "AI Whisper Auto-Caption" to generate clean transcript.</p>
         </div>
       </div>`;
     return;
   }
 
-  const wordsPerLine = parseInt(document.getElementById('wordsPerLineSelect').value) || 4;
-  const lines = [];
-  for (let i = 0; i < AppState.words.length; i += wordsPerLine) {
-    lines.push(AppState.words.slice(i, i + wordsPerLine));
-  }
+  // Clean sentence & paragraph grouping (pure white prose, normal casing, no premature styling)
+  const paragraphs = [];
+  let currentPara = [];
+  let charCount = 0;
 
-  DOM.transcriptPanel.innerHTML = lines.map((line, li) => `
-    <div class="p-2.5 rounded-lg bg-[#181820]/70 border border-[var(--border)] hover:border-white/20 transition-all group">
-      <div class="flex items-center justify-between font-technical-mono text-[10px] text-[#B0B2C3] mb-1.5 font-semibold">
-        <span class="flex items-center gap-1.5 text-white">
-          <i class="ph-bold ph-play-circle text-[#E52E42]"></i> BLOCK ${li + 1}
-          <span class="text-[9px] text-[#8C8E9F]">(${formatTimecode(line[0].start).substring(3, 8)})</span>
-        </span>
-        <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-          <button data-line-del="${li}" class="p-1 rounded text-[#E52E42] hover:bg-[#E52E42]/10" title="Delete Block">
-            <i class="ph-bold ph-trash"></i>
+  wordsToDisplay.forEach((w, idx) => {
+    currentPara.push(w);
+    charCount += w.text.length + 1;
+    const endsWithPunct = /[.?!]$/.test(w.text);
+    const nextWord = wordsToDisplay[idx + 1];
+    const isLongPause = nextWord && (nextWord.start - w.end > 0.7);
+
+    if (endsWithPunct || isLongPause || charCount > 120 || idx === wordsToDisplay.length - 1) {
+      paragraphs.push([...currentPara]);
+      currentPara = [];
+      charCount = 0;
+    }
+  });
+
+  const query = (filterQuery || '').trim().toLowerCase();
+
+  DOM.transcriptPanel.innerHTML = paragraphs.map((para, pi) => {
+    const startTime = para[0]?.start || 0;
+    const endTime = para[para.length - 1]?.end || 0;
+    const paraText = para.map(w => w.text).join(' ');
+
+    if (query && !paraText.toLowerCase().includes(query)) {
+      return '';
+    }
+
+    return `
+      <div class="p-3 rounded-lg bg-[#14141E] border border-[var(--border)] hover:border-white/20 transition-all group space-y-2">
+        <div class="flex items-center justify-between font-technical-mono text-[10px] text-[#8C8E9F] pb-1.5 border-b border-[var(--border)]/40">
+          <span class="flex items-center gap-1.5 text-white font-medium">
+            <i class="ph-bold ph-speaker-simple-high text-[#E52E42]"></i> SPEECH BLOCK ${pi + 1}
+            <span class="text-[#8C8E9F] font-normal font-technical-mono">(${formatTimecode(startTime).substring(3, 8)} - ${formatTimecode(endTime).substring(3, 8)})</span>
+          </span>
+          <button data-para-play="${startTime}" class="px-2 py-0.5 rounded bg-[#1C1C28] border border-[var(--border)] text-white hover:text-[#E52E42] hover:border-[#E52E42] text-[10px] flex items-center gap-1 transition-colors" title="Play from this speech block">
+            <i class="ph-fill ph-play text-[9px]"></i> Play
           </button>
         </div>
-      </div>
-      <div class="flex flex-wrap items-center">
-        ${line.map(w => `
-          <span class="word-chip font-technical-mono" data-word-id="${w.id}" data-start="${w.start}" title="Click to seek · Double-click to edit">
-            ${w.text}
-          </span>
-        `).join('')}
-      </div>
-    </div>
-  `).join('');
 
-  document.querySelectorAll('.word-chip').forEach(chip => {
-    chip.addEventListener('click', () => seekVideo(parseFloat(chip.dataset.start)));
-    chip.addEventListener('dblclick', () => {
-      const wordId = chip.dataset.wordId;
-      const wordIdx = AppState.words.findIndex(w => w.id === wordId);
-      if (wordIdx !== -1) {
-        editCaptionInline(wordIdx);
-      }
+        <div class="transcript-clean-prose select-text">
+          ${para.map(w => {
+            const isMatch = query && w.text.toLowerCase().includes(query);
+            return `
+              <span class="transcript-clean-word ${isMatch ? 'bg-[#FFE600]/30 text-white rounded' : ''}" data-word-id="${w.id}" data-start="${w.start}" data-end="${w.end}" title="${formatTimecode(w.start).substring(3, 8)} - Click to seek">
+                ${w.text}
+              </span>
+            `;
+          }).join(' ')}
+        </div>
+      </div>
+    `;
+  }).filter(Boolean).join('');
+
+  // Wire seeking click on each clean word span
+  document.querySelectorAll('.transcript-clean-word').forEach(span => {
+    span.addEventListener('click', (e) => {
+      e.stopPropagation();
+      seekVideo(parseFloat(span.dataset.start));
     });
   });
 
-  document.querySelectorAll('[data-line-del]').forEach(btn => {
+  document.querySelectorAll('[data-para-play]').forEach(btn => {
     btn.addEventListener('click', () => {
-      const li = parseInt(btn.dataset.lineDel);
-      AppState.words.splice(li * wordsPerLine, wordsPerLine);
-      buildTranscriptPanel();
-      buildTimelineTracks();
-      renderLiveCaptionOverlay(DOM.video.currentTime || AppState.currentTime);
+      seekVideo(parseFloat(btn.dataset.paraPlay));
+      if (DOM.video.paused) togglePlay();
     });
   });
 
   if (!DOM.transcriptBox.value.trim()) {
-    DOM.transcriptBox.value = AppState.words.map(w => w.text).join(' ');
+    DOM.transcriptBox.value = wordsToDisplay.map(w => w.text).join(' ');
   }
 }
 
 function syncTranscriptHighlight(t) {
-  document.querySelectorAll('.word-chip').forEach(chip => chip.classList.remove('active-karaoke'));
-  const activeWord = AppState.words.find(w => t >= w.start && t <= w.end);
-  if (activeWord) {
-    const chip = document.querySelector(`[data-word-id="${activeWord.id}"]`);
-    if (chip) {
-      chip.classList.add('active-karaoke');
-      chip.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  document.querySelectorAll('.transcript-clean-word').forEach(w => w.classList.remove('active-karaoke'));
+  document.querySelectorAll('.word-chip').forEach(w => w.classList.remove('active-karaoke'));
+
+  const activeRawWord = (AppState.rawTranscriptWords.length ? AppState.rawTranscriptWords : AppState.words).find(w => t >= w.start && t <= w.end);
+  if (activeRawWord) {
+    const wordEl = document.querySelector(`.transcript-clean-word[data-word-id="${activeRawWord.id}"]`) || document.querySelector(`.word-chip[data-word-id="${activeRawWord.id}"]`);
+    if (wordEl) {
+      wordEl.classList.add('active-karaoke');
+      wordEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
   }
 }
 
-DOM.syncToCaptionsBtn.addEventListener('click', () => {
-  if (DOM.transcriptBox.value.trim()) {
-    DOM.applyTranscript.click();
-  } else if (AppState.words.length) {
-    buildTimelineTracks();
-    DOM.statusTxt.textContent = 'CAPTIONS SYNCED TO TIMELINE';
+// Transcript search filter
+if (DOM.searchTranscriptInput) {
+  DOM.searchTranscriptInput.addEventListener('input', (e) => {
+    buildTranscriptPanel(e.target.value);
+  });
+}
+
+// ==================== PREMIERE PRO CREATE CAPTIONS [CC] MODAL ENGINE ====================
+function openCreateCaptionsModal() {
+  if (DOM.createCaptionsModal) {
+    DOM.createCaptionsModal.classList.remove('hidden');
   }
-});
+}
+
+function closeCreateCaptionsModal() {
+  if (DOM.createCaptionsModal) {
+    DOM.createCaptionsModal.classList.add('hidden');
+  }
+}
+
+if (DOM.openCreateCaptionsModalBtn) DOM.openCreateCaptionsModalBtn.addEventListener('click', openCreateCaptionsModal);
+if (DOM.syncToCaptionsBtn) DOM.syncToCaptionsBtn.addEventListener('click', openCreateCaptionsModal);
+if (DOM.closeCreateCaptionsBtn) DOM.closeCreateCaptionsBtn.addEventListener('click', closeCreateCaptionsModal);
+if (DOM.cancelCreateCaptionsBtn) DOM.cancelCreateCaptionsBtn.addEventListener('click', closeCreateCaptionsModal);
+
+// Modal live slider feedback
+if (DOM.ccMaxChars) {
+  DOM.ccMaxChars.addEventListener('input', (e) => {
+    if (DOM.ccMaxCharsVal) DOM.ccMaxCharsVal.textContent = e.target.value;
+  });
+}
+if (DOM.ccMinDur) {
+  DOM.ccMinDur.addEventListener('input', (e) => {
+    if (DOM.ccMinDurVal) DOM.ccMinDurVal.textContent = `${parseFloat(e.target.value).toFixed(1)}s`;
+  });
+}
+if (DOM.ccGapFrames) {
+  DOM.ccGapFrames.addEventListener('input', (e) => {
+    if (DOM.ccGapFramesVal) DOM.ccGapFramesVal.textContent = e.target.value;
+  });
+}
+
+// ==================== PARAMETRIC TIMELINE CAPTION GENERATION ====================
+function generateParametricCaptions(options = {}) {
+  const maxChars = parseInt(DOM.ccMaxChars?.value) || 32;
+  const minDur = parseFloat(DOM.ccMinDur?.value) || 1.5;
+  const gapFrames = parseInt(DOM.ccGapFrames?.value) || 0;
+  const lines = (document.querySelector('input[name="ccLinesChoice"]:checked')?.value) || 'double';
+  const preset = DOM.ccPresetSelect?.value || 'default';
+  const style = DOM.ccStyleSelect?.value || 'none';
+
+  let rawWords = AppState.rawTranscriptWords.length ? AppState.rawTranscriptWords : (AppState.words.length ? AppState.words : []);
+
+  if (!rawWords.length && DOM.transcriptBox.value.trim()) {
+    const rawTokens = DOM.transcriptBox.value.trim().split(/\s+/).filter(Boolean);
+    const dur = AppState.duration || DOM.video.duration || 8.5;
+    const step = dur / Math.max(1, rawTokens.length);
+    rawWords = rawTokens.map((w, i) => ({
+      id: 'rw_man_' + i,
+      text: w,
+      start: i * step,
+      end: (i + 1) * step
+    }));
+    AppState.rawTranscriptWords = rawWords;
+  }
+
+  if (!rawWords.length) {
+    DOM.statusTxt.textContent = 'NO TRANSCRIPT FOUND TO CONVERT';
+    return;
+  }
+
+  const generatedChunks = [];
+  let currentChunkWords = [];
+  const gapDuration = gapFrames / 30; // 30 FPS frame delta
+
+  for (let i = 0; i < rawWords.length; i++) {
+    const word = rawWords[i];
+    const prevWord = currentChunkWords[currentChunkWords.length - 1];
+
+    // Check potential length if we add this word
+    const potentialWords = [...currentChunkWords, word];
+    const potentialLength = potentialWords.map(w => w.text).join(' ').length;
+    const isLongPause = prevWord && (word.start - prevWord.end > 0.65);
+    const prevEndsWithPunct = prevWord && /[.?!]$/.test(prevWord.text);
+
+    if (currentChunkWords.length > 0 && (potentialLength > maxChars || isLongPause || (prevEndsWithPunct && currentChunkWords.length >= 3))) {
+      finalizeCaptionChunk(currentChunkWords, generatedChunks, minDur, gapDuration, lines);
+      currentChunkWords = [word];
+    } else {
+      currentChunkWords.push(word);
+    }
+  }
+
+  if (currentChunkWords.length > 0) {
+    finalizeCaptionChunk(currentChunkWords, generatedChunks, minDur, gapDuration, lines);
+  }
+
+  // Apply chosen preset to AppState.style
+  applyPresetByName(preset, style);
+
+  // Update AppState.words with generated timeline blocks
+  AppState.words = generatedChunks;
+  AppState.selectedTrackItem = { type: null, index: null, id: null };
+
+  buildTimelineTracks();
+  renderLiveCaptionOverlay(DOM.video.currentTime || AppState.currentTime);
+  closeCreateCaptionsModal();
+
+  DOM.statusTxt.textContent = `CAPTIONS CREATED: ${generatedChunks.length} BLOCKS`;
+  DOM.statusDot.className = 'w-2 h-2 rounded-full bg-[#E52E42]';
+}
+
+function finalizeCaptionChunk(chunkWords, targetArray, minDur, gapDuration, linesMode) {
+  if (!chunkWords.length) return;
+  const start = chunkWords[0].start;
+  let end = chunkWords[chunkWords.length - 1].end;
+
+  // Enforce minimum duration
+  if (end - start < minDur) {
+    end = start + minDur;
+  }
+  // Enforce gap between captions
+  if (gapDuration > 0) {
+    end = Math.max(start + 0.15, end - gapDuration);
+  }
+
+  let formattedText = '';
+  const plainWords = chunkWords.map(w => w.text);
+
+  if (linesMode === 'double' && plainWords.length >= 2) {
+    let bestSplit = 1;
+    let bestDiff = 9999;
+    for (let s = 1; s < plainWords.length; s++) {
+      const l1 = plainWords.slice(0, s).join(' ').length;
+      const l2 = plainWords.slice(s).join(' ').length;
+      const diff = Math.abs(l1 - l2);
+      if (diff < bestDiff) {
+        bestDiff = diff;
+        bestSplit = s;
+      }
+    }
+    formattedText = plainWords.slice(0, bestSplit).join(' ') + '\n' + plainWords.slice(bestSplit).join(' ');
+  } else {
+    formattedText = plainWords.join(' ');
+  }
+
+  targetArray.push({
+    id: 'cap_' + targetArray.length + '_' + Date.now(),
+    text: formattedText,
+    start: parseFloat(start.toFixed(3)),
+    end: parseFloat(end.toFixed(3)),
+    rawWords: chunkWords
+  });
+}
+
+function applyPresetByName(preset, styleOption) {
+  if (preset === 'filmcom') {
+    AppState.style.fontFamily = 'Anton';
+    AppState.style.fontSize = 36;
+    AppState.style.casing = 'caps';
+    AppState.style.textColor = '#FFFFFF';
+    AppState.style.strokeOn = true;
+    AppState.style.strokeWidth = 3;
+    AppState.style.strokeColor = '#000000';
+    AppState.style.glowOn = true;
+    AppState.style.glowRadius = 18;
+    AppState.style.glowColorA = '#E52E42';
+    AppState.style.motion = 'filmcom_pop';
+    AppState.style.activeWordColor = '#E52E42';
+  } else if (preset === 'mogrt_master') {
+    AppState.style.fontFamily = 'Anton';
+    AppState.style.fontSize = 38;
+    AppState.style.casing = 'caps';
+    AppState.style.textColor = '#FFFFFF';
+    AppState.style.strokeOn = true;
+    AppState.style.strokeWidth = 3;
+    AppState.style.strokeColor = '#000000';
+    AppState.style.glowOn = true;
+    AppState.style.glowRadius = 24;
+    AppState.style.glowColorA = '#E52E42';
+    AppState.style.motion = 'mogrt_bounce';
+    AppState.style.activeWordColor = '#E52E42';
+  } else if (preset === 'hormozi') {
+    AppState.style.fontFamily = 'Bebas Neue';
+    AppState.style.fontSize = 42;
+    AppState.style.casing = 'caps';
+    AppState.style.textColor = '#FFFFFF';
+    AppState.style.strokeOn = true;
+    AppState.style.strokeWidth = 4;
+    AppState.style.strokeColor = '#000000';
+    AppState.style.glowOn = false;
+    AppState.style.motion = 'pop';
+    AppState.style.activeWordColor = '#FFE600';
+  } else if (preset === 'minimalist') {
+    AppState.style.fontFamily = 'Poppins';
+    AppState.style.fontSize = 24;
+    AppState.style.casing = 'none';
+    AppState.style.textColor = '#FFFFFF';
+    AppState.style.strokeOn = false;
+    AppState.style.glowOn = false;
+    AppState.style.motion = 'none';
+    AppState.style.activeWordColor = '#E52E42';
+  } else {
+    // Default
+    AppState.style.fontFamily = 'Poppins';
+    AppState.style.fontSize = 28;
+    AppState.style.casing = 'none';
+    AppState.style.textColor = '#FFFFFF';
+    AppState.style.strokeOn = true;
+    AppState.style.strokeWidth = 2;
+    AppState.style.strokeColor = '#000000';
+    AppState.style.glowOn = false;
+    AppState.style.motion = 'none';
+    AppState.style.activeWordColor = '#E52E42';
+  }
+
+  if (styleOption === 'filmcom') AppState.style.motion = 'filmcom_pop';
+  if (styleOption === 'glow') AppState.style.glowOn = true;
+  if (styleOption === 'karaoke') AppState.style.motion = 'karaoke';
+
+  // Sync inspector inputs
+  if (document.getElementById('fontFamilySelect')) document.getElementById('fontFamilySelect').value = AppState.style.fontFamily;
+  if (document.getElementById('fontSizeSlider')) document.getElementById('fontSizeSlider').value = AppState.style.fontSize;
+  if (document.getElementById('fontValBadge')) document.getElementById('fontValBadge').textContent = `${AppState.style.fontSize}px`;
+  if (document.getElementById('casingSelect')) document.getElementById('casingSelect').value = AppState.style.casing;
+  if (document.getElementById('textColorInput')) document.getElementById('textColorInput').value = AppState.style.textColor;
+  if (document.getElementById('strokeOn')) document.getElementById('strokeOn').checked = AppState.style.strokeOn;
+  if (document.getElementById('glowOn')) document.getElementById('glowOn').checked = AppState.style.glowOn;
+}
+
+if (DOM.confirmCreateCaptionsBtn) {
+  DOM.confirmCreateCaptionsBtn.addEventListener('click', () => {
+    generateParametricCaptions();
+  });
+}
 
 DOM.applyTranscript.addEventListener('click', () => {
   const text = DOM.transcriptBox.value.trim();
   const dur = AppState.duration || DOM.video.duration || 8.5;
   if (!text) return;
 
-  const rawWords = text.split(/\s+/).filter(Boolean);
-  const step = dur / rawWords.length;
+  const rawTokens = text.split(/\s+/).filter(Boolean);
+  const step = dur / Math.max(1, rawTokens.length);
   
-  AppState.words = rawWords.map((w, i) => ({
-    id: 'w_' + i + '_' + Date.now(),
+  AppState.rawTranscriptWords = rawTokens.map((w, i) => ({
+    id: 'rw_' + i + '_' + Date.now(),
     text: w,
     start: i * step,
     end: (i + 1) * step
   }));
 
   buildTranscriptPanel();
-  buildTimelineTracks();
-  DOM.statusTxt.textContent = `${AppState.words.length} CAPTIONS SYNCED`;
+  DOM.statusTxt.textContent = `SCRIPT INJECTED (${AppState.rawTranscriptWords.length} WORDS) · CLICK [CC] TO GENERATE`;
+  openCreateCaptionsModal();
 });
 
 DOM.clearTranscriptBtn.addEventListener('click', () => {
+  AppState.rawTranscriptWords = [];
   AppState.words = [];
+  AppState.rawTranscriptText = '';
   DOM.transcriptBox.value = '';
   buildTranscriptPanel();
   buildTimelineTracks();
   DOM.capOverlay.innerHTML = '';
+  if (DOM.fsCapOverlay) DOM.fsCapOverlay.innerHTML = '';
+  DOM.statusTxt.textContent = 'TRANSCRIPT & CAPTIONS CLEARED';
 });
 
 // ==================== UNIVERSAL SPLIT & DELETE ACROSS ALL TRACKS ====================
@@ -2477,33 +2920,28 @@ async function runDirectGroqTranscription() {
   const fileToUpload = activeMedia ? activeMedia.file : AppState.activeFile;
 
   showInlineProgress(true);
-  updateProgressState('Extracting Audio... [25%]', 25);
+  updateProgressState('Extracting Audio Track... [25%]', 25);
   DOM.statusTxt.textContent = 'AI TRANSCRIBING...';
   DOM.statusDot.className = 'w-2 h-2 rounded-full bg-[#E52E42] animate-ping';
 
   if (!fileToUpload) {
-    setTimeout(() => updateProgressState('Transcribing with Whisper... [65%]', 65), 500);
-    setTimeout(() => updateProgressState('Syncing Captions... [90%]', 90), 1000);
-    setTimeout(() => {
-      loadDemoSample();
-      updateProgressState('Captions Ready [100%]', 100);
-      DOM.leftTabTranscript.click();
-      DOM.statusDot.className = 'w-2 h-2 rounded-full bg-[#E52E42]';
-      setTimeout(() => showInlineProgress(false), 2000);
-    }, 1500);
+    updateProgressState('Please import a video or audio file first', 100);
+    DOM.statusTxt.textContent = 'NO MEDIA IMPORTED';
+    DOM.statusDot.className = 'w-2 h-2 rounded-full bg-[#E52E42]';
+    setTimeout(() => showInlineProgress(false), 2200);
     return;
   }
 
   try {
     await new Promise(r => setTimeout(r, 350));
-    updateProgressState('Transcribing with Whisper... [65%]', 65);
+    updateProgressState('Whisper Transcribing Speech... [65%]', 65);
 
     const formData = new FormData();
     formData.append('file', fileToUpload, fileToUpload.name);
     formData.append('model', 'whisper-large-v3');
     formData.append('response_format', 'verbose_json');
     formData.append('timestamp_granularities[]', 'word');
-    formData.append('prompt', 'Shaditz, Shaher Yar, motion graphics, viral captions, video editing, retention rate');
+    formData.append('prompt', 'Shaditz, Shaher Yar, motion graphics, viral captions, video editing, retention rate, subtitles');
 
     const response = await fetch('https://api.groq.com/openai/v1/audio/transcriptions', {
       method: 'POST',
@@ -2519,37 +2957,40 @@ async function runDirectGroqTranscription() {
     }
 
     const data = await response.json();
-    updateProgressState('Syncing Captions... [90%]', 90);
+    updateProgressState('Formatting Clean Transcript... [90%]', 90);
 
     if (data.words && data.words.length) {
-      AppState.words = data.words.map((w, i) => ({
-        id: 'w_' + i,
+      AppState.rawTranscriptWords = data.words.map((w, i) => ({
+        id: 'rw_' + i,
         text: w.word.trim(),
         start: w.start,
         end: w.end
       }));
+      AppState.rawTranscriptText = data.text || AppState.rawTranscriptWords.map(w => w.text).join(' ');
     } else if (data.text) {
-      const rawWords = data.text.trim().split(/\s+/).filter(Boolean);
-      const step = (AppState.duration || 10) / rawWords.length;
-      AppState.words = rawWords.map((w, i) => ({
-        id: 'w_' + i,
+      const rawTokens = data.text.trim().split(/\s+/).filter(Boolean);
+      const step = (AppState.duration || 10) / Math.max(1, rawTokens.length);
+      AppState.rawTranscriptWords = rawTokens.map((w, i) => ({
+        id: 'rw_' + i,
         text: w,
         start: i * step,
         end: (i + 1) * step
       }));
+      AppState.rawTranscriptText = data.text;
     }
 
+    DOM.transcriptBox.value = AppState.rawTranscriptText;
     buildTranscriptPanel();
-    buildTimelineTracks();
     DOM.leftTabTranscript.click();
 
-    updateProgressState('Captions Ready [100%]', 100);
-    DOM.statusTxt.textContent = `CAPTIONS READY (${AppState.words.length} WORDS)`;
+    updateProgressState('Transcript Ready [100%]', 100);
+    DOM.statusTxt.textContent = `RAW TRANSCRIPT READY (${AppState.rawTranscriptWords.length} WORDS)`;
     DOM.statusDot.className = 'w-2 h-2 rounded-full bg-[#E52E42]';
 
     setTimeout(() => {
       showInlineProgress(false);
-    }, 2000);
+      openCreateCaptionsModal();
+    }, 600);
 
   } catch (err) {
     console.error('Groq transcription error:', err);
@@ -3464,7 +3905,15 @@ DOM.startRenderBtn.addEventListener('click', async () => {
 
 document.addEventListener('DOMContentLoaded', () => {
   updateSafeZoneOverlay();
-  loadDemoSample();
+  buildTimelineRuler();
+  buildVideoTrackFilmstrip(null);
+  buildTranscriptPanel();
+  buildTimelineTracks();
+  drawWaveformCanvas();
+  renderMediaBinUI();
+  renderTimecode(0, 0);
+  if (DOM.emptyState) DOM.emptyState.style.display = 'flex';
+  if (DOM.activeVideoName) DOM.activeVideoName.textContent = 'NO CLIP LOADED';
 });
 </script>
 </body>
