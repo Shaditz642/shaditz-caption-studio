@@ -1278,6 +1278,8 @@ const AppState = {
   videoTransform: { x: 0, y: 0, scale: 1.0 }, // Pan & zoom offsets
   words: [], // Transcribed word timestamps: { id, text, start, end }
   
+  timelineZoom: 1, // Ultra-precision timeline zoom multiplier (1x to 100x)
+  
   // MULTI-TRACK SEGMENTS & SELECTION STATE
   videoSegments: [], // [{ id, name, start, end, thumbUrl }]
   audioSegments: [], // [{ id, start, end }]
@@ -1697,8 +1699,13 @@ function drawWaveformCanvas() {
   const ctx = canvas.getContext('2d');
   const dpr = window.devicePixelRatio || 1;
   const trackWidth = DOM.audioWaveTrack.clientWidth || 800;
-  canvas.width = trackWidth * dpr;
-  canvas.height = (DOM.audioWaveTrack.clientHeight || 44) * dpr;
+  
+  // Safe hardware buffer width limit (up to 16384px) to guarantee flawless 60fps rendering at 100x zoom
+  const bufferWidth = Math.min(16384, Math.max(800, Math.round(trackWidth * dpr)));
+  canvas.width = bufferWidth;
+  canvas.height = Math.round((DOM.audioWaveTrack.clientHeight || 44) * dpr);
+  canvas.style.width = '100%';
+  canvas.style.height = '100%';
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   const peaks = AppState.waveformPeaks;
@@ -1712,7 +1719,7 @@ function drawWaveformCanvas() {
   for (let i = 0; i < peaks.length; i++) {
     const val = peaks[i];
     const barHeight = Math.max(3 * dpr, val * (canvas.height - 10 * dpr));
-    ctx.fillRect(i * barWidth, centerY - barHeight / 2, Math.max(1.5 * dpr, barWidth - 1), barHeight);
+    ctx.fillRect(i * barWidth, centerY - barHeight / 2, Math.max(1.5, barWidth - 1), barHeight);
   }
 
   // Render split divider markers across audio segments
