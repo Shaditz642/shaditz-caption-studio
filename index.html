@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>SHADITZ // Caption Studio Pro · Multi-Track Video & AI Subtitling Engine</title>
+  <title>SHADITZ · Multi-Track Video & AI Subtitling Engine</title>
   
   <!-- Official Brand Fonts: Anton (Primary Display) & JetBrains Mono (Technical Precision) + Plus Jakarta Sans (UI) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -64,6 +64,7 @@
       user-select: none;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+      text-shadow: none !important;
     }
     
     input, textarea, [contenteditable="true"] {
@@ -109,6 +110,7 @@
       border: 1px solid rgba(255, 255, 255, 0.18);
       transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.05s ease;
       box-shadow: none !important;
+      text-shadow: none !important;
     }
     .btn-cherry-primary:hover {
       background-color: #ED394D;
@@ -126,6 +128,7 @@
       font-weight: 600;
       transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
       box-shadow: none !important;
+      text-shadow: none !important;
     }
     .btn-secondary:hover {
       background-color: #282836;
@@ -179,6 +182,7 @@
       outline: none;
       transition: border-color 0.15s ease, background-color 0.15s ease;
       box-shadow: none !important;
+      text-shadow: none !important;
     }
     select:focus, input[type="text"]:focus, input[type="password"]:focus, textarea:focus {
       border-color: #E52E42;
@@ -206,6 +210,7 @@
       color: #E4E6F0;
       cursor: pointer;
       transition: all 0.12s ease;
+      text-shadow: none !important;
     }
     .word-chip:hover {
       background: #282838;
@@ -265,6 +270,7 @@
       white-space: nowrap;
       cursor: pointer;
       transition: border-color 0.12s, background-color 0.12s, outline 0.12s;
+      text-shadow: none !important;
     }
     .caption-segment:hover {
       border-color: #FFFFFF;
@@ -374,21 +380,6 @@
       pointer-events: none;
     }
 
-    .audio-segment-block {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      border-radius: 5px;
-      overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      cursor: pointer;
-      background: #101017;
-      transition: border-color 0.15s, box-shadow 0.15s;
-    }
-    .audio-segment-block:hover {
-      border-color: rgba(255, 255, 255, 0.35);
-    }
-
     .media-card {
       background: #181820;
       border: 1px solid var(--border);
@@ -474,27 +465,13 @@
 <!-- TOP NAVIGATION HEADER -->
 <header class="glass-surface flex items-center justify-between px-4 py-2.5 shrink-0 z-30 border-b border-[var(--border)]">
   
-  <div class="flex items-center gap-3">
-    <div class="flex items-center gap-2.5">
-      <div class="w-8 h-8 rounded-lg btn-cherry-primary flex items-center justify-center font-brand-display text-lg tracking-wider">
-        S
-      </div>
-      <div class="flex flex-col">
-        <span class="font-brand-display text-lg tracking-wider text-white leading-none">
-          SHADITZ <span class="text-[#E52E42]">STUDIO PRO</span>
-        </span>
-        <span class="font-technical-mono text-[9px] text-[#B0B2C3] tracking-widest uppercase mt-0.5 font-semibold">
-          SYS // MULTI-CLIP & AI ENGINE v3.0
-        </span>
-      </div>
+  <div class="flex items-center gap-2.5">
+    <div class="w-8 h-8 rounded-lg btn-cherry-primary flex items-center justify-center font-brand-display text-lg tracking-wider">
+      S
     </div>
-
-    <div class="h-5 w-[1px] bg-white/15 mx-1.5"></div>
-
-    <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#181820] border border-[var(--border)] hover:border-white/30 transition-colors group">
-      <i class="ph-bold ph-terminal text-[#B0B2C3] text-xs group-hover:text-[#E52E42]"></i>
-      <input id="projName" type="text" value="VIRAL_PROMO_01" class="!bg-transparent !border-none !p-0 font-technical-mono text-xs font-semibold text-white focus:!ring-0 w-36 uppercase">
-    </div>
+    <span class="font-brand-display text-xl tracking-wider text-white leading-none">
+      SHADITZ
+    </span>
   </div>
 
   <!-- ASPECT RATIO SELECTOR CONTROLS -->
@@ -725,8 +702,8 @@
           <div class="border-r border-b border-[#E52E42]/30"></div>
           <div class="border-r border-b border-[#E52E42]/30"></div>
           <div class="border-b border-[#E52E42]/30"></div>
-          <div class="border-r border-[#E52E42]/30"></div>
-          <div class="border-r border-[#E52E42]/30"></div>
+          <div class="border-r border-b border-[#E52E42]/30"></div>
+          <div class="border-r border-b border-[#E52E42]/30"></div>
           <div></div>
         </div>
 
@@ -759,7 +736,7 @@
         <span id="timecodeDuration" class="text-[#B0B2C3]">00:00:00:00</span>
       </div>
       <div class="h-4 w-[1px] bg-white/15 mx-1"></div>
-      <select id="playbackSpeedSelect" class="!py-1 !px-2 !text-xs !bg-[#22222D] !border border-[var(--border)] !rounded-md text-[#E6E7F2] font-technical-mono font-medium">
+      <select id="playbackSpeedSelect" class="!py-1 !px-2 !text-xs !bg-[#22222D] !border border-[var(--border)] !rounded-md text-[#E6E7F2] font-technical-mono font-medium" title="Playback Speed">
         <option value="0.5">0.5x</option>
         <option value="0.75">0.75x</option>
         <option value="1" selected>1.0x</option>
@@ -767,7 +744,7 @@
         <option value="1.5">1.5x</option>
         <option value="2">2.0x</option>
       </select>
-      <button id="fullscreenBtn" class="p-1.5 rounded-md text-[#B0B2C3] hover:text-white hover:bg-[#22222D] transition-all">
+      <button id="fullscreenBtn" class="p-1.5 rounded-md text-[#B0B2C3] hover:text-white hover:bg-[#22222D] transition-all" title="Fullscreen Cinematic Preview (Modal)">
         <i class="ph-bold ph-arrows-out text-base"></i>
       </button>
     </div>
@@ -1034,12 +1011,12 @@
 <footer class="glass-surface shrink-0 px-4 py-3 z-30 border-t border-[var(--border)] select-none">
   <div class="flex items-center justify-between mb-2.5 text-xs text-[#B0B2C3]">
     <div class="flex items-center gap-2">
-      <button id="splitAtPlayheadBtn" class="px-2.5 py-1 rounded-md bg-[#181820] border border-[var(--border)] hover:text-white hover:border-white/30 flex items-center gap-1.5 font-technical-mono font-semibold transition-all" title="Split Selected Track / Clip / Caption at Playhead (or all tracks if none selected)">
+      <button id="splitAtPlayheadBtn" class="px-2.5 py-1 rounded-md bg-[#181820] border border-[var(--border)] hover:text-white hover:border-white/30 flex items-center gap-1.5 font-technical-mono font-semibold transition-all" title="Split at Playhead (Shortcut: C)">
         <i class="ph-bold ph-scissors text-[#E52E42]"></i>
         <span>SPLIT</span>
       </button>
 
-      <button id="deleteWordBtn" class="px-2.5 py-1 rounded-md bg-[#181820] border border-[var(--border)] hover:text-[#E52E42] hover:border-[#E52E42]/50 flex items-center gap-1.5 font-technical-mono font-semibold transition-all" title="Delete Selected Track Segment or Caption Block">
+      <button id="deleteWordBtn" class="px-2.5 py-1 rounded-md bg-[#181820] border border-[var(--border)] hover:text-[#E52E42] hover:border-[#E52E42]/50 flex items-center gap-1.5 font-technical-mono font-semibold transition-all" title="Delete Selected Clip / Word (Shortcut: Del / Backspace)">
         <i class="ph-bold ph-trash text-[#E52E42]"></i>
         <span>DELETE</span>
       </button>
@@ -1092,7 +1069,7 @@
       <div id="timelineRuler" class="h-5 border-b border-[var(--border)] relative font-technical-mono text-[10px] text-[#9DA0B5]"></div>
       
       <!-- CHERRY RED PLAYHEAD -->
-      <div id="playhead" style="left: 0%;"></div>
+      <div id="playhead" style="left: 0px;"></div>
 
       <div id="tracksStack" class="p-1.5 space-y-1.5 relative">
         
@@ -1128,6 +1105,37 @@
     </div>
   </div>
 </footer>
+
+<!-- MODAL: FULLSCREEN CINEMATIC PREVIEW -->
+<div id="fullscreenModal" class="fixed inset-0 bg-black/95 z-50 flex flex-col items-center justify-center p-4 hidden backdrop-blur-md">
+  <div class="absolute top-4 right-6 flex items-center gap-3 z-50">
+    <div class="flex items-center gap-1 px-3 py-1 rounded-md bg-[#181820] border border-[var(--border)] font-technical-mono text-xs text-[#B0B2C3]">
+      <span class="text-white font-bold" id="fsTimecode">00:00:00:00</span>
+    </div>
+    <button id="closeFullscreenBtn" class="px-3 py-1.5 rounded-md bg-[#181820] border border-[var(--border)] text-[#B0B2C3] hover:text-white hover:border-[#E52E42] transition-all flex items-center gap-1.5 font-technical-mono text-xs font-semibold">
+      <i class="ph-bold ph-x text-base text-[#E52E42]"></i>
+      <span>ESC TO EXIT</span>
+    </button>
+  </div>
+  
+  <div id="fsStageWrapper" class="relative max-h-[86vh] max-w-[90vw] flex items-center justify-center rounded-xl overflow-hidden shadow-2xl border border-white/15 bg-black" style="aspect-ratio: 9/16;">
+    <div id="fsVideoContainer" class="w-full h-full relative overflow-hidden flex items-center justify-center">
+      <video id="fsVideoClone" class="w-full h-full object-cover pointer-events-none" playsinline muted></video>
+      <div id="fsCapOverlayContainer" class="absolute left-0 right-0 bottom-[14%] flex items-center justify-center pointer-events-none z-30">
+        <div id="fsCapOverlay" class="relative max-w-[92%] px-4 py-2 text-center select-none"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Floating Playbar inside Fullscreen Modal -->
+  <div class="flex items-center gap-3 px-4 py-2 rounded-xl bg-[#121217] border border-[var(--border)] z-50 mt-3">
+    <button id="fsPlayBtn" class="w-8 h-8 rounded-lg btn-cherry-primary flex items-center justify-center text-white">
+      <i id="fsPlayIcon" class="ph-fill ph-play text-sm"></i>
+    </button>
+    <div class="h-4 w-[1px] bg-white/15"></div>
+    <span id="fsTimecodeDuration" class="font-technical-mono text-xs text-[#B0B2C3]">00:00:00:00 / 00:00:00:00</span>
+  </div>
+</div>
 
 <!-- MODAL: VIDEO EXPORT -->
 <div id="exportModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
@@ -1297,6 +1305,18 @@ const DOM = {
   zoomInBtn: document.getElementById('zoomInBtn'),
   zoomOutBtn: document.getElementById('zoomOutBtn'),
   zoomValBadge: document.getElementById('zoomValBadge'),
+  playbackSpeedSelect: document.getElementById('playbackSpeedSelect'),
+  fullscreenBtn: document.getElementById('fullscreenBtn'),
+  fullscreenModal: document.getElementById('fullscreenModal'),
+  closeFullscreenBtn: document.getElementById('closeFullscreenBtn'),
+  fsStageWrapper: document.getElementById('fsStageWrapper'),
+  fsVideoClone: document.getElementById('fsVideoClone'),
+  fsCapOverlayContainer: document.getElementById('fsCapOverlayContainer'),
+  fsCapOverlay: document.getElementById('fsCapOverlay'),
+  fsPlayBtn: document.getElementById('fsPlayBtn'),
+  fsPlayIcon: document.getElementById('fsPlayIcon'),
+  fsTimecode: document.getElementById('fsTimecode'),
+  fsTimecodeDuration: document.getElementById('fsTimecodeDuration'),
   splitAtPlayheadBtn: document.getElementById('splitAtPlayheadBtn'),
   deleteWordBtn: document.getElementById('deleteWordBtn'),
   addWordSegmentBtn: document.getElementById('addWordSegmentBtn'),
@@ -1475,6 +1495,7 @@ async function loadAssetToTimeline(assetId) {
   // Load video into stage
   DOM.video.srcObject = null;
   DOM.video.src = asset.url;
+  DOM.video.playbackRate = parseFloat(DOM.playbackSpeedSelect.value) || 1.0;
   DOM.video.load();
 
   DOM.video.onloadedmetadata = () => {
@@ -1482,7 +1503,6 @@ async function loadAssetToTimeline(assetId) {
       AppState.duration = DOM.video.duration;
       asset.duration = DOM.video.duration;
       
-      // Initialize segments
       AppState.videoSegments = [{
         id: 'v_seg_0',
         name: asset.name,
@@ -1503,7 +1523,6 @@ async function loadAssetToTimeline(assetId) {
     }
   };
 
-  // Immediate rendering
   AppState.videoSegments = [{
     id: 'v_seg_0',
     name: asset.name,
@@ -1584,17 +1603,14 @@ function selectTrackItem(type, index, id) {
     AppState.selectedWordIndex = null;
   }
 
-  // Update Caption segments styling
   document.querySelectorAll('.caption-segment').forEach((s, idx) => {
     s.classList.toggle('selected-seg', type === 'caption' && idx === index);
   });
 
-  // Update Video segments styling
   document.querySelectorAll('.video-clip-segment').forEach((v, idx) => {
     v.classList.toggle('selected-track-item', type === 'video' && idx === index);
   });
 
-  // Update Audio track styling
   const isAudioSel = (type === 'audio');
   DOM.audioWaveTrack.classList.toggle('selected-track-item', isAudioSel);
   DOM.audioTrackStatus.textContent = isAudioSel ? 'AUDIO TRACK SELECTED' : 'CLICK TO SELECT AUDIO';
@@ -1676,6 +1692,7 @@ function loadDemoSample() {
   const stream = demoCanvas.captureStream(30);
   DOM.video.src = '';
   DOM.video.srcObject = stream;
+  DOM.video.playbackRate = parseFloat(DOM.playbackSpeedSelect.value) || 1.0;
   DOM.emptyState.style.display = 'none';
   DOM.activeVideoName.textContent = 'SHADITZ_PRO_DEMO_01.MP4';
   
@@ -1717,7 +1734,6 @@ function loadDemoSample() {
     end: 8.5
   }];
 
-  // Register in Media Bin
   if (!AppState.mediaBin.find(m => m.id === 'demo_01')) {
     AppState.mediaBin.unshift({
       id: 'demo_01',
@@ -1842,7 +1858,6 @@ function buildVideoTrackFilmstrip(asset) {
 
     vt.appendChild(segEl);
 
-    // Extract periodic thumbnails
     if (asset && asset.url && asset.type === 'video') {
       const offscreenVid = document.createElement('video');
       offscreenVid.src = asset.url;
@@ -1876,7 +1891,6 @@ function buildVideoTrackFilmstrip(asset) {
         }
       };
     } else {
-      // Demo graphics for procedural synthesis
       thumbDivs.forEach((item, idx) => {
         const c = document.createElement('canvas');
         c.width = 160;
@@ -1954,7 +1968,6 @@ function buildTimelineTracks() {
       selectTrackItem('caption', idx, w.id);
     });
 
-    // Double-click inline caption text editing
     seg.addEventListener('dblclick', (ev) => {
       ev.stopPropagation();
       editCaptionInline(idx);
@@ -2043,7 +2056,6 @@ function buildTranscriptPanel() {
     });
   });
 
-  // Populate textarea if empty
   if (!DOM.transcriptBox.value.trim()) {
     DOM.transcriptBox.value = AppState.words.map(w => w.text).join(' ');
   }
@@ -2061,7 +2073,6 @@ function syncTranscriptHighlight(t) {
   }
 }
 
-// One-Click "Convert to Captions / Sync to Timeline" button
 DOM.syncToCaptionsBtn.addEventListener('click', () => {
   if (DOM.transcriptBox.value.trim()) {
     DOM.applyTranscript.click();
@@ -2108,7 +2119,7 @@ DOM.splitAtPlayheadBtn.addEventListener('click', () => {
   const selected = AppState.selectedTrackItem;
   let didSplit = false;
 
-  // 1. If a Video segment is selected (or split all)
+  // 1. Video track split
   if (selected.type === 'video' || selected.type === null) {
     let segIdx = selected.type === 'video' ? selected.index : AppState.videoSegments.findIndex(s => t > s.start && t < s.end);
     if (segIdx !== -1 && segIdx < AppState.videoSegments.length) {
@@ -2129,7 +2140,7 @@ DOM.splitAtPlayheadBtn.addEventListener('click', () => {
     }
   }
 
-  // 2. If an Audio segment is selected (or split all)
+  // 2. Audio track split
   if (selected.type === 'audio' || selected.type === null) {
     let aIdx = selected.type === 'audio' ? selected.index : AppState.audioSegments.findIndex(s => t > s.start && t < s.end);
     if (aIdx !== -1 && aIdx < AppState.audioSegments.length) {
@@ -2147,7 +2158,7 @@ DOM.splitAtPlayheadBtn.addEventListener('click', () => {
     }
   }
 
-  // 3. If a Caption block is selected (or split all)
+  // 3. Caption block split
   if (selected.type === 'caption' || selected.type === null) {
     let wordIdx = selected.type === 'caption' ? selected.index : AppState.words.findIndex(w => t > w.start && t < w.end);
     if (wordIdx !== -1 && wordIdx < AppState.words.length) {
@@ -2403,21 +2414,18 @@ const endVideoPan = (e) => {
 DOM.videoTransformWrapper.addEventListener('pointerup', endVideoPan);
 DOM.videoTransformWrapper.addEventListener('pointercancel', endVideoPan);
 
-// Double-click to reset pan and scale
 DOM.videoTransformWrapper.addEventListener('dblclick', () => {
   AppState.videoTransform = { x: 0, y: 0, scale: 1.0 };
   updateVideoTransform();
   DOM.statusTxt.textContent = 'POSITION RESET';
 });
 
-// FIT button resets pan and scale
 DOM.fitZoomBtn.addEventListener('click', () => {
   AppState.videoTransform = { x: 0, y: 0, scale: 1.0 };
   updateVideoTransform();
   DOM.statusTxt.textContent = 'CANVAS FIT CENTERED';
 });
 
-// Zoom video with wheel
 DOM.videoTransformWrapper.addEventListener('wheel', (e) => {
   e.preventDefault();
   const zoomFactor = e.deltaY < 0 ? 0.05 : -0.05;
@@ -2464,7 +2472,6 @@ function updateSafeZoneOverlay() {
       <div class="absolute top-[12%] bottom-[18%] left-[5%] right-[10%] border-2 border-dashed border-[#E52E42]/60 pointer-events-none rounded-sm"></div>
     `;
   } else {
-    // 1:1 Feed
     overlay.innerHTML = `
       <div class="absolute inset-[10%] border-2 border-dashed border-[#E52E42]/50 pointer-events-none rounded-sm flex items-start justify-end p-1 font-technical-mono text-[9px] text-white">
         <span class="bg-black/60 px-2 py-0.5 rounded">FEED SAFE ZONE (90%)</span>
@@ -2487,13 +2494,13 @@ document.querySelectorAll('.ar-btn').forEach(btn => {
     const dim = btn.dataset.dim;
     AppState.aspectRatio = ratio;
     DOM.stageContainer.style.aspectRatio = ratio;
+    if (DOM.fsStageWrapper) DOM.fsStageWrapper.style.aspectRatio = ratio;
     document.getElementById('canvasDimBadge').textContent = dim;
     DOM.statusTxt.textContent = `ASPECT RATIO: ${ratio}`;
     updateSafeZoneOverlay();
   });
 });
 
-// UI Overlays Toggles
 DOM.safeZoneToggle.addEventListener('click', () => {
   const isHidden = DOM.safeZoneOverlay.classList.contains('hidden');
   DOM.safeZoneOverlay.classList.toggle('hidden', !isHidden);
@@ -2512,15 +2519,23 @@ DOM.gridToggle.addEventListener('click', () => {
 // ==================== LIVE CAPTION OVERLAY RENDERING ====================
 function renderLiveCaptionOverlay(currentTime) {
   DOM.capOverlay.innerHTML = '';
+  if (DOM.fsCapOverlay) DOM.fsCapOverlay.innerHTML = '';
+
   const windowTime = 0.35;
   const activeWords = AppState.words.filter(w => currentTime >= (w.start - windowTime) && currentTime <= (w.end + windowTime));
   
   if (!activeWords.length) {
     DOM.capOverlayContainer.style.display = 'none';
+    if (DOM.fsCapOverlayContainer) DOM.fsCapOverlayContainer.style.display = 'none';
     return;
   }
   DOM.capOverlayContainer.style.display = 'flex';
   DOM.capOverlayContainer.style.bottom = `${AppState.style.posY}%`;
+
+  if (DOM.fsCapOverlayContainer) {
+    DOM.fsCapOverlayContainer.style.display = 'flex';
+    DOM.fsCapOverlayContainer.style.bottom = `${AppState.style.posY}%`;
+  }
   
   const wrapper = document.createElement('div');
   wrapper.className = 'flex flex-wrap justify-center items-center gap-1.5';
@@ -2562,8 +2577,6 @@ function renderLiveCaptionOverlay(currentTime) {
     if (AppState.style.glowOn) {
       const r = AppState.style.glowRadius;
       span.style.textShadow = `0 0 ${r}px ${AppState.style.glowColorA}, 0 0 ${r * 2}px ${AppState.style.glowColorB}`;
-    } else {
-      span.style.textShadow = 'none';
     }
 
     if (AppState.style.boxBgOn) {
@@ -2592,6 +2605,7 @@ function renderLiveCaptionOverlay(currentTime) {
   });
 
   DOM.capOverlay.appendChild(wrapper);
+  if (DOM.fsCapOverlay) DOM.fsCapOverlay.appendChild(wrapper.cloneNode(true));
 }
 
 // Drag caption position Y
@@ -2616,6 +2630,7 @@ window.addEventListener('mousemove', (e) => {
   AppState.style.posY = Math.round(newPos);
   document.getElementById('posYSlider').value = AppState.style.posY;
   DOM.capOverlayContainer.style.bottom = `${AppState.style.posY}%`;
+  if (DOM.fsCapOverlayContainer) DOM.fsCapOverlayContainer.style.bottom = `${AppState.style.posY}%`;
 });
 
 window.addEventListener('mouseup', () => {
@@ -2638,10 +2653,13 @@ function formatTimecode(seconds) {
 function renderTimecode(current, total) {
   DOM.timecodeCurrent.textContent = formatTimecode(current);
   DOM.timecodeDuration.textContent = formatTimecode(total || 0);
+  if (DOM.fsTimecode) DOM.fsTimecode.textContent = formatTimecode(current);
+  if (DOM.fsTimecodeDuration) DOM.fsTimecodeDuration.textContent = `${formatTimecode(current)} / ${formatTimecode(total || 0)}`;
 }
 
 function updatePlayPauseUI(playing) {
   DOM.playIcon.className = playing ? 'ph-fill ph-pause text-base' : 'ph-fill ph-play text-base';
+  if (DOM.fsPlayIcon) DOM.fsPlayIcon.className = playing ? 'ph-fill ph-pause text-sm' : 'ph-fill ph-play text-sm';
 }
 
 function togglePlay() {
@@ -2671,6 +2689,8 @@ function togglePlay() {
 }
 
 DOM.playBtn.addEventListener('click', togglePlay);
+DOM.fsPlayBtn.addEventListener('click', togglePlay);
+
 DOM.video.addEventListener('play', () => {
   AppState.isPlaying = true;
   updatePlayPauseUI(true);
@@ -2688,12 +2708,20 @@ DOM.video.addEventListener('ended', () => {
   updatePlayPauseUI(false);
 });
 
+// ==================== GLOBAL KEYBOARD SHORTCUTS ====================
 window.addEventListener('keydown', (e) => {
   const tag = e.target.tagName;
   if (tag === 'INPUT' || tag === 'TEXTAREA' || e.target.isContentEditable) return;
+  
   if (e.code === 'Space') {
     e.preventDefault();
     togglePlay();
+  } else if (e.code === 'KeyC') {
+    e.preventDefault();
+    DOM.splitAtPlayheadBtn.click();
+  } else if (e.code === 'Delete' || e.code === 'Backspace') {
+    e.preventDefault();
+    DOM.deleteWordBtn.click();
   } else if (e.code === 'ArrowLeft') {
     e.preventDefault();
     seekVideo((DOM.video.currentTime || AppState.currentTime) - (e.shiftKey ? 1.0 : 1/30));
@@ -2709,6 +2737,8 @@ window.addEventListener('keydown', (e) => {
   } else if (e.code === 'KeyL') {
     e.preventDefault();
     seekVideo((DOM.video.currentTime || AppState.currentTime) + 1.0);
+  } else if (e.code === 'Escape') {
+    closeFullscreen();
   }
 });
 
@@ -2761,9 +2791,11 @@ DOM.video.addEventListener('seeked', () => onTimeUpdate(DOM.video.currentTime));
 function onTimeUpdate(t) {
   const dur = AppState.duration || DOM.video.duration || 8.5;
   renderTimecode(t, dur);
+
   if (dur > 0) {
     const progress = Math.max(0, Math.min(1, t / dur));
-    DOM.playhead.style.left = `${progress * 100}%`;
+    const trackWidth = DOM.timelineInner.offsetWidth || DOM.timelineInner.clientWidth || 1;
+    DOM.playhead.style.left = `${progress * trackWidth}px`;
   }
 
   // Real-time Active Caption Segment highlight on the timeline track
@@ -2846,6 +2878,43 @@ DOM.zoomInBtn.addEventListener('click', () => {
 DOM.zoomOutBtn.addEventListener('click', () => {
   applyTimelineZoom(AppState.timelineZoom - 25);
 });
+
+// ==================== PLAYBACK SPEED CONTROL ====================
+DOM.playbackSpeedSelect.addEventListener('change', (e) => {
+  const speed = parseFloat(e.target.value) || 1.0;
+  DOM.video.playbackRate = speed;
+  DOM.statusTxt.textContent = `SPEED: ${speed}x`;
+});
+
+// ==================== FULLSCREEN CINEMATIC PREVIEW MODAL ====================
+function openFullscreen() {
+  DOM.fullscreenModal.classList.remove('hidden');
+  DOM.fsStageWrapper.style.aspectRatio = AppState.aspectRatio;
+  
+  if (DOM.video.src) {
+    DOM.fsVideoClone.src = DOM.video.src;
+    DOM.fsVideoClone.currentTime = DOM.video.currentTime;
+    if (!DOM.video.paused) DOM.fsVideoClone.play().catch(() => {});
+  } else if (DOM.video.srcObject) {
+    DOM.fsVideoClone.srcObject = DOM.video.srcObject;
+    DOM.fsVideoClone.play().catch(() => {});
+  }
+
+  updatePlayPauseUI(AppState.isPlaying);
+  renderLiveCaptionOverlay(DOM.video.currentTime || AppState.currentTime);
+}
+
+function closeFullscreen() {
+  DOM.fullscreenModal.classList.add('hidden');
+  if (DOM.fsVideoClone) {
+    DOM.fsVideoClone.pause();
+    DOM.fsVideoClone.src = '';
+    DOM.fsVideoClone.srcObject = null;
+  }
+}
+
+DOM.fullscreenBtn.addEventListener('click', openFullscreen);
+DOM.closeFullscreenBtn.addEventListener('click', closeFullscreen);
 
 // ==================== INSPECTORS & STYLING ====================
 document.querySelectorAll('.inspector-tab').forEach(tab => {
@@ -3023,7 +3092,7 @@ DOM.startRenderBtn.addEventListener('click', async () => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `${document.getElementById('projName').value || 'SHADITZ_EXPORT'}.webm`;
+    a.download = `SHADITZ_MASTER_${Date.now()}.webm`;
     a.click();
 
     DOM.renderStatusTxt.textContent = 'RENDER COMPLETE · DOWNLOADING';
@@ -3046,7 +3115,6 @@ DOM.startRenderBtn.addEventListener('click', async () => {
     const t = currentFrame / 30;
 
     if (DOM.video.videoWidth) {
-      // Draw transformed video frame (pan and zoom)
       const { x, y, scale } = AppState.videoTransform;
       ctx.save();
       ctx.translate(renderCanvas.width / 2 + x * (renderCanvas.width / DOM.stageContainer.clientWidth), renderCanvas.height / 2 + y * (renderCanvas.height / DOM.stageContainer.clientHeight));
