@@ -255,52 +255,111 @@
     
     .caption-segment {
       position: absolute;
-      top: 4px;
-      bottom: 4px;
+      top: 3px;
+      bottom: 3px;
       background: #E52E42;
-      border: 1px solid rgba(255, 255, 255, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.28);
       border-radius: 4px;
       font-size: 11px;
       font-weight: 700;
       color: #FFFFFF;
       display: flex;
       align-items: center;
-      padding: 0 8px;
+      justify-content: center;
+      padding: 0 6px;
       overflow: hidden;
       white-space: nowrap;
       cursor: pointer;
       transition: border-color 0.12s, background-color 0.12s, outline 0.12s;
       text-shadow: none !important;
+      box-sizing: border-box;
     }
     .caption-segment:hover {
       border-color: #FFFFFF;
       background: #ED394D;
-      z-index: 5;
+      z-index: 25;
     }
     .caption-segment.active-seg {
       border: 1.5px solid #FFFFFF;
       background: #FF2E47 !important;
       box-shadow: 0 0 10px rgba(229, 46, 66, 0.7);
-      z-index: 10;
+      z-index: 30;
     }
     .caption-segment.selected-seg {
       border: 2px solid #FFFFFF !important;
       outline: 2px solid #E52E42;
-      box-shadow: 0 0 12px rgba(229, 46, 66, 0.6) !important;
-      z-index: 15;
+      box-shadow: 0 0 14px rgba(229, 46, 66, 0.8) !important;
+      z-index: 35;
+    }
+    .caption-segment .seg-text {
+      width: 100%;
+      text-align: center;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      pointer-events: none;
+      user-select: none;
+      padding: 0 4px;
     }
     .caption-segment .handle {
       position: absolute;
       top: 0;
       bottom: 0;
-      width: 6px;
-      background: rgba(0, 0, 0, 0.45);
+      width: 8px;
+      background: rgba(0, 0, 0, 0.65);
       cursor: ew-resize;
-      display: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 40;
+      opacity: 0;
+      transition: opacity 0.12s, background-color 0.12s;
     }
-    .caption-segment:hover .handle { display: block; }
-    .caption-segment .handle-left { left: 0; }
-    .caption-segment .handle-right { right: 0; }
+    .caption-segment .handle::after {
+      content: '';
+      width: 2px;
+      height: 14px;
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 1px;
+    }
+    .caption-segment:hover .handle,
+    .caption-segment.selected-seg .handle {
+      opacity: 1;
+    }
+    .caption-segment .handle:hover {
+      background: #FFFFFF;
+    }
+    .caption-segment .handle:hover::after {
+      background: #E52E42;
+    }
+    .caption-segment .handle-left {
+      left: 0;
+      border-radius: 3px 0 0 3px;
+      border-right: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .caption-segment .handle-right {
+      right: 0;
+      border-radius: 0 3px 3px 0;
+      border-left: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    /* Custom Sleek Scrollbars for Timeline */
+    #timelineWrapper::-webkit-scrollbar {
+      height: 8px;
+    }
+    #timelineWrapper::-webkit-scrollbar-track {
+      background: #0E0E14;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    #timelineWrapper::-webkit-scrollbar-thumb {
+      background: #282838;
+      border-radius: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+    #timelineWrapper::-webkit-scrollbar-thumb:hover {
+      background: #E52E42;
+      border-color: #FFFFFF;
+    }
 
     /* MULTI-TRACK SELECTION & SEGMENTS */
     .selected-track-item {
@@ -1049,17 +1108,17 @@
       </label>
     </div>
 
-    <!-- TIMELINE ZOOM CONTROLS (100% to 400%) -->
+    <!-- TIMELINE ZOOM CONTROLS (1x to 100x) -->
     <div class="flex items-center gap-3">
       <div class="flex items-center gap-1.5 bg-[#181820] px-2.5 py-1 rounded-lg border border-[var(--border)]">
-        <button id="zoomOutBtn" class="p-1 text-[#B0B2C3] hover:text-white transition-colors" title="Zoom Out Timeline (-25%)">
+        <button id="zoomOutBtn" class="p-1 text-[#B0B2C3] hover:text-white transition-colors" title="Zoom Out Timeline (-)">
           <i class="ph-bold ph-magnifying-glass-minus text-xs"></i>
         </button>
-        <input id="timelineZoom" type="range" min="100" max="400" step="10" value="100" class="w-24 cursor-pointer" title="Timeline Zoom (100% - 400%)">
-        <button id="zoomInBtn" class="p-1 text-[#B0B2C3] hover:text-white transition-colors" title="Zoom In Timeline (+25%)">
+        <input id="timelineZoom" type="range" min="1" max="100" step="1" value="1" class="w-28 cursor-pointer accent-[#E52E42]" title="Timeline Zoom (1x - 100x)">
+        <button id="zoomInBtn" class="p-1 text-[#B0B2C3] hover:text-white transition-colors" title="Zoom In Timeline (+)">
           <i class="ph-bold ph-magnifying-glass-plus text-xs"></i>
         </button>
-        <span id="zoomValBadge" class="font-technical-mono text-[10px] text-white font-bold ml-1 min-w-[32px] text-right">1.0x</span>
+        <span id="zoomValBadge" class="font-technical-mono text-[10px] text-white font-bold ml-1 min-w-[32px] text-right">1x</span>
       </div>
     </div>
   </div>
