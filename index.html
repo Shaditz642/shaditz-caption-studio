@@ -256,6 +256,33 @@
       border-radius: 3px;
     }
 
+    /* ==================== 30 FILMCOM KINETIC ANIMATIONS SUITE ==================== */
+    :root {
+      --anim-speed: 0.35s;
+      --anim-ease: cubic-bezier(0.25, 1, 0.5, 1);
+    }
+    
+    @keyframes kSlideUp { from { transform: translateY(35px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    @keyframes kSlideDown { from { transform: translateY(-35px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    @keyframes kSlideLeft { from { transform: translateX(45px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+    @keyframes kSlideRight { from { transform: translateX(-45px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+    @keyframes kSimpleFade { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes kSmoothFade { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
+    @keyframes kBlurFade { from { opacity: 0; filter: blur(14px); } to { opacity: 1; filter: blur(0); } }
+    @keyframes kScaleIn { from { transform: scale(0.55); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    @keyframes kScaleOut { from { transform: scale(1.45); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    @keyframes kTrackingSimple { from { letter-spacing: 16px; opacity: 0; } to { letter-spacing: inherit; opacity: 1; } }
+    @keyframes kTrackingElastic { 0% { letter-spacing: 24px; opacity: 0; } 65% { letter-spacing: -2px; opacity: 1; } 100% { letter-spacing: inherit; opacity: 1; } }
+    @keyframes kSmoothReveal { from { clip-path: inset(100% 0 0 0); transform: translateY(20px); } to { clip-path: inset(0 0 0 0); transform: translateY(0); } }
+    @keyframes kBouncyReveal { 0% { transform: scale(0.5) translateY(25px); opacity: 0; } 60% { transform: scale(1.15) translateY(-4px); opacity: 1; } 100% { transform: scale(1) translateY(0); opacity: 1; } }
+    @keyframes kFlipReveal { from { transform: perspective(500px) rotateX(85deg); opacity: 0; } to { transform: perspective(500px) rotateX(0deg); opacity: 1; } }
+    @keyframes kBlurReveal { from { filter: blur(16px); opacity: 0; transform: scale(1.08); } to { filter: blur(0); opacity: 1; transform: scale(1); } }
+    @keyframes kDroppingChars { 0% { transform: translateY(-60px) scaleY(1.4); opacity: 0; } 70% { transform: translateY(4px) scaleY(0.9); opacity: 1; } 100% { transform: translateY(0) scaleY(1); opacity: 1; } }
+    @keyframes kRisingChars { 0% { transform: translateY(60px) scaleY(1.4); opacity: 0; } 70% { transform: translateY(-4px) scaleY(0.9); opacity: 1; } 100% { transform: translateY(0) scaleY(1); opacity: 1; } }
+    @keyframes kFlickerIn { 0% { opacity: 0; } 20% { opacity: 0.8; } 35% { opacity: 0.15; } 60% { opacity: 0.95; } 75% { opacity: 0.6; } 100% { opacity: 1; } }
+    @keyframes kTypewriterBlink { from { width: 0; } to { width: 100%; } }
+    @keyframes kCursorBlink { 0%, 100% { border-right: 2px solid transparent; } 50% { border-right: 2px solid #E52E42; } }
+
     @keyframes filmcomPop {
       0% { transform: scale(0.85); opacity: 0; }
       60% { transform: scale(1.08); opacity: 1; }
@@ -282,11 +309,58 @@
       75% { transform: rotate(2deg) scale(1.04); }
     }
 
-    .anim-filmcom-pop { animation: filmcomPop 0.18s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
-    .anim-mogrt-bounce { animation: mogrtElasticBounce 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
-    .anim-pop { animation: popBounce 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-    .anim-slideup { animation: slideUpFade 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-    .anim-wiggle { animation: wiggleJitter 0.18s ease-in-out infinite; }
+    /* 30 Kinetic Motion Classes */
+    .anim-1-slideup-lines { animation: kSlideUp var(--anim-speed) var(--anim-ease) both; }
+    .anim-2-slideup-words { animation: kSlideUp var(--anim-speed) var(--anim-ease) both; display: inline-block; }
+    .anim-3-slideup-chars { animation: kSlideUp var(--anim-speed) var(--anim-ease) both; display: inline-block; }
+    .anim-4-slidedown-lines { animation: kSlideDown var(--anim-speed) var(--anim-ease) both; }
+    .anim-5-slidedown-words { animation: kSlideDown var(--anim-speed) var(--anim-ease) both; display: inline-block; }
+    .anim-6-slidedown-chars { animation: kSlideDown var(--anim-speed) var(--anim-ease) both; display: inline-block; }
+    .anim-7-slideleft-lines { animation: kSlideLeft var(--anim-speed) var(--anim-ease) both; }
+    .anim-8-slideright-lines { animation: kSlideRight var(--anim-speed) var(--anim-ease) both; }
+    .anim-9-slideleft-words { animation: kSlideLeft var(--anim-speed) var(--anim-ease) both; display: inline-block; }
+    .anim-10-slideright-words { animation: kSlideRight var(--anim-speed) var(--anim-ease) both; display: inline-block; }
+    .anim-11-simple-fade { animation: kSimpleFade var(--anim-speed) ease-out both; }
+    .anim-12-smooth-fade { animation: kSmoothFade var(--anim-speed) var(--anim-ease) both; }
+    .anim-13-blur-fade { animation: kBlurFade var(--anim-speed) var(--anim-ease) both; }
+    .anim-14-scale-in { animation: kScaleIn var(--anim-speed) var(--anim-ease) both; }
+    .anim-15-scale-out { animation: kScaleOut var(--anim-speed) var(--anim-ease) both; }
+    .anim-16-scale-chars { animation: kScaleIn var(--anim-speed) var(--anim-ease) both; display: inline-block; }
+    .anim-17-tracking-simple { animation: kTrackingSimple var(--anim-speed) var(--anim-ease) both; }
+    .anim-18-tracking-elastic { animation: kTrackingElastic var(--anim-speed) cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+    .anim-19-smooth-reveal { animation: kSmoothReveal var(--anim-speed) var(--anim-ease) both; display: inline-block; }
+    .anim-20-bouncy-reveal { animation: kBouncyReveal var(--anim-speed) cubic-bezier(0.34, 1.56, 0.64, 1) both; display: inline-block; }
+    .anim-21-flip-reveal { animation: kFlipReveal var(--anim-speed) var(--anim-ease) both; display: inline-block; }
+    .anim-22-blur-chars { animation: kBlurReveal var(--anim-speed) var(--anim-ease) both; display: inline-block; }
+    .anim-23-blur-words { animation: kBlurReveal var(--anim-speed) var(--anim-ease) both; display: inline-block; }
+    .anim-24-blur-random { animation: kBlurReveal var(--anim-speed) var(--anim-ease) both; display: inline-block; }
+    .anim-25-blur-chaotic { animation: kBlurReveal var(--anim-speed) var(--anim-ease) both; display: inline-block; }
+    .anim-26-dropping-chars { animation: kDroppingChars var(--anim-speed) cubic-bezier(0.34, 1.56, 0.64, 1) both; display: inline-block; }
+    .anim-27-rising-chars { animation: kRisingChars var(--anim-speed) cubic-bezier(0.34, 1.56, 0.64, 1) both; display: inline-block; }
+    .anim-28-flicker-in { animation: kFlickerIn var(--anim-speed) ease-out both; }
+    .anim-29-typewriter-blink {
+      overflow: hidden;
+      white-space: nowrap;
+      display: inline-block;
+      animation: kTypewriterBlink var(--anim-speed) steps(30, end) both, kCursorBlink 0.75s step-end infinite;
+    }
+    .anim-30-typewriter-noblink {
+      overflow: hidden;
+      white-space: nowrap;
+      display: inline-block;
+      animation: kTypewriterBlink var(--anim-speed) steps(30, end) both;
+    }
+
+    .anim-filmcom-pop { animation: filmcomPop var(--anim-speed) cubic-bezier(0.34, 1.56, 0.64, 1) forwards; display: inline-block; }
+    .anim-mogrt-bounce { animation: mogrtElasticBounce var(--anim-speed) cubic-bezier(0.34, 1.56, 0.64, 1) forwards; display: inline-block; }
+    .anim-pop { animation: popBounce var(--anim-speed) cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; display: inline-block; }
+    .anim-slideup { animation: slideUpFade var(--anim-speed) cubic-bezier(0.16, 1, 0.3, 1) forwards; display: inline-block; }
+    .anim-wiggle { animation: wiggleJitter 0.18s ease-in-out infinite; display: inline-block; }
+
+    /* Motion Blur filter active class */
+    .has-motion-blur {
+      filter: blur(2.5px) !important;
+    }
 
     .timeline-track {
       position: relative;
@@ -855,125 +929,167 @@
     </div>
   </section>
 
-  <!-- RIGHT PANEL: MODULAR INSPECTOR -->
-  <aside class="glass-surface w-[340px] shrink-0 flex flex-col border-l border-[var(--border)] z-10">
+  <!-- RIGHT PANEL: FILMCOM MOGRT MODULAR INSPECTOR -->
+  <aside class="glass-surface w-[360px] shrink-0 flex flex-col border-l border-[var(--border)] z-10 bg-[#0E0E14]">
+    <!-- Tab Navigation -->
     <div class="flex border-b border-[var(--border)] p-1.5 gap-1 bg-[#121217]">
-      <button data-tab="text" class="inspector-tab active flex-1 py-1.5 px-2 rounded-md text-xs font-semibold flex items-center justify-center gap-1.5 transition-all bg-[#181820] text-white border border-[#E52E42]">
+      <button data-tab="type" class="inspector-tab active flex-1 py-1.5 px-2 rounded-md text-xs font-semibold flex items-center justify-center gap-1.5 transition-all bg-[#181820] text-white border border-[#E52E42]">
         <i class="ph-bold ph-text-t text-[#E52E42]"></i> Type
       </button>
-      <button data-tab="styles" class="inspector-tab flex-1 py-1.5 px-2 rounded-md text-xs font-medium text-[#B0B2C3] hover:text-white flex items-center justify-center gap-1.5 transition-all">
+      <button data-tab="effects" class="inspector-tab flex-1 py-1.5 px-2 rounded-md text-xs font-medium text-[#B0B2C3] hover:text-white flex items-center justify-center gap-1.5 transition-all">
         <i class="ph-bold ph-paint-brush"></i> Effects
       </button>
       <button data-tab="presets" class="inspector-tab flex-1 py-1.5 px-2 rounded-md text-xs font-medium text-[#B0B2C3] hover:text-white flex items-center justify-center gap-1.5 transition-all">
         <i class="ph-bold ph-magic-wand"></i> Presets
       </button>
-      <button data-tab="anim" class="inspector-tab flex-1 py-1.5 px-2 rounded-md text-xs font-medium text-[#B0B2C3] hover:text-white flex items-center justify-center gap-1.5 transition-all">
+      <button data-tab="motion" class="inspector-tab flex-1 py-1.5 px-2 rounded-md text-xs font-medium text-[#B0B2C3] hover:text-white flex items-center justify-center gap-1.5 transition-all">
         <i class="ph-bold ph-lightning"></i> Motion
       </button>
     </div>
 
     <div class="flex-1 overflow-y-auto p-4 space-y-4">
 
-      <!-- TAB 1: TYPOGRAPHY -->
-      <div data-page="text" class="space-y-4">
-        <div>
-          <label class="block font-technical-mono text-[10px] font-bold text-[#B0B2C3] mb-1 uppercase tracking-wider">PRIMARY TYPEFACE</label>
-          <select id="fontFamily" class="w-full font-medium">
-            <optgroup label="Official Brand & Monolithic Display">
-              <option value="Anton" selected>Anton (Official Shaditz Brand Display)</option>
-              <option value="Bebas Neue">Bebas Neue (Hormozi Classic)</option>
-              <option value="Poppins">Poppins Black (Punchy)</option>
-              <option value="Outfit">Outfit (Clean High-End)</option>
-            </optgroup>
-            <optgroup label="Technical & Modern Sans">
-              <option value="Plus Jakarta Sans">Plus Jakarta Sans (Sleek Clean)</option>
-              <option value="JetBrains Mono">JetBrains Mono (Technical Precision)</option>
-              <option value="Bangers">Bangers (Action Punch)</option>
-              <option value="Bungee">Bungee (Thick Outline)</option>
-            </optgroup>
-            <optgroup label="Urdu & Nastaliq">
-              <option value="Noto Nastaliq Urdu">Noto Nastaliq Urdu (اُردُو)</option>
-            </optgroup>
-          </select>
-        </div>
-
+      <!-- ==================== TAB 1: TYPE ==================== -->
+      <div data-page="type" class="space-y-4">
+        <!-- Live Selected Caption Source Text Box -->
         <div>
           <div class="flex justify-between items-center mb-1">
-            <label class="font-technical-mono text-[10px] font-bold text-[#B0B2C3] uppercase tracking-wider">FONT SIZE</label>
-            <span id="fontSizeVal" class="font-technical-mono text-xs text-[#E52E42] font-bold">36px</span>
+            <label class="font-technical-mono text-[10px] font-bold text-[#B0B2C3] uppercase tracking-wider flex items-center gap-1.5">
+              <i class="ph-bold ph-pencil-simple text-[#E52E42]"></i> Source Text
+            </label>
+            <span id="sourceTextStatus" class="font-technical-mono text-[9px] text-[#8C8E9F]">ACTIVE BLOCK</span>
           </div>
-          <input id="fontSize" type="range" min="14" max="96" value="36" class="w-full">
+          <textarea id="sourceTextBox" rows="2" placeholder="Select caption block on timeline or preview to edit text..." class="w-full !text-xs font-technical-mono resize-none p-2.5 rounded-lg bg-[#161622] border border-[var(--border)] text-white focus:border-[#E52E42] focus:outline-none transition-colors"></textarea>
         </div>
 
-        <div>
-          <label class="block font-technical-mono text-[10px] font-bold text-[#B0B2C3] mb-1 uppercase tracking-wider">TEXT CASING</label>
-          <div class="grid grid-cols-3 gap-1.5 p-1 rounded-md bg-[#181820] border border-[var(--border)]">
-            <button id="caseCaps" class="py-1 rounded text-xs font-bold transition-all bg-[#22222D] text-[#E52E42]">UPPER</button>
-            <button id="caseTitle" class="py-1 rounded text-xs font-medium transition-all text-[#B0B2C3] hover:text-white">Title</button>
-            <button id="caseLower" class="py-1 rounded text-xs font-medium transition-all text-[#B0B2C3] hover:text-white">lower</button>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block font-technical-mono text-[10px] font-bold text-[#B0B2C3] mb-1 uppercase tracking-wider">LINE HEIGHT</label>
-            <input id="lineHeight" type="range" min="0.8" max="2.0" step="0.05" value="1.1" class="w-full">
-          </div>
-          <div>
-            <label class="block font-technical-mono text-[10px] font-bold text-[#B0B2C3] mb-1 uppercase tracking-wider">LETTER SPACE</label>
-            <input id="letterSpacing" type="range" min="-2" max="12" step="0.5" value="1" class="w-full">
-          </div>
-        </div>
-
+        <!-- Typography & Weights -->
         <div class="space-y-2">
-          <label class="block font-technical-mono text-[10px] font-bold text-[#B0B2C3] uppercase tracking-wider">POSITION OFFSET (Y-AXIS)</label>
+          <label class="block font-technical-mono text-[10px] font-bold text-[#B0B2C3] uppercase tracking-wider">Text Properties</label>
+          <div class="space-y-2">
+            <select id="fontFamily" class="w-full bg-[#181822] border border-[var(--border)] rounded-md px-3 py-2 text-xs text-white font-medium focus:border-[#E52E42] focus:outline-none">
+              <optgroup label="Core Display Fonts">
+                <option value="Poppins" selected>Poppins</option>
+                <option value="Montserrat">Montserrat</option>
+                <option value="Anton">Anton (Filmcom Bold)</option>
+                <option value="Plus Jakarta Sans">Plus Jakarta Sans</option>
+                <option value="Bebas Neue">Bebas Neue</option>
+                <option value="Outfit">Outfit</option>
+                <option value="JetBrains Mono">JetBrains Mono</option>
+                <option value="Noto Nastaliq Urdu">Noto Nastaliq Urdu (اُردُو)</option>
+              </optgroup>
+            </select>
+
+            <div class="flex items-center gap-2">
+              <select id="fontWeight" class="flex-1 bg-[#181822] border border-[var(--border)] rounded-md px-2.5 py-1.5 text-xs text-white font-medium focus:border-[#E52E42] focus:outline-none">
+                <option value="100">Thin (100)</option>
+                <option value="200">ExtraLight (200)</option>
+                <option value="300">Light (300)</option>
+                <option value="400">Regular (400)</option>
+                <option value="500" selected>Medium (500)</option>
+                <option value="600">SemiBold (600)</option>
+                <option value="700">Bold (700)</option>
+                <option value="800">ExtraBold (800)</option>
+                <option value="900">Black (900)</option>
+              </select>
+
+              <!-- Formatting Action Toggles: B, I, TT, Tt -->
+              <div class="flex items-center bg-[#181822] border border-[var(--border)] rounded-md p-0.5">
+                <button id="formatBoldBtn" class="px-2 py-1 rounded text-xs font-bold text-[#B0B2C3] hover:text-white hover:bg-white/5 transition-all" title="Bold Toggle">
+                  B
+                </button>
+                <button id="formatItalicBtn" class="px-2 py-1 rounded text-xs font-serif italic text-[#B0B2C3] hover:text-white hover:bg-white/5 transition-all" title="Italic Toggle">
+                  I
+                </button>
+                <button id="formatAllCapsBtn" class="px-2 py-1 rounded text-xs font-bold text-[#B0B2C3] hover:text-white hover:bg-white/5 transition-all" title="ALL CAPS (TT)">
+                  TT
+                </button>
+                <button id="formatSmallCapsBtn" class="px-2 py-1 rounded text-xs font-semibold text-[#B0B2C3] hover:text-white hover:bg-white/5 transition-all" title="Small Caps (Tt)">
+                  Tt
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Text Size Slider (0 - 500px) -->
+        <div>
+          <div class="flex justify-between items-center mb-1 text-xs">
+            <label class="font-technical-mono text-[10px] font-bold text-[#B0B2C3] uppercase tracking-wider">Text Size</label>
+            <span id="fontSizeVal" class="font-technical-mono text-xs text-[#E52E42] font-bold">32px</span>
+          </div>
+          <input id="fontSize" type="range" min="10" max="500" value="32" class="w-full accent-[#E52E42] cursor-pointer">
+          <div class="flex justify-between font-technical-mono text-[9px] text-[#8C8E9F] mt-0.5">
+            <span>0</span>
+            <span>500</span>
+          </div>
+        </div>
+
+        <!-- Text Opacity Slider (0 - 100%) -->
+        <div>
+          <div class="flex justify-between items-center mb-1 text-xs">
+            <label class="font-technical-mono text-[10px] font-bold text-[#B0B2C3] uppercase tracking-wider">Text Opacity</label>
+            <span id="fontOpacityVal" class="font-technical-mono text-xs text-white font-bold">100%</span>
+          </div>
+          <input id="fontOpacity" type="range" min="0" max="100" value="100" class="w-full accent-[#E52E42] cursor-pointer">
+          <div class="flex justify-between font-technical-mono text-[9px] text-[#8C8E9F] mt-0.5">
+            <span>0</span>
+            <span>100</span>
+          </div>
+        </div>
+
+        <!-- Text Color -->
+        <div>
+          <label class="block font-technical-mono text-[10px] font-bold text-[#B0B2C3] mb-1 uppercase tracking-wider">Text Color</label>
+          <div class="flex items-center gap-2.5">
+            <input id="textColor" type="color" value="#FFFFFF" class="w-10 h-8 rounded border border-[var(--border)] bg-transparent cursor-pointer">
+            <input id="textColorHex" type="text" value="#FFFFFF" class="flex-1 bg-[#181822] border border-[var(--border)] rounded-md px-3 py-1.5 text-xs font-technical-mono text-white uppercase focus:border-[#E52E42] focus:outline-none">
+          </div>
+        </div>
+
+        <!-- Position Offset (Y-Axis) -->
+        <div class="space-y-2">
+          <div class="flex justify-between items-center">
+            <label class="font-technical-mono text-[10px] font-bold text-[#B0B2C3] uppercase tracking-wider">Position Offset (Y-Axis)</label>
+            <span id="posYVal" class="font-technical-mono text-[10px] text-[#E52E42] font-bold">14%</span>
+          </div>
           <div class="grid grid-cols-3 gap-1.5">
             <button id="posTopBtn" class="py-1 rounded bg-[#181820] border border-[var(--border)] text-xs font-technical-mono font-semibold text-[#B0B2C3] hover:text-white">TOP</button>
             <button id="posMidBtn" class="py-1 rounded bg-[#181820] border border-[var(--border)] text-xs font-technical-mono font-semibold text-[#B0B2C3] hover:text-white">MID</button>
             <button id="posBotBtn" class="py-1 rounded bg-[#22222D] border border-[#E52E42] text-xs font-technical-mono font-semibold text-white">BOT</button>
           </div>
-          <input id="posYSlider" type="range" min="5" max="90" value="14" class="w-full mt-1">
+          <input id="posYSlider" type="range" min="5" max="90" value="14" class="w-full accent-[#E52E42] cursor-pointer mt-1">
         </div>
 
-        <div>
-          <label class="block font-technical-mono text-[10px] font-bold text-[#B0B2C3] mb-1 uppercase tracking-wider">PRIMARY FILL COLOR</label>
-          <div class="flex items-center gap-2">
-            <input id="textColor" type="color" value="#FFFFFF" class="flex-1">
-          </div>
-        </div>
-      </div>
-
-      <!-- TAB 2: STYLING & EFFECTS -->
-      <div data-page="styles" class="hidden space-y-4">
-        <div class="glass-card p-3 rounded-lg space-y-3">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-bold text-white flex items-center gap-1.5">
-              <i class="ph-bold ph-paint-bucket text-[#E52E42]"></i> Gradient Fill Overlay
+        <!-- Text Spacing Accordion -->
+        <details class="group rounded-lg bg-[#14141E] border border-[var(--border)] overflow-hidden">
+          <summary class="flex items-center justify-between px-3 py-2.5 cursor-pointer font-medium text-white text-xs select-none hover:bg-white/5 transition-colors">
+            <span class="flex items-center gap-2">
+              <i class="ph-bold ph-caret-right group-open:rotate-90 transition-transform text-[#E52E42]"></i>
+              <span class="font-semibold text-xs">Text Spacing</span>
             </span>
-            <input id="gradOn" type="checkbox" class="w-4 h-4 rounded accent-[#E52E42] cursor-pointer">
-          </div>
-
-          <div id="gradControls" class="space-y-2 opacity-50 pointer-events-none transition-opacity">
-            <div class="grid grid-cols-2 gap-2">
-              <div>
-                <label class="font-technical-mono text-[9px] text-[#B0B2C3] font-bold">COLOR A</label>
-                <input id="gradC1" type="color" value="#FFFFFF">
+          </summary>
+          <div class="p-3 pt-2 space-y-3 border-t border-[var(--border)]/60 bg-[#12121A]">
+            <div>
+              <div class="flex justify-between font-technical-mono text-[10px] text-[#B0B2C3] mb-1 font-semibold">
+                <span>LINE HEIGHT</span>
+                <span id="lineHeightVal" class="text-white font-bold">1.25</span>
               </div>
-              <div>
-                <label class="font-technical-mono text-[9px] text-[#B0B2C3] font-bold">COLOR B</label>
-                <input id="gradC2" type="color" value="#E52E42">
-              </div>
+              <input id="lineHeight" type="range" min="0.8" max="2.5" step="0.05" value="1.25" class="w-full accent-[#E52E42] cursor-pointer">
             </div>
             <div>
               <div class="flex justify-between font-technical-mono text-[10px] text-[#B0B2C3] mb-1 font-semibold">
-                <span>ANGLE</span>
-                <span id="gradAngVal" class="text-[#E52E42] font-bold">90°</span>
+                <span>LETTER SPACING (TRACKING)</span>
+                <span id="letterSpacingVal" class="text-white font-bold">0px</span>
               </div>
-              <input id="gradAngle" type="range" min="0" max="360" value="90" class="w-full">
+              <input id="letterSpacing" type="range" min="-5" max="25" step="0.5" value="0" class="w-full accent-[#E52E42] cursor-pointer">
             </div>
           </div>
-        </div>
+        </details>
+      </div>
 
+      <!-- ==================== TAB 2: EFFECTS (ACCORDIONS) ==================== -->
+      <div data-page="effects" class="hidden space-y-3">
+        <!-- Outer Stroke -->
         <div class="glass-card p-3 rounded-lg space-y-3">
           <div class="flex items-center justify-between">
             <span class="text-xs font-bold text-white flex items-center gap-1.5">
@@ -986,49 +1102,165 @@
             <div class="col-span-2">
               <div class="flex justify-between font-technical-mono text-[10px] text-[#B0B2C3] mb-1 font-semibold">
                 <span>WIDTH</span>
-                <span id="strokeWVal" class="text-[#E52E42] font-bold">3px</span>
+                <span id="strokeWVal" class="text-[#E52E42] font-bold">2px</span>
               </div>
-              <input id="strokeWidth" type="range" min="1" max="16" value="3" class="w-full">
+              <input id="strokeWidth" type="range" min="0" max="16" value="2" class="w-full accent-[#E52E42] cursor-pointer">
             </div>
             <div class="col-span-1">
               <label class="font-technical-mono text-[9px] text-[#B0B2C3] block mb-1 font-bold">COLOR</label>
-              <input id="strokeColor" type="color" value="#000000">
+              <input id="strokeColor" type="color" value="#000000" class="w-full h-7 rounded border border-[var(--border)] bg-transparent cursor-pointer">
             </div>
           </div>
         </div>
 
-        <div class="glass-card p-3 rounded-lg space-y-3">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-bold text-white flex items-center gap-1.5">
-              <i class="ph-bold ph-sun text-[#E52E42]"></i> Glow / Atmospheric Aura
+        <!-- Drop Shadow Accordion -->
+        <details class="group rounded-lg bg-[#14141E] border border-[var(--border)] overflow-hidden">
+          <summary class="flex items-center justify-between px-3 py-2.5 cursor-pointer font-medium text-white text-xs select-none hover:bg-white/5 transition-colors">
+            <span class="flex items-center gap-2">
+              <i class="ph-bold ph-caret-right group-open:rotate-90 transition-transform text-[#E52E42]"></i>
+              <span class="font-semibold">Drop Shadow</span>
             </span>
-            <input id="glowOn" type="checkbox" class="w-4 h-4 rounded accent-[#E52E42] cursor-pointer">
+            <input id="dropShadowOn" type="checkbox" class="w-4 h-4 rounded accent-[#E52E42] cursor-pointer" onclick="event.stopPropagation()">
+          </summary>
+          <div class="p-3 pt-2 space-y-3 border-t border-[var(--border)]/60 bg-[#12121A]">
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="font-technical-mono text-[9px] text-[#B0B2C3] font-bold block mb-1">SHADOW COLOR</label>
+                <input id="shadowColor" type="color" value="#000000" class="w-full h-7 rounded border border-[var(--border)] bg-transparent">
+              </div>
+              <div>
+                <div class="flex justify-between font-technical-mono text-[9px] text-[#B0B2C3] mb-1 font-bold">
+                  <span>OPACITY</span>
+                  <span id="shadowOpacityVal" class="text-[#E52E42]">85%</span>
+                </div>
+                <input id="shadowOpacity" type="range" min="0" max="100" value="85" class="w-full accent-[#E52E42] cursor-pointer">
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <div class="flex justify-between font-technical-mono text-[9px] text-[#B0B2C3] mb-1 font-bold">
+                  <span>BLUR</span>
+                  <span id="shadowBlurVal" class="text-white">10px</span>
+                </div>
+                <input id="shadowBlur" type="range" min="0" max="50" value="10" class="w-full accent-[#E52E42] cursor-pointer">
+              </div>
+              <div>
+                <div class="flex justify-between font-technical-mono text-[9px] text-[#B0B2C3] mb-1 font-bold">
+                  <span>OFFSET Y</span>
+                  <span id="shadowOffsetYVal" class="text-white">4px</span>
+                </div>
+                <input id="shadowOffsetY" type="range" min="-30" max="30" value="4" class="w-full accent-[#E52E42] cursor-pointer">
+              </div>
+            </div>
           </div>
+        </details>
 
-          <div class="grid grid-cols-2 gap-2">
-            <div>
-              <label class="font-technical-mono text-[9px] text-[#B0B2C3] font-bold">CORE GLOW (A)</label>
-              <input id="glowColorA" type="color" value="#E52E42">
+        <!-- Glow Accordion -->
+        <details class="group rounded-lg bg-[#14141E] border border-[var(--border)] overflow-hidden">
+          <summary class="flex items-center justify-between px-3 py-2.5 cursor-pointer font-medium text-white text-xs select-none hover:bg-white/5 transition-colors">
+            <span class="flex items-center gap-2">
+              <i class="ph-bold ph-caret-right group-open:rotate-90 transition-transform text-[#E52E42]"></i>
+              <span class="font-semibold">Glow</span>
+            </span>
+            <input id="glowOn" type="checkbox" class="w-4 h-4 rounded accent-[#E52E42] cursor-pointer" onclick="event.stopPropagation()">
+          </summary>
+          <div class="p-3 pt-2 space-y-3 border-t border-[var(--border)]/60 bg-[#12121A]">
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="font-technical-mono text-[9px] text-[#B0B2C3] font-bold block mb-1">CORE GLOW</label>
+                <input id="glowColorA" type="color" value="#E52E42" class="w-full h-7 rounded border border-[var(--border)] bg-transparent">
+              </div>
+              <div>
+                <label class="font-technical-mono text-[9px] text-[#B0B2C3] font-bold block mb-1">ATMOSPHERE</label>
+                <input id="glowColorB" type="color" value="#A81827" class="w-full h-7 rounded border border-[var(--border)] bg-transparent">
+              </div>
             </div>
             <div>
-              <label class="font-technical-mono text-[9px] text-[#B0B2C3] font-bold">ATMOSPHERE (B)</label>
-              <input id="glowColorB" type="color" value="#A81827">
+              <div class="flex justify-between font-technical-mono text-[9px] text-[#B0B2C3] mb-1 font-bold">
+                <span>GLOW RADIUS</span>
+                <span id="glowRVal" class="text-[#E52E42]">18px</span>
+              </div>
+              <input id="glowRadius" type="range" min="0" max="50" value="18" class="w-full accent-[#E52E42] cursor-pointer">
             </div>
           </div>
+        </details>
 
-          <div>
-            <div class="flex justify-between font-technical-mono text-[10px] text-[#B0B2C3] mb-1 font-semibold">
-              <span>RADIUS</span>
-              <span id="glowRVal" class="text-[#E52E42] font-bold">12px</span>
+        <!-- Text Box (Background Plate) Accordion -->
+        <details class="group rounded-lg bg-[#14141E] border border-[var(--border)] overflow-hidden">
+          <summary class="flex items-center justify-between px-3 py-2.5 cursor-pointer font-medium text-white text-xs select-none hover:bg-white/5 transition-colors">
+            <span class="flex items-center gap-2">
+              <i class="ph-bold ph-caret-right group-open:rotate-90 transition-transform text-[#E52E42]"></i>
+              <span class="font-semibold">Text Box (Plate)</span>
+            </span>
+            <input id="boxBgOn" type="checkbox" class="w-4 h-4 rounded accent-[#E52E42] cursor-pointer" onclick="event.stopPropagation()">
+          </summary>
+          <div class="p-3 pt-2 space-y-3 border-t border-[var(--border)]/60 bg-[#12121A]">
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="font-technical-mono text-[9px] text-[#B0B2C3] font-bold block mb-1">BOX COLOR</label>
+                <input id="boxBgColor" type="color" value="#000000" class="w-full h-7 rounded border border-[var(--border)] bg-transparent">
+              </div>
+              <div>
+                <div class="flex justify-between font-technical-mono text-[9px] text-[#B0B2C3] mb-1 font-bold">
+                  <span>OPACITY</span>
+                  <span id="boxBgOpacityVal" class="text-[#E52E42]">80%</span>
+                </div>
+                <input id="boxBgOpacity" type="range" min="0" max="100" value="80" class="w-full accent-[#E52E42] cursor-pointer">
+              </div>
             </div>
-            <input id="glowRadius" type="range" min="0" max="40" value="12" class="w-full">
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <div class="flex justify-between font-technical-mono text-[9px] text-[#B0B2C3] mb-1 font-bold">
+                  <span>PADDING</span>
+                  <span id="boxBgPaddingVal" class="text-white">10px</span>
+                </div>
+                <input id="boxBgPadding" type="range" min="0" max="40" value="10" class="w-full accent-[#E52E42] cursor-pointer">
+              </div>
+              <div>
+                <div class="flex justify-between font-technical-mono text-[9px] text-[#B0B2C3] mb-1 font-bold">
+                  <span>ROUNDNESS</span>
+                  <span id="boxBgRadiusVal" class="text-white">6px</span>
+                </div>
+                <input id="boxBgRadius" type="range" min="0" max="30" value="6" class="w-full accent-[#E52E42] cursor-pointer">
+              </div>
+            </div>
           </div>
-        </div>
+        </details>
+
+        <!-- Gradient Accordion -->
+        <details class="group rounded-lg bg-[#14141E] border border-[var(--border)] overflow-hidden">
+          <summary class="flex items-center justify-between px-3 py-2.5 cursor-pointer font-medium text-white text-xs select-none hover:bg-white/5 transition-colors">
+            <span class="flex items-center gap-2">
+              <i class="ph-bold ph-caret-right group-open:rotate-90 transition-transform text-[#E52E42]"></i>
+              <span class="font-semibold">Gradient Fill</span>
+            </span>
+            <input id="gradOn" type="checkbox" class="w-4 h-4 rounded accent-[#E52E42] cursor-pointer" onclick="event.stopPropagation()">
+          </summary>
+          <div class="p-3 pt-2 space-y-3 border-t border-[var(--border)]/60 bg-[#12121A]">
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="font-technical-mono text-[9px] text-[#B0B2C3] font-bold block mb-1">COLOR A</label>
+                <input id="gradC1" type="color" value="#FFFFFF" class="w-full h-7 rounded border border-[var(--border)] bg-transparent">
+              </div>
+              <div>
+                <label class="font-technical-mono text-[9px] text-[#B0B2C3] font-bold block mb-1">COLOR B</label>
+                <input id="gradC2" type="color" value="#E52E42" class="w-full h-7 rounded border border-[var(--border)] bg-transparent">
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between font-technical-mono text-[9px] text-[#B0B2C3] mb-1 font-bold">
+                <span>ANGLE</span>
+                <span id="gradAngVal" class="text-[#E52E42]">90°</span>
+              </div>
+              <input id="gradAngle" type="range" min="0" max="360" value="90" class="w-full accent-[#E52E42] cursor-pointer">
+            </div>
+          </div>
+        </details>
       </div>
 
-      <!-- TAB 3: VIRAL PRESETS -->
+      <!-- ==================== TAB 3: PRESETS ==================== -->
       <div data-page="presets" class="hidden space-y-3">
-        <p class="font-technical-mono text-[10px] text-[#B0B2C3] font-bold uppercase tracking-wider">SHADITZ BRAND PRESET MATRIX:</p>
+        <p class="font-technical-mono text-[10px] text-[#B0B2C3] font-bold uppercase tracking-wider">FILMCOM & SHADITZ PRESETS:</p>
         <div class="grid grid-cols-2 gap-2.5" id="presetsGrid">
           <div class="template-card col-span-2 border-[#E52E42] bg-[#181820]" data-preset="filmcom_basic">
             <div class="flex items-center justify-between">
@@ -1047,7 +1279,7 @@
             <span class="font-technical-mono text-[9px] text-[#E52E42] block mt-1 font-semibold">115% Elastic Aura</span>
           </div>
 
-          <div class="template-card active" data-preset="shaditz_signature">
+          <div class="template-card" data-preset="shaditz_signature">
             <div class="font-brand-display text-sm text-white uppercase tracking-wider" style="-webkit-text-stroke: 1.5px #000;">
               SHADITZ CHERRY
             </div>
@@ -1068,74 +1300,94 @@
             <span class="font-technical-mono text-[9px] text-[#B0B2C3] block mt-1 font-semibold">Crimson Outer Stroke</span>
           </div>
 
-          <div class="template-card" data-preset="minimal">
-            <div class="font-semibold text-xs text-white" style="font-family: 'Plus Jakarta Sans';">
-              Kinetic Minimal
+          <div class="template-card active" data-preset="minimal">
+            <div class="font-semibold text-xs text-white" style="font-family: 'Poppins';">
+              Subtitle Default
             </div>
-            <span class="font-technical-mono text-[9px] text-[#B0B2C3] block mt-1 font-semibold">Stark Clean Fade</span>
+            <span class="font-technical-mono text-[9px] text-[#B0B2C3] block mt-1 font-semibold">Clean Static White</span>
           </div>
         </div>
       </div>
 
-      <!-- TAB 4: MOTION ENGINES -->
-      <div data-page="anim" class="hidden space-y-4">
-        <div>
-          <label class="block font-technical-mono text-[10px] font-bold text-[#B0B2C3] mb-1 uppercase tracking-wider">MOTION ENGINE</label>
-          <div class="grid grid-cols-2 gap-2" id="motionGrid">
-            <button data-motion="filmcom_pop" class="motion-btn p-2.5 rounded-lg bg-[#181820] border border-[var(--border)] text-left transition-all">
-              <div class="font-bold text-xs text-white flex items-center gap-1.5">
-                <i class="ph-bold ph-lightning text-[#E52E42]"></i> Filmcom Pop
-              </div>
-              <p class="font-technical-mono text-[9px] text-[#B0B2C3] mt-0.5 font-medium">Snappy kinetic easing</p>
-            </button>
+      <!-- ==================== TAB 4: MOTION (30 ANIMATIONS SUITE) ==================== -->
+      <div data-page="motion" class="hidden space-y-4">
+        <!-- Complete 31-Options Animation Dropdown -->
+        <div class="space-y-1.5">
+          <label class="block font-technical-mono text-[10px] font-bold text-[#B0B2C3] uppercase tracking-wider flex items-center justify-between">
+            <span>Animation (Filmcom Suite)</span>
+            <span class="text-[#E52E42] font-mono text-[9px]">30 PRESETS</span>
+          </label>
+          <select id="animationPresetSelect" class="w-full bg-[#181822] border border-[var(--border)] rounded-md px-3 py-2 text-xs text-white font-medium focus:border-[#E52E42] focus:outline-none">
+            <option value="none" selected>0. No Animation (Static)</option>
+            <option value="1">1. Slide Up (Lines)</option>
+            <option value="2">2. Slide Up (Words)</option>
+            <option value="3">3. Slide Up (Characters)</option>
+            <option value="4">4. Slide Down (Lines)</option>
+            <option value="5">5. Slide Down (Words)</option>
+            <option value="6">6. Slide Down (Characters)</option>
+            <option value="7">7. Slide Left (Lines)</option>
+            <option value="8">8. Slide Right (Lines)</option>
+            <option value="9">9. Slide Left (Words)</option>
+            <option value="10">10. Slide Right (Words)</option>
+            <option value="11">11. Simple Fade</option>
+            <option value="12">12. Smooth Fade</option>
+            <option value="13">13. Blur Fade</option>
+            <option value="14">14. Scale (In)</option>
+            <option value="15">15. Scale (Out)</option>
+            <option value="16">16. Scale (Characters)</option>
+            <option value="17">17. Tracking Reveal (Simple)</option>
+            <option value="18">18. Tracking Reveal (Elastic)</option>
+            <option value="19">19. Smooth Reveal</option>
+            <option value="20">20. Bouncy Reveal</option>
+            <option value="21">21. Flip Reveal</option>
+            <option value="22">22. Blur Reveal (Characters)</option>
+            <option value="23">23. Blur Reveal (Words)</option>
+            <option value="24">24. Blur Reveal (Random)</option>
+            <option value="25">25. Blur Reveal (Chaotic)</option>
+            <option value="26">26. Dropping Characters</option>
+            <option value="27">27. Rising Characters</option>
+            <option value="28">28. Flicker In</option>
+            <option value="29">29. Typewriter (Blink)</option>
+            <option value="30">30. Typewriter (No Blink)</option>
+          </select>
+        </div>
 
-            <button data-motion="mogrt_bounce" class="motion-btn p-2.5 rounded-lg bg-[#181820] border border-[var(--border)] text-left transition-all">
-              <div class="font-bold text-xs text-white flex items-center gap-1.5">
-                <i class="ph-bold ph-arrows-out-simple text-[#E52E42]"></i> MOGRT Elastic
-              </div>
-              <p class="font-technical-mono text-[9px] text-[#B0B2C3] mt-0.5 font-medium">115% snap bounce</p>
-            </button>
-
-            <button data-motion="pop" class="motion-btn active p-2.5 rounded-lg bg-[#181820] border border-[#E52E42] text-left transition-all">
-              <div class="font-bold text-xs text-white flex items-center gap-1.5">
-                <i class="ph-bold ph-sparkle text-[#E52E42]"></i> Pop / Bounce
-              </div>
-              <p class="font-technical-mono text-[9px] text-[#B0B2C3] mt-0.5 font-medium">Scale punch</p>
-            </button>
-
-            <button data-motion="karaoke" class="motion-btn p-2.5 rounded-lg bg-[#181820] border border-[var(--border)] text-left transition-all">
-              <div class="font-bold text-xs text-white flex items-center gap-1.5">
-                <i class="ph-bold ph-circle-dashed text-[#E52E42]"></i> Karaoke Red
-              </div>
-              <p class="font-technical-mono text-[9px] text-[#B0B2C3] mt-0.5 font-medium">Cherry pulse</p>
-            </button>
-
-            <button data-motion="slideup" class="motion-btn p-2.5 rounded-lg bg-[#181820] border border-[var(--border)] text-left transition-all">
-              <div class="font-bold text-xs text-white flex items-center gap-1.5">
-                <i class="ph-bold ph-arrow-up text-white"></i> Slide Up
-              </div>
-              <p class="font-technical-mono text-[9px] text-[#B0B2C3] mt-0.5 font-medium">Smooth Y drift</p>
-            </button>
-
-            <button data-motion="wiggle" class="motion-btn p-2.5 rounded-lg bg-[#181820] border border-[var(--border)] text-left transition-all">
-              <div class="font-bold text-xs text-white flex items-center gap-1.5">
-                <i class="ph-bold ph-vibrate text-[#E52E42]"></i> Kinetic Jitter
-              </div>
-              <p class="font-technical-mono text-[9px] text-[#B0B2C3] mt-0.5 font-medium">High tension shake</p>
-            </button>
+        <!-- Animation Speed Slider -->
+        <div class="space-y-1">
+          <div class="flex justify-between items-center text-xs">
+            <label class="font-technical-mono text-[10px] font-bold text-[#B0B2C3] uppercase tracking-wider">Animation Speed</label>
+            <span id="animSpeedVal" class="font-technical-mono text-xs text-[#E52E42] font-bold">0.35s</span>
+          </div>
+          <input id="animSpeedSlider" type="range" min="0.10" max="1.50" step="0.05" value="0.35" class="w-full accent-[#E52E42] cursor-pointer">
+          <div class="flex justify-between font-technical-mono text-[9px] text-[#8C8E9F]">
+            <span>Fast (0.10s)</span>
+            <span>Slow (1.50s)</span>
           </div>
         </div>
 
-        <div class="glass-card p-3 rounded-lg space-y-3">
+        <!-- Motion Blur Toggle -->
+        <div class="glass-card p-3 rounded-lg flex items-center justify-between">
+          <div>
+            <span class="text-xs font-bold text-white flex items-center gap-1.5">
+              <i class="ph-bold ph-wind text-[#E52E42]"></i> Motion Blur
+            </span>
+            <p class="font-technical-mono text-[9px] text-[#8C8E9F] mt-0.5">Simulate directional shutter blur on motion</p>
+          </div>
+          <input id="motionBlurOn" type="checkbox" class="w-4 h-4 rounded accent-[#E52E42] cursor-pointer">
+        </div>
+
+        <!-- Active Word Accent Color -->
+        <div class="glass-card p-3 rounded-lg space-y-2.5">
           <span class="text-xs font-bold text-white flex items-center gap-1.5">
-            <i class="ph-bold ph-highlighter text-[#E52E42]"></i> Active Word Accent
+            <i class="ph-bold ph-highlighter text-[#E52E42]"></i> Karaoke / Word Highlight
           </span>
-          <div class="grid grid-cols-4 gap-2">
-            <input id="activeWordColor" type="color" value="#E52E42" class="col-span-2">
-            <button class="active-color-btn h-8 rounded bg-[#E52E42]" data-color="#E52E42"></button>
-            <button class="active-color-btn h-8 rounded bg-yellow-300" data-color="#fde047"></button>
+          <div class="grid grid-cols-4 gap-2 items-center">
+            <input id="activeWordColor" type="color" value="#E52E42" class="col-span-2 w-full h-8 rounded border border-[var(--border)] bg-transparent cursor-pointer">
+            <button class="active-color-btn h-8 rounded bg-[#E52E42]" data-color="#E52E42" title="Cherry Red"></button>
+            <button class="active-color-btn h-8 rounded bg-yellow-300" data-color="#fde047" title="Viral Yellow"></button>
           </div>
         </div>
+
       </div>
 
     </div>
@@ -1503,29 +1755,48 @@ const AppState = {
 
   style: {
     fontFamily: 'Poppins',
-    fontSize: 28,
-    casing: 'none',
+    fontWeight: '500',
+    fontSize: 32,
+    fontOpacity: 100,
+    isBold: false,
+    isItalic: false,
+    casing: 'none', // 'none' | 'caps' | 'small-caps' | 'lower'
     textColor: '#FFFFFF',
-    lineHeight: 1.2,
+    lineHeight: 1.25,
     letterSpacing: 0,
     posY: 14,
-    glowOn: false,
-    glowRadius: 12,
-    glowColorA: '#E52E42',
-    glowColorB: '#A81827',
+    // Outer Stroke
     strokeOn: true,
     strokeWidth: 2,
     strokeColor: '#000000',
+    // Drop Shadow
+    dropShadowOn: false,
+    shadowColor: '#000000',
+    shadowOpacity: 85,
+    shadowBlur: 10,
+    shadowOffsetY: 4,
+    // Glow
+    glowOn: false,
+    glowRadius: 18,
+    glowColorA: '#E52E42',
+    glowColorB: '#A81827',
+    // Text Box
+    boxBgOn: false,
+    boxBgColor: '#000000',
+    boxBgOpacity: 80,
+    boxBgPadding: 10,
+    boxBgRadius: 6,
+    // Gradient Fill
     gradOn: false,
     gradColor1: '#FFFFFF',
     gradColor2: '#E52E42',
     gradAngle: 90,
-    boxBgOn: false,
-    boxBgColor: '#0A0A0C',
-    boxBgOpacity: 85,
+    // Motion Suite
     motion: 'none',
+    animSpeed: 0.35,
+    motionBlur: false,
     scope: 'sentence',
-    activeWordColor: '#FFFFFF',
+    activeWordColor: '#E52E42',
     dimInactive: false
   },
   snap: true
@@ -1634,7 +1905,66 @@ const DOM = {
   ccMinDur: document.getElementById('ccMinDur'),
   ccMinDurVal: document.getElementById('ccMinDurVal'),
   ccGapFrames: document.getElementById('ccGapFrames'),
-  ccGapFramesVal: document.getElementById('ccGapFramesVal')
+  ccGapFramesVal: document.getElementById('ccGapFramesVal'),
+  // Modular Filmcom Inspector Elements
+  sourceTextBox: document.getElementById('sourceTextBox'),
+  sourceTextStatus: document.getElementById('sourceTextStatus'),
+  fontFamily: document.getElementById('fontFamily'),
+  fontWeight: document.getElementById('fontWeight'),
+  formatBoldBtn: document.getElementById('formatBoldBtn'),
+  formatItalicBtn: document.getElementById('formatItalicBtn'),
+  formatAllCapsBtn: document.getElementById('formatAllCapsBtn'),
+  formatSmallCapsBtn: document.getElementById('formatSmallCapsBtn'),
+  fontSize: document.getElementById('fontSize'),
+  fontSizeVal: document.getElementById('fontSizeVal'),
+  fontOpacity: document.getElementById('fontOpacity'),
+  fontOpacityVal: document.getElementById('fontOpacityVal'),
+  textColor: document.getElementById('textColor'),
+  textColorHex: document.getElementById('textColorHex'),
+  posYSlider: document.getElementById('posYSlider'),
+  posYVal: document.getElementById('posYVal'),
+  posTopBtn: document.getElementById('posTopBtn'),
+  posMidBtn: document.getElementById('posMidBtn'),
+  posBotBtn: document.getElementById('posBotBtn'),
+  lineHeight: document.getElementById('lineHeight'),
+  lineHeightVal: document.getElementById('lineHeightVal'),
+  letterSpacing: document.getElementById('letterSpacing'),
+  letterSpacingVal: document.getElementById('letterSpacingVal'),
+  strokeOn: document.getElementById('strokeOn'),
+  strokeWidth: document.getElementById('strokeWidth'),
+  strokeWVal: document.getElementById('strokeWVal'),
+  strokeColor: document.getElementById('strokeColor'),
+  dropShadowOn: document.getElementById('dropShadowOn'),
+  shadowColor: document.getElementById('shadowColor'),
+  shadowOpacity: document.getElementById('shadowOpacity'),
+  shadowOpacityVal: document.getElementById('shadowOpacityVal'),
+  shadowBlur: document.getElementById('shadowBlur'),
+  shadowBlurVal: document.getElementById('shadowBlurVal'),
+  shadowOffsetY: document.getElementById('shadowOffsetY'),
+  shadowOffsetYVal: document.getElementById('shadowOffsetYVal'),
+  glowOn: document.getElementById('glowOn'),
+  glowColorA: document.getElementById('glowColorA'),
+  glowColorB: document.getElementById('glowColorB'),
+  glowRadius: document.getElementById('glowRadius'),
+  glowRVal: document.getElementById('glowRVal'),
+  boxBgOn: document.getElementById('boxBgOn'),
+  boxBgColor: document.getElementById('boxBgColor'),
+  boxBgOpacity: document.getElementById('boxBgOpacity'),
+  boxBgOpacityVal: document.getElementById('boxBgOpacityVal'),
+  boxBgPadding: document.getElementById('boxBgPadding'),
+  boxBgPaddingVal: document.getElementById('boxBgPaddingVal'),
+  boxBgRadius: document.getElementById('boxBgRadius'),
+  boxBgRadiusVal: document.getElementById('boxBgRadiusVal'),
+  gradOn: document.getElementById('gradOn'),
+  gradC1: document.getElementById('gradC1'),
+  gradC2: document.getElementById('gradC2'),
+  gradAngle: document.getElementById('gradAngle'),
+  gradAngVal: document.getElementById('gradAngVal'),
+  animationPresetSelect: document.getElementById('animationPresetSelect'),
+  animSpeedSlider: document.getElementById('animSpeedSlider'),
+  animSpeedVal: document.getElementById('animSpeedVal'),
+  motionBlurOn: document.getElementById('motionBlurOn'),
+  activeWordColor: document.getElementById('activeWordColor')
 };
 
 // ==================== LEFT PANEL TABS ====================
@@ -1890,10 +2220,26 @@ function generateSyntheticPeaks() {
 function selectTrackItem(type, index, id) {
   AppState.selectedTrackItem = { type, index, id };
   
-  if (type === 'caption') {
+  if (type === 'caption' && index !== null && AppState.words[index]) {
     AppState.selectedWordIndex = index;
+    if (DOM.sourceTextBox) {
+      DOM.sourceTextBox.value = AppState.words[index].text;
+    }
+    if (DOM.sourceTextStatus) {
+      DOM.sourceTextStatus.textContent = `BLOCK #${index + 1} (${AppState.words[index].start.toFixed(2)}s - ${AppState.words[index].end.toFixed(2)}s)`;
+      DOM.sourceTextStatus.className = 'font-technical-mono text-[9px] text-[#E52E42] font-bold';
+    }
   } else {
     AppState.selectedWordIndex = null;
+    if (DOM.sourceTextBox && type !== 'caption') {
+      const t = DOM.video ? (DOM.video.currentTime || AppState.currentTime || 0) : 0;
+      const cur = AppState.words.find(w => t >= w.start && t <= w.end);
+      DOM.sourceTextBox.value = cur ? cur.text : '';
+      if (DOM.sourceTextStatus) {
+        DOM.sourceTextStatus.textContent = cur ? `LIVE BLOCK (${cur.start.toFixed(2)}s)` : 'NO ACTIVE SELECTION';
+        DOM.sourceTextStatus.className = 'font-technical-mono text-[9px] text-[#8C8E9F]';
+      }
+    }
   }
 
   document.querySelectorAll('.caption-segment').forEach((s, idx) => {
@@ -1920,6 +2266,10 @@ function deselectAllTrackItems() {
   DOM.audioWaveTrack.classList.remove('selected-track-item');
   DOM.audioTrackStatus.textContent = 'CLICK TO SELECT AUDIO';
   DOM.audioTrackStatus.className = 'text-[9px] text-[#8C8E9F]';
+  if (DOM.sourceTextStatus) {
+    DOM.sourceTextStatus.textContent = 'NO ACTIVE SELECTION';
+    DOM.sourceTextStatus.className = 'font-technical-mono text-[9px] text-[#8C8E9F]';
+  }
   drawWaveformCanvas();
 }
 
@@ -2634,85 +2984,122 @@ function finalizeCaptionChunk(chunkWords, targetArray, minDur, gapDuration, line
 function applyPresetByName(preset, styleOption) {
   if (preset === 'filmcom') {
     AppState.style.fontFamily = 'Anton';
-    AppState.style.fontSize = 36;
+    AppState.style.fontWeight = '700';
+    AppState.style.fontSize = 38;
+    AppState.style.fontOpacity = 100;
     AppState.style.casing = 'caps';
     AppState.style.textColor = '#FFFFFF';
     AppState.style.strokeOn = true;
-    AppState.style.strokeWidth = 3;
+    AppState.style.strokeWidth = 2;
     AppState.style.strokeColor = '#000000';
+    AppState.style.dropShadowOn = true;
+    AppState.style.shadowColor = '#000000';
+    AppState.style.shadowOpacity = 85;
+    AppState.style.shadowBlur = 12;
+    AppState.style.shadowOffsetY = 4;
     AppState.style.glowOn = true;
-    AppState.style.glowRadius = 18;
-    AppState.style.glowColorA = '#E52E42';
-    AppState.style.motion = 'filmcom_pop';
+    AppState.style.glowRadius = 25;
+    AppState.style.glowColorA = 'rgba(229, 46, 66, 0.45)';
+    AppState.style.glowColorB = 'rgba(0, 0, 0, 0.85)';
+    AppState.style.motion = '20';
+    AppState.style.animSpeed = 0.35;
     AppState.style.activeWordColor = '#E52E42';
+    AppState.style.dimInactive = true;
   } else if (preset === 'mogrt_master') {
     AppState.style.fontFamily = 'Anton';
-    AppState.style.fontSize = 38;
+    AppState.style.fontWeight = '700';
+    AppState.style.fontSize = 40;
+    AppState.style.fontOpacity = 100;
     AppState.style.casing = 'caps';
     AppState.style.textColor = '#FFFFFF';
     AppState.style.strokeOn = true;
     AppState.style.strokeWidth = 3;
     AppState.style.strokeColor = '#000000';
+    AppState.style.dropShadowOn = true;
+    AppState.style.shadowColor = '#000000';
+    AppState.style.shadowOpacity = 90;
+    AppState.style.shadowBlur = 14;
+    AppState.style.shadowOffsetY = 4;
     AppState.style.glowOn = true;
     AppState.style.glowRadius = 24;
     AppState.style.glowColorA = '#E52E42';
-    AppState.style.motion = 'mogrt_bounce';
+    AppState.style.glowColorB = '#800A16';
+    AppState.style.motion = '18';
+    AppState.style.animSpeed = 0.40;
     AppState.style.activeWordColor = '#E52E42';
+    AppState.style.dimInactive = true;
   } else if (preset === 'hormozi') {
     AppState.style.fontFamily = 'Bebas Neue';
+    AppState.style.fontWeight = '700';
     AppState.style.fontSize = 42;
+    AppState.style.fontOpacity = 100;
     AppState.style.casing = 'caps';
     AppState.style.textColor = '#FFFFFF';
     AppState.style.strokeOn = true;
     AppState.style.strokeWidth = 4;
     AppState.style.strokeColor = '#000000';
+    AppState.style.dropShadowOn = true;
+    AppState.style.shadowColor = '#000000';
+    AppState.style.shadowOpacity = 90;
+    AppState.style.shadowBlur = 8;
+    AppState.style.shadowOffsetY = 4;
     AppState.style.glowOn = false;
-    AppState.style.motion = 'pop';
-    AppState.style.activeWordColor = '#FFE600';
+    AppState.style.motion = '14';
+    AppState.style.animSpeed = 0.25;
+    AppState.style.activeWordColor = '#fde047';
+    AppState.style.dimInactive = false;
   } else if (preset === 'minimalist') {
     AppState.style.fontFamily = 'Poppins';
-    AppState.style.fontSize = 24;
+    AppState.style.fontWeight = '500';
+    AppState.style.fontSize = 26;
+    AppState.style.fontOpacity = 100;
     AppState.style.casing = 'none';
     AppState.style.textColor = '#FFFFFF';
     AppState.style.strokeOn = false;
+    AppState.style.dropShadowOn = false;
     AppState.style.glowOn = false;
+    AppState.style.boxBgOn = false;
+    AppState.style.gradOn = false;
     AppState.style.motion = 'none';
+    AppState.style.animSpeed = 0.35;
     AppState.style.activeWordColor = '#E52E42';
+    AppState.style.dimInactive = false;
   } else {
     // Default Premiere Pro Standard Static Subtitle
     AppState.style.fontFamily = 'Poppins';
+    AppState.style.fontWeight = '500';
     AppState.style.fontSize = 26;
+    AppState.style.fontOpacity = 100;
     AppState.style.casing = 'none';
     AppState.style.textColor = '#FFFFFF';
     AppState.style.strokeOn = true;
     AppState.style.strokeWidth = 2;
     AppState.style.strokeColor = '#000000';
+    AppState.style.dropShadowOn = false;
     AppState.style.glowOn = false;
+    AppState.style.boxBgOn = false;
+    AppState.style.gradOn = false;
     AppState.style.motion = 'none';
+    AppState.style.animSpeed = 0.35;
     AppState.style.scope = 'sentence';
     AppState.style.activeWordColor = '#FFFFFF';
     AppState.style.dimInactive = false;
   }
 
   if (styleOption === 'filmcom') {
-    AppState.style.motion = 'filmcom_pop';
+    AppState.style.motion = '20';
     AppState.style.activeWordColor = '#E52E42';
   } else if (styleOption === 'glow') {
     AppState.style.glowOn = true;
     AppState.style.activeWordColor = '#E52E42';
   } else if (styleOption === 'karaoke') {
-    AppState.style.motion = 'karaoke';
+    AppState.style.motion = '2';
     AppState.style.activeWordColor = '#E52E42';
   }
 
-  // Sync inspector inputs
-  if (document.getElementById('fontFamilySelect')) document.getElementById('fontFamilySelect').value = AppState.style.fontFamily;
-  if (document.getElementById('fontSizeSlider')) document.getElementById('fontSizeSlider').value = AppState.style.fontSize;
-  if (document.getElementById('fontValBadge')) document.getElementById('fontValBadge').textContent = `${AppState.style.fontSize}px`;
-  if (document.getElementById('casingSelect')) document.getElementById('casingSelect').value = AppState.style.casing;
-  if (document.getElementById('textColorInput')) document.getElementById('textColorInput').value = AppState.style.textColor;
-  if (document.getElementById('strokeOn')) document.getElementById('strokeOn').checked = AppState.style.strokeOn;
-  if (document.getElementById('glowOn')) document.getElementById('glowOn').checked = AppState.style.glowOn;
+  if (typeof syncInspectorUI === 'function') {
+    syncInspectorUI();
+  }
 }
 
 if (DOM.confirmCreateCaptionsBtn) {
@@ -3166,7 +3553,21 @@ DOM.gridToggle.addEventListener('click', () => {
   DOM.gridToggle.classList.toggle('bg-[#22222D]', isHidden);
 });
 
-// ==================== LIVE CAPTION OVERLAY RENDERING (STATIC PREMIERE PRO DEFAULT) ====================
+// Helper: Hex color to RGBA string
+function hexToRgba(hex, alpha = 1) {
+  if (!hex) return `rgba(0,0,0,${alpha})`;
+  if (hex.startsWith('rgba') || hex.startsWith('rgb')) return hex;
+  let c = hex.replace('#', '');
+  if (c.length === 3) c = c.split('').map(x => x + x).join('');
+  const num = parseInt(c, 16);
+  if (isNaN(num)) return `rgba(0,0,0,${alpha})`;
+  const r = (num >> 16) & 255;
+  const g = (num >> 8) & 255;
+  const b = num & 255;
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
+// ==================== LIVE CAPTION OVERLAY RENDERING (FILMCOM MOGRT & STATIC ENGINE) ====================
 function renderLiveCaptionOverlay(currentTime) {
   DOM.capOverlay.innerHTML = '';
   if (DOM.fsCapOverlay) DOM.fsCapOverlay.innerHTML = '';
@@ -3187,128 +3588,228 @@ function renderLiveCaptionOverlay(currentTime) {
     DOM.fsCapOverlayContainer.style.display = 'flex';
     DOM.fsCapOverlayContainer.style.bottom = `${AppState.style.posY}%`;
   }
+
+  // Update Source Text Box if user is not actively typing in it
+  if (DOM.sourceTextBox && document.activeElement !== DOM.sourceTextBox && AppState.selectedWordIndex === null) {
+    if (DOM.sourceTextBox.value !== activeBlock.text) {
+      DOM.sourceTextBox.value = activeBlock.text;
+      if (DOM.sourceTextStatus) {
+        DOM.sourceTextStatus.textContent = `LIVE BLOCK (${activeBlock.start.toFixed(2)}s)`;
+        DOM.sourceTextStatus.className = 'font-technical-mono text-[9px] text-[#8C8E9F]';
+      }
+    }
+  }
+
+  // Set active animation speed CSS variable
+  document.documentElement.style.setProperty('--anim-speed', `${AppState.style.animSpeed || 0.35}s`);
   
   // Format casing according to user setting
-  let displayTxt = activeBlock.text;
-  if (AppState.style.casing === 'caps') displayTxt = displayTxt.toUpperCase();
-  else if (AppState.style.casing === 'lower') displayTxt = displayTxt.toLowerCase();
-  else if (AppState.style.casing === 'title') displayTxt = displayTxt.charAt(0).toUpperCase() + displayTxt.slice(1);
+  let displayTxt = activeBlock.text || '';
+  if (AppState.style.casing === 'caps') {
+    displayTxt = displayTxt.toUpperCase();
+  } else if (AppState.style.casing === 'lower') {
+    displayTxt = displayTxt.toLowerCase();
+  } else if (AppState.style.casing === 'title') {
+    displayTxt = displayTxt.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+  }
 
-  const isKinetic = (AppState.style.motion && AppState.style.motion !== 'none') || (AppState.style.scope === 'word' && AppState.style.activeWordColor !== AppState.style.textColor);
+  // Common typography & visual styling applicator
+  function applyCaptionStyles(el, isSpan = false) {
+    el.style.fontFamily = `"${AppState.style.fontFamily || 'Poppins'}", "Montserrat", sans-serif`;
+    el.style.fontSize = `${AppState.style.fontSize || 32}px`;
+    el.style.fontWeight = AppState.style.isBold ? '700' : (AppState.style.fontWeight || '500');
+    el.style.fontStyle = AppState.style.isItalic ? 'italic' : 'normal';
+    el.style.fontVariant = (AppState.style.casing === 'small-caps') ? 'small-caps' : 'normal';
+    el.style.opacity = `${(AppState.style.fontOpacity !== undefined ? AppState.style.fontOpacity : 100) / 100}`;
+    el.style.lineHeight = `${AppState.style.lineHeight || 1.25}`;
+    el.style.letterSpacing = `${AppState.style.letterSpacing || 0}px`;
+    el.style.color = AppState.style.textColor || '#FFFFFF';
 
-  if (!isKinetic) {
-    // 100% STATIC, CLEAN SUBTITLE BLOCK (Premiere Pro Default Standard - Zero Word Jumps, Zero Auto-Coloring)
+    // Stroke
+    if (AppState.style.strokeOn) {
+      el.style.webkitTextStroke = `${AppState.style.strokeWidth || 2}px ${AppState.style.strokeColor || '#000000'}`;
+      el.style.paintOrder = 'stroke fill';
+    } else {
+      el.style.webkitTextStroke = '0px transparent';
+    }
+
+    // Drop Shadow & Glow
+    let shadows = [];
+    if (AppState.style.dropShadowOn) {
+      const sc = AppState.style.shadowColor || '#000000';
+      const sop = (AppState.style.shadowOpacity !== undefined ? AppState.style.shadowOpacity : 85) / 100;
+      const sblur = AppState.style.shadowBlur !== undefined ? AppState.style.shadowBlur : 10;
+      const soy = AppState.style.shadowOffsetY !== undefined ? AppState.style.shadowOffsetY : 4;
+      shadows.push(`0 ${soy}px ${sblur}px ${hexToRgba(sc, sop)}`);
+    } else {
+      shadows.push('0 2px 8px rgba(0, 0, 0, 0.85)');
+    }
+
+    if (AppState.style.glowOn) {
+      const gr = AppState.style.glowRadius || 18;
+      const ga = AppState.style.glowColorA || '#E52E42';
+      const gb = AppState.style.glowColorB || '#A81827';
+      shadows.push(`0 0 ${gr}px ${ga}`);
+      shadows.push(`0 0 ${gr * 1.5}px ${gb}`);
+    }
+    el.style.textShadow = shadows.join(', ');
+
+    // Gradient Fill
+    if (AppState.style.gradOn) {
+      el.style.background = `linear-gradient(${AppState.style.gradAngle || 90}deg, ${AppState.style.gradColor1 || '#FFFFFF'}, ${AppState.style.gradColor2 || '#E52E42'})`;
+      el.style.webkitBackgroundClip = 'text';
+      el.style.backgroundClip = 'text';
+      el.style.color = 'transparent';
+    }
+
+    // Text Box / Plate (applied to block container)
+    if (AppState.style.boxBgOn && !isSpan) {
+      const bc = AppState.style.boxBgColor || '#000000';
+      const bop = (AppState.style.boxBgOpacity !== undefined ? AppState.style.boxBgOpacity : 80) / 100;
+      el.style.backgroundColor = hexToRgba(bc, bop);
+      el.style.padding = `${AppState.style.boxBgPadding || 10}px ${Math.round((AppState.style.boxBgPadding || 10) * 1.4)}px`;
+      el.style.borderRadius = `${AppState.style.boxBgRadius || 6}px`;
+    }
+
+    if (AppState.style.motionBlur) {
+      el.classList.add('has-motion-blur');
+    }
+  }
+
+  const motionId = String(AppState.style.motion || 'none');
+
+  // ==================== MODE A: 100% STATIC PREMIERE PRO SUBTITLES ====================
+  if (motionId === 'none' || motionId === '0') {
     const blockDiv = document.createElement('div');
     blockDiv.className = 'static-subtitle-block select-none pointer-events-none';
-    blockDiv.style.fontFamily = `"${AppState.style.fontFamily || 'Poppins'}", "Montserrat", sans-serif`;
-    blockDiv.style.fontSize = `${AppState.style.fontSize}px`;
-    blockDiv.style.fontWeight = '500';
-    blockDiv.style.lineHeight = AppState.style.lineHeight || '1.3';
-    blockDiv.style.letterSpacing = `${AppState.style.letterSpacing || 0}px`;
-    blockDiv.style.color = AppState.style.textColor || '#FFFFFF';
+    applyCaptionStyles(blockDiv, false);
+    blockDiv.textContent = displayTxt;
     blockDiv.style.whiteSpace = 'pre-line';
     blockDiv.style.textAlign = 'center';
-    blockDiv.style.transition = 'none';
-    blockDiv.style.transform = 'none';
-    blockDiv.style.animation = 'none';
-    
-    // Readability stroke & drop shadow
-    if (AppState.style.strokeOn) {
-      blockDiv.style.webkitTextStroke = `${AppState.style.strokeWidth || 2}px ${AppState.style.strokeColor || '#000000'}`;
-      blockDiv.style.paintOrder = 'stroke fill';
-    } else {
-      blockDiv.style.webkitTextStroke = '0px transparent';
-    }
-    
-    if (AppState.style.glowOn) {
-      const r = AppState.style.glowRadius || 18;
-      const gA = AppState.style.glowColorA || '#E52E42';
-      blockDiv.style.textShadow = `0 4px 15px rgba(0, 0, 0, 0.85), 0 0 ${r}px ${gA}`;
-    } else {
-      blockDiv.style.textShadow = '0 2px 8px rgba(0, 0, 0, 0.85)';
-    }
-
-    if (AppState.style.boxBgOn) {
-      blockDiv.style.backgroundColor = AppState.style.boxBgColor || '#000000';
-      blockDiv.style.borderRadius = '4px';
-      blockDiv.style.padding = '4px 14px';
-    }
-
-    blockDiv.textContent = displayTxt;
 
     DOM.capOverlay.appendChild(blockDiv);
     if (DOM.fsCapOverlay) DOM.fsCapOverlay.appendChild(blockDiv.cloneNode(true));
     return;
   }
 
-  // OPT-IN KINETIC MODE (Active ONLY if user manually selected a motion/preset from Inspector)
-  const wordsList = (activeBlock.rawWords && activeBlock.rawWords.length) 
-    ? activeBlock.rawWords 
-    : displayTxt.split(/\s+/).map((t, idx) => ({ text: t, id: `${activeBlock.id}_${idx}` }));
-
+  // ==================== MODE B: 30 KINETIC FILMCOM ANIMATIONS SUITE ====================
   const wrapper = document.createElement('div');
-  wrapper.className = 'flex flex-wrap justify-center items-center gap-1.5';
+  wrapper.className = 'select-none pointer-events-none flex flex-col items-center justify-center text-center';
+  if (AppState.style.boxBgOn) {
+    const bc = AppState.style.boxBgColor || '#000000';
+    const bop = (AppState.style.boxBgOpacity !== undefined ? AppState.style.boxBgOpacity : 80) / 100;
+    wrapper.style.backgroundColor = hexToRgba(bc, bop);
+    wrapper.style.padding = `${AppState.style.boxBgPadding || 10}px ${Math.round((AppState.style.boxBgPadding || 10) * 1.4)}px`;
+    wrapper.style.borderRadius = `${AppState.style.boxBgRadius || 6}px`;
+  }
 
-  wordsList.forEach((w) => {
-    const isCurrent = (w.start !== undefined && w.end !== undefined) ? (currentTime >= w.start && currentTime <= w.end) : true;
-    const span = document.createElement('span');
-    
-    let wordText = w.text;
-    if (AppState.style.casing === 'caps') wordText = wordText.toUpperCase();
-    else if (AppState.style.casing === 'lower') wordText = wordText.toLowerCase();
-    
-    span.textContent = wordText;
-    span.style.fontFamily = `"${AppState.style.fontFamily}", sans-serif`;
-    span.style.fontSize = `${AppState.style.fontSize}px`;
-    span.style.lineHeight = AppState.style.lineHeight || '1.2';
-    span.style.letterSpacing = `${AppState.style.letterSpacing || 0}px`;
-    span.style.fontWeight = '700';
-    span.style.display = 'inline-block';
-    span.style.whiteSpace = 'pre-line';
+  // 1. Line-Based Kinetic Animations
+  if (['1', '4', '7', '8'].includes(motionId)) {
+    const lines = displayTxt.split('\n');
+    lines.forEach((lTxt, lIdx) => {
+      const lineDiv = document.createElement('div');
+      applyCaptionStyles(lineDiv, false);
+      lineDiv.textContent = lTxt;
+      lineDiv.style.animationDelay = `${lIdx * 0.08}s`;
 
-    if (AppState.style.gradOn && !isCurrent) {
-      span.style.background = `linear-gradient(${AppState.style.gradAngle}deg, ${AppState.style.gradColor1}, ${AppState.style.gradColor2})`;
-      span.style.webkitBackgroundClip = 'text';
-      span.style.backgroundClip = 'text';
-      span.style.color = 'transparent';
-    } else {
-      span.style.color = isCurrent ? AppState.style.activeWordColor : AppState.style.textColor;
-    }
+      if (motionId === '1') lineDiv.className = 'anim-1-slideup-lines';
+      else if (motionId === '4') lineDiv.className = 'anim-4-slidedown-lines';
+      else if (motionId === '7') lineDiv.className = 'anim-7-slideleft-lines';
+      else if (motionId === '8') lineDiv.className = 'anim-8-slideright-lines';
 
-    if (AppState.style.strokeOn) {
-      span.style.webkitTextStroke = `${AppState.style.strokeWidth}px ${AppState.style.strokeColor}`;
-      span.style.paintOrder = 'stroke fill';
-    } else {
-      span.style.webkitTextStroke = '0px transparent';
-    }
+      wrapper.appendChild(lineDiv);
+    });
+  }
+  // 2. Word-Based Kinetic Animations
+  else if (['2', '5', '9', '10', '19', '20', '23'].includes(motionId)) {
+    const words = displayTxt.split(/\s+/).filter(Boolean);
+    const row = document.createElement('div');
+    row.className = 'flex flex-wrap justify-center items-center gap-x-2 gap-y-1';
 
-    if (AppState.style.glowOn) {
-      const r = AppState.style.glowRadius || 18;
-      const gA = AppState.style.glowColorA || '#E52E42';
-      span.style.textShadow = `0 4px 15px rgba(0, 0, 0, 0.85), 0 0 ${r}px ${gA}`;
-    } else {
-      span.style.textShadow = '0 3px 10px rgba(0, 0, 0, 0.7)';
-    }
+    words.forEach((w, wIdx) => {
+      const wordSpan = document.createElement('span');
+      applyCaptionStyles(wordSpan, true);
+      wordSpan.textContent = w;
+      wordSpan.style.animationDelay = `${wIdx * 0.06}s`;
 
-    if (isCurrent && AppState.style.motion !== 'none') {
-      if (AppState.style.motion === 'filmcom_pop') {
-        span.className = 'anim-filmcom-pop';
-        span.style.transform = 'scale(1.08)';
-      } else if (AppState.style.motion === 'mogrt_bounce') {
-        span.className = 'anim-mogrt-bounce';
-        span.style.transform = 'scale(1.12)';
-      } else if (AppState.style.motion === 'pop') {
-        span.className = 'anim-pop';
-        span.style.transform = 'scale(1.08)';
-      } else if (AppState.style.motion === 'karaoke') {
-        span.style.transform = 'scale(1.05)';
+      if (motionId === '2') wordSpan.className = 'anim-2-slideup-words';
+      else if (motionId === '5') wordSpan.className = 'anim-5-slidedown-words';
+      else if (motionId === '9') wordSpan.className = 'anim-9-slideleft-words';
+      else if (motionId === '10') wordSpan.className = 'anim-10-slideright-words';
+      else if (motionId === '19') wordSpan.className = 'anim-19-smooth-reveal';
+      else if (motionId === '20') wordSpan.className = 'anim-20-bouncy-reveal';
+      else if (motionId === '23') wordSpan.className = 'anim-23-blur-words';
+
+      row.appendChild(wordSpan);
+    });
+    wrapper.appendChild(row);
+  }
+  // 3. Character-Based Kinetic Animations
+  else if (['3', '6', '16', '21', '22', '24', '25', '26', '27'].includes(motionId)) {
+    const words = displayTxt.split(/\s+/).filter(Boolean);
+    const row = document.createElement('div');
+    row.className = 'flex flex-wrap justify-center items-center gap-y-1';
+    let charCounter = 0;
+
+    words.forEach((w) => {
+      const wordWrap = document.createElement('span');
+      wordWrap.className = 'inline-block whitespace-nowrap mr-2';
+
+      for (let ch of w) {
+        const charSpan = document.createElement('span');
+        applyCaptionStyles(charSpan, true);
+        charSpan.textContent = ch;
+
+        if (motionId === '24') {
+          charSpan.style.animationDelay = `${(Math.random() * 0.22).toFixed(2)}s`;
+        } else if (motionId === '25') {
+          charSpan.style.animationDelay = `${(Math.random() * 0.35).toFixed(2)}s`;
+        } else {
+          charSpan.style.animationDelay = `${charCounter * 0.025}s`;
+        }
+
+        if (motionId === '3') charSpan.className = 'anim-3-slideup-chars';
+        else if (motionId === '6') charSpan.className = 'anim-6-slidedown-chars';
+        else if (motionId === '16') charSpan.className = 'anim-16-scale-chars';
+        else if (motionId === '21') charSpan.className = 'anim-21-flip-reveal';
+        else if (motionId === '22') charSpan.className = 'anim-22-blur-chars';
+        else if (motionId === '24') charSpan.className = 'anim-24-blur-random';
+        else if (motionId === '25') charSpan.className = 'anim-25-blur-chaotic';
+        else if (motionId === '26') charSpan.className = 'anim-26-dropping-chars';
+        else if (motionId === '27') charSpan.className = 'anim-27-rising-chars';
+
+        charCounter++;
+        wordWrap.appendChild(charSpan);
       }
-    } else if (AppState.style.dimInactive) {
-      span.style.opacity = '0.75';
-    }
+      row.appendChild(wordWrap);
+    });
+    wrapper.appendChild(row);
+  }
+  // 4. Block-Based Kinetic Animations & Legacy Presets
+  else {
+    const blockEl = document.createElement('div');
+    applyCaptionStyles(blockEl, false);
+    blockEl.textContent = displayTxt;
+    blockEl.style.whiteSpace = 'pre-line';
+    blockEl.style.textAlign = 'center';
 
-    wrapper.appendChild(span);
-  });
+    if (motionId === '11') blockEl.className = 'anim-11-simple-fade';
+    else if (motionId === '12') blockEl.className = 'anim-12-smooth-fade';
+    else if (motionId === '13') blockEl.className = 'anim-13-blur-fade';
+    else if (motionId === '14') blockEl.className = 'anim-14-scale-in';
+    else if (motionId === '15') blockEl.className = 'anim-15-scale-out';
+    else if (motionId === '17') blockEl.className = 'anim-17-tracking-simple';
+    else if (motionId === '18') blockEl.className = 'anim-18-tracking-elastic';
+    else if (motionId === '28') blockEl.className = 'anim-28-flicker-in';
+    else if (motionId === '29') blockEl.className = 'anim-29-typewriter-blink';
+    else if (motionId === '30') blockEl.className = 'anim-30-typewriter-noblink';
+    else if (motionId === 'filmcom_pop') blockEl.className = 'anim-filmcom-pop';
+    else if (motionId === 'mogrt_bounce') blockEl.className = 'anim-mogrt-bounce';
+    else if (motionId === 'pop') blockEl.className = 'anim-pop';
+    else blockEl.className = 'anim-14-scale-in';
+
+    wrapper.appendChild(blockEl);
+  }
 
   DOM.capOverlay.appendChild(wrapper);
   if (DOM.fsCapOverlay) DOM.fsCapOverlay.appendChild(wrapper.cloneNode(true));
@@ -3661,7 +4162,9 @@ function closeFullscreen() {
 DOM.fullscreenBtn.addEventListener('click', openFullscreen);
 DOM.closeFullscreenBtn.addEventListener('click', closeFullscreen);
 
-// ==================== INSPECTORS & STYLING ====================
+// ==================== FILMCOM MOGRT MODULAR INSPECTOR SYSTEM ====================
+
+// 1. Tab Navigation (Type / Effects / Presets / Motion)
 document.querySelectorAll('.inspector-tab').forEach(tab => {
   tab.addEventListener('click', () => {
     document.querySelectorAll('.inspector-tab').forEach(t => {
@@ -3678,149 +4181,524 @@ document.querySelectorAll('.inspector-tab').forEach(tab => {
   });
 });
 
-document.getElementById('fontFamily').addEventListener('change', (e) => {
-  AppState.style.fontFamily = e.target.value;
-  renderLiveCaptionOverlay(DOM.video.currentTime || AppState.currentTime);
-});
-
-document.getElementById('fontSize').addEventListener('input', (e) => {
-  AppState.style.fontSize = parseInt(e.target.value);
-  document.getElementById('fontSizeVal').textContent = `${AppState.style.fontSize}px`;
-  renderLiveCaptionOverlay(DOM.video.currentTime || AppState.currentTime);
-});
-
-document.getElementById('lineHeight').addEventListener('input', (e) => {
-  AppState.style.lineHeight = parseFloat(e.target.value);
-  renderLiveCaptionOverlay(DOM.video.currentTime || AppState.currentTime);
-});
-
-document.getElementById('letterSpacing').addEventListener('input', (e) => {
-  AppState.style.letterSpacing = parseFloat(e.target.value);
-  renderLiveCaptionOverlay(DOM.video.currentTime || AppState.currentTime);
-});
-
-['caseCaps', 'caseTitle', 'caseLower'].forEach(id => {
-  document.getElementById(id).addEventListener('click', () => {
-    const mode = id === 'caseCaps' ? 'caps' : id === 'caseTitle' ? 'title' : 'lower';
-    AppState.style.casing = AppState.style.casing === mode ? 'none' : mode;
-    ['caseCaps', 'caseTitle', 'caseLower'].forEach(btn => {
-      document.getElementById(btn).classList.remove('bg-[#22222D]', 'text-[#E52E42]');
-    });
-    if (AppState.style.casing !== 'none') {
-      document.getElementById(id).classList.add('bg-[#22222D]', 'text-[#E52E42]');
+// 2. Tab 1 (Type): Live Source Text Area Two-Way Sync
+if (DOM.sourceTextBox) {
+  DOM.sourceTextBox.addEventListener('input', (e) => {
+    const newText = e.target.value;
+    let activeIdx = AppState.selectedWordIndex;
+    if (activeIdx === null || activeIdx === -1 || !AppState.words[activeIdx]) {
+      const t = DOM.video ? (DOM.video.currentTime || AppState.currentTime || 0) : 0;
+      activeIdx = AppState.words.findIndex(w => t >= w.start && t <= w.end);
     }
-    renderLiveCaptionOverlay(DOM.video.currentTime || AppState.currentTime);
+    if (activeIdx !== -1 && AppState.words[activeIdx]) {
+      AppState.words[activeIdx].text = newText;
+      
+      // Update raw words if present
+      if (AppState.words[activeIdx].rawWords) {
+        const tokens = newText.split(/\s+/).filter(Boolean);
+        const start = AppState.words[activeIdx].start;
+        const end = AppState.words[activeIdx].end;
+        const step = (end - start) / Math.max(1, tokens.length);
+        AppState.words[activeIdx].rawWords = tokens.map((tk, ti) => ({
+          id: `${AppState.words[activeIdx].id}_${ti}`,
+          text: tk,
+          start: start + ti * step,
+          end: start + (ti + 1) * step
+        }));
+      }
+
+      // Update segment text on timeline track
+      const segText = document.querySelector(`.caption-segment[data-word-idx="${activeIdx}"] .seg-text`);
+      if (segText) {
+        segText.textContent = newText;
+      }
+      renderLiveCaptionOverlay(DOM.video ? (DOM.video.currentTime || AppState.currentTime || 0) : 0);
+    }
+  });
+}
+
+// 3. Tab 1 (Type): Typography & Font Weight Engine
+if (DOM.fontFamily) {
+  DOM.fontFamily.addEventListener('change', (e) => {
+    AppState.style.fontFamily = e.target.value;
+    renderLiveCaptionOverlay(DOM.video ? (DOM.video.currentTime || AppState.currentTime || 0) : 0);
+  });
+}
+
+if (DOM.fontWeight) {
+  DOM.fontWeight.addEventListener('change', (e) => {
+    AppState.style.fontWeight = e.target.value;
+    renderLiveCaptionOverlay(DOM.video ? (DOM.video.currentTime || AppState.currentTime || 0) : 0);
+  });
+}
+
+// Formatting Action Toggles: B, I, TT, Tt
+if (DOM.formatBoldBtn) {
+  DOM.formatBoldBtn.addEventListener('click', () => {
+    AppState.style.isBold = !AppState.style.isBold;
+    DOM.formatBoldBtn.classList.toggle('bg-[#E52E42]', AppState.style.isBold);
+    DOM.formatBoldBtn.classList.toggle('text-white', AppState.style.isBold);
+    DOM.formatBoldBtn.classList.toggle('text-[#B0B2C3]', !AppState.style.isBold);
+    renderLiveCaptionOverlay(DOM.video ? (DOM.video.currentTime || AppState.currentTime || 0) : 0);
+  });
+}
+
+if (DOM.formatItalicBtn) {
+  DOM.formatItalicBtn.addEventListener('click', () => {
+    AppState.style.isItalic = !AppState.style.isItalic;
+    DOM.formatItalicBtn.classList.toggle('bg-[#E52E42]', AppState.style.isItalic);
+    DOM.formatItalicBtn.classList.toggle('text-white', AppState.style.isItalic);
+    DOM.formatItalicBtn.classList.toggle('text-[#B0B2C3]', !AppState.style.isItalic);
+    renderLiveCaptionOverlay(DOM.video ? (DOM.video.currentTime || AppState.currentTime || 0) : 0);
+  });
+}
+
+if (DOM.formatAllCapsBtn) {
+  DOM.formatAllCapsBtn.addEventListener('click', () => {
+    AppState.style.casing = (AppState.style.casing === 'caps') ? 'none' : 'caps';
+    DOM.formatAllCapsBtn.classList.toggle('bg-[#E52E42]', AppState.style.casing === 'caps');
+    DOM.formatAllCapsBtn.classList.toggle('text-white', AppState.style.casing === 'caps');
+    DOM.formatAllCapsBtn.classList.toggle('text-[#B0B2C3]', AppState.style.casing !== 'caps');
+    if (DOM.formatSmallCapsBtn) {
+      DOM.formatSmallCapsBtn.classList.remove('bg-[#E52E42]', 'text-white');
+      DOM.formatSmallCapsBtn.classList.add('text-[#B0B2C3]');
+    }
+    renderLiveCaptionOverlay(DOM.video ? (DOM.video.currentTime || AppState.currentTime || 0) : 0);
+  });
+}
+
+if (DOM.formatSmallCapsBtn) {
+  DOM.formatSmallCapsBtn.addEventListener('click', () => {
+    AppState.style.casing = (AppState.style.casing === 'small-caps') ? 'none' : 'small-caps';
+    DOM.formatSmallCapsBtn.classList.toggle('bg-[#E52E42]', AppState.style.casing === 'small-caps');
+    DOM.formatSmallCapsBtn.classList.toggle('text-white', AppState.style.casing === 'small-caps');
+    DOM.formatSmallCapsBtn.classList.toggle('text-[#B0B2C3]', AppState.style.casing !== 'small-caps');
+    if (DOM.formatAllCapsBtn) {
+      DOM.formatAllCapsBtn.classList.remove('bg-[#E52E42]', 'text-white');
+      DOM.formatAllCapsBtn.classList.add('text-[#B0B2C3]');
+    }
+    renderLiveCaptionOverlay(DOM.video ? (DOM.video.currentTime || AppState.currentTime || 0) : 0);
+  });
+}
+
+// 4. Tab 1 (Type): Text Size, Opacity & Color
+if (DOM.fontSize) {
+  DOM.fontSize.addEventListener('input', (e) => {
+    AppState.style.fontSize = parseInt(e.target.value) || 32;
+    if (DOM.fontSizeVal) DOM.fontSizeVal.textContent = `${AppState.style.fontSize}px`;
+    renderLiveCaptionOverlay(DOM.video ? (DOM.video.currentTime || AppState.currentTime || 0) : 0);
+  });
+}
+
+if (DOM.fontOpacity) {
+  DOM.fontOpacity.addEventListener('input', (e) => {
+    AppState.style.fontOpacity = parseInt(e.target.value) || 100;
+    if (DOM.fontOpacityVal) DOM.fontOpacityVal.textContent = `${AppState.style.fontOpacity}%`;
+    renderLiveCaptionOverlay(DOM.video ? (DOM.video.currentTime || AppState.currentTime || 0) : 0);
+  });
+}
+
+if (DOM.textColor) {
+  DOM.textColor.addEventListener('input', (e) => {
+    AppState.style.textColor = e.target.value;
+    if (DOM.textColorHex) DOM.textColorHex.value = e.target.value.toUpperCase();
+    renderLiveCaptionOverlay(DOM.video ? (DOM.video.currentTime || AppState.currentTime || 0) : 0);
+  });
+}
+
+if (DOM.textColorHex) {
+  DOM.textColorHex.addEventListener('input', (e) => {
+    let val = e.target.value.trim();
+    if (!val.startsWith('#')) val = '#' + val;
+    if (/^#[0-9A-F]{6}$/i.test(val)) {
+      AppState.style.textColor = val;
+      if (DOM.textColor) DOM.textColor.value = val;
+      renderLiveCaptionOverlay(DOM.video ? (DOM.video.currentTime || AppState.currentTime || 0) : 0);
+    }
+  });
+}
+
+// 5. Tab 1 (Type): Position Offset (Y-Axis)
+if (DOM.posYSlider) {
+  DOM.posYSlider.addEventListener('input', (e) => {
+    AppState.style.posY = parseInt(e.target.value) || 14;
+    if (DOM.posYVal) DOM.posYVal.textContent = `${AppState.style.posY}%`;
+    renderLiveCaptionOverlay(DOM.video ? (DOM.video.currentTime || AppState.currentTime || 0) : 0);
+  });
+}
+
+if (DOM.posTopBtn) {
+  DOM.posTopBtn.onclick = () => {
+    AppState.style.posY = 80;
+    if (DOM.posYSlider) DOM.posYSlider.value = 80;
+    if (DOM.posYVal) DOM.posYVal.textContent = '80%';
+    renderLiveCaptionOverlay(DOM.video ? (DOM.video.currentTime || AppState.currentTime || 0) : 0);
+  };
+}
+
+if (DOM.posMidBtn) {
+  DOM.posMidBtn.onclick = () => {
+    AppState.style.posY = 50;
+    if (DOM.posYSlider) DOM.posYSlider.value = 50;
+    if (DOM.posYVal) DOM.posYVal.textContent = '50%';
+    renderLiveCaptionOverlay(DOM.video ? (DOM.video.currentTime || AppState.currentTime || 0) : 0);
+  };
+}
+
+if (DOM.posBotBtn) {
+  DOM.posBotBtn.onclick = () => {
+    AppState.style.posY = 14;
+    if (DOM.posYSlider) DOM.posYSlider.value = 14;
+    if (DOM.posYVal) DOM.posYVal.textContent = '14%';
+    renderLiveCaptionOverlay(DOM.video ? (DOM.video.currentTime || AppState.currentTime || 0) : 0);
+  };
+}
+
+// 6. Tab 1 (Type): Text Spacing Accordion
+if (DOM.lineHeight) {
+  DOM.lineHeight.addEventListener('input', (e) => {
+    AppState.style.lineHeight = parseFloat(e.target.value) || 1.25;
+    if (DOM.lineHeightVal) DOM.lineHeightVal.textContent = AppState.style.lineHeight.toFixed(2);
+    renderLiveCaptionOverlay(DOM.video ? (DOM.video.currentTime || AppState.currentTime || 0) : 0);
+  });
+}
+
+if (DOM.letterSpacing) {
+  DOM.letterSpacing.addEventListener('input', (e) => {
+    AppState.style.letterSpacing = parseFloat(e.target.value) || 0;
+    if (DOM.letterSpacingVal) DOM.letterSpacingVal.textContent = `${AppState.style.letterSpacing}px`;
+    renderLiveCaptionOverlay(DOM.video ? (DOM.video.currentTime || AppState.currentTime || 0) : 0);
+  });
+}
+
+// 7. Tab 2 (Effects): Outer Stroke
+if (DOM.strokeOn) {
+  DOM.strokeOn.addEventListener('change', (e) => {
+    AppState.style.strokeOn = e.target.checked;
+    renderLiveCaptionOverlay(DOM.video ? (DOM.video.currentTime || AppState.currentTime || 0) : 0);
+  });
+}
+
+if (DOM.strokeWidth) {
+  DOM.strokeWidth.addEventListener('input', (e) => {
+    AppState.style.strokeWidth = parseInt(e.target.value) || 0;
+    if (DOM.strokeWVal) DOM.strokeWVal.textContent = `${AppState.style.strokeWidth}px`;
+    renderLiveCaptionOverlay(DOM.video ? (DOM.video.currentTime || AppState.currentTime || 0) : 0);
+  });
+}
+
+if (DOM.strokeColor) {
+  DOM.strokeColor.addEventListener('input', (e) => {
+    AppState.style.strokeColor = e.target.value;
+    renderLiveCaptionOverlay(DOM.video ? (DOM.video.currentTime || AppState.currentTime || 0) : 0);
+  });
+}
+
+// 8. Tab 2 (Effects): Drop Shadow
+if (DOM.dropShadowOn) {
+  DOM.dropShadowOn.addEventListener('change', (e) => {
+    AppState.style.dropShadowOn = e.target.checked;
+    renderLiveCaptionOverlay(DOM.video ? (DOM.video.currentTime || AppState.currentTime || 0) : 0);
+  });
+}
+
+if (DOM.shadowColor) {
+  DOM.shadowColor.addEventListener('input', (e) => {
+    AppState.style.shadowColor = e.target.value;
+    renderLiveCaptionOverlay(DOM.video ? (DOM.video.currentTime || AppState.currentTime || 0) : 0);
+  });
+}
+
+if (DOM.shadowOpacity) {
+  DOM.shadowOpacity.addEventListener('input', (e) => {
+    AppState.style.shadowOpacity = parseInt(e.target.value) || 85;
+    if (DOM.shadowOpacityVal) DOM.shadowOpacityVal.textContent = `${AppState.style.shadowOpacity}%`;
+    renderLiveCaptionOverlay(DOM.video ? (DOM.video.currentTime || AppState.currentTime || 0) : 0);
+  });
+}
+
+if (DOM.shadowBlur) {
+  DOM.shadowBlur.addEventListener('input', (e) => {
+    AppState.style.shadowBlur = parseInt(e.target.value) || 10;
+    if (DOM.shadowBlurVal) DOM.shadowBlurVal.textContent = `${AppState.style.shadowBlur}px`;
+    renderLiveCaptionOverlay(DOM.video ? (DOM.video.currentTime || AppState.currentTime || 0) : 0);
+  });
+}
+
+if (DOM.shadowOffsetY) {
+  DOM.shadowOffsetY.addEventListener('input', (e) => {
+    AppState.style.shadowOffsetY = parseInt(e.target.value) || 4;
+    if (DOM.shadowOffsetYVal) DOM.shadowOffsetYVal.textContent = `${AppState.style.shadowOffsetY}px`;
+    renderLiveCaptionOverlay(DOM.video ? (DOM.video.currentTime || AppState.currentTime || 0) : 0);
+  });
+}
+
+// 9. Tab 2 (Effects): Glow
+if (DOM.glowOn) {
+  DOM.glowOn.addEventListener('change', (e) => {
+    AppState.style.glowOn = e.target.checked;
+    renderLiveCaptionOverlay(DOM.video ? (DOM.video.currentTime || AppState.currentTime || 0) : 0);
+  });
+}
+
+if (DOM.glowColorA) {
+  DOM.glowColorA.addEventListener('input', (e) => {
+    AppState.style.glowColorA = e.target.value;
+    renderLiveCaptionOverlay(DOM.video ? (DOM.video.currentTime || AppState.currentTime || 0) : 0);
+  });
+}
+
+if (DOM.glowColorB) {
+  DOM.glowColorB.addEventListener('input', (e) => {
+    AppState.style.glowColorB = e.target.value;
+    renderLiveCaptionOverlay(DOM.video ? (DOM.video.currentTime || AppState.currentTime || 0) : 0);
+  });
+}
+
+if (DOM.glowRadius) {
+  DOM.glowRadius.addEventListener('input', (e) => {
+    AppState.style.glowRadius = parseInt(e.target.value) || 18;
+    if (DOM.glowRVal) DOM.glowRVal.textContent = `${AppState.style.glowRadius}px`;
+    renderLiveCaptionOverlay(DOM.video ? (DOM.video.currentTime || AppState.currentTime || 0) : 0);
+  });
+}
+
+// 10. Tab 2 (Effects): Text Box (Background Plate)
+if (DOM.boxBgOn) {
+  DOM.boxBgOn.addEventListener('change', (e) => {
+    AppState.style.boxBgOn = e.target.checked;
+    renderLiveCaptionOverlay(DOM.video ? (DOM.video.currentTime || AppState.currentTime || 0) : 0);
+  });
+}
+
+if (DOM.boxBgColor) {
+  DOM.boxBgColor.addEventListener('input', (e) => {
+    AppState.style.boxBgColor = e.target.value;
+    renderLiveCaptionOverlay(DOM.video ? (DOM.video.currentTime || AppState.currentTime || 0) : 0);
+  });
+}
+
+if (DOM.boxBgOpacity) {
+  DOM.boxBgOpacity.addEventListener('input', (e) => {
+    AppState.style.boxBgOpacity = parseInt(e.target.value) || 80;
+    if (DOM.boxBgOpacityVal) DOM.boxBgOpacityVal.textContent = `${AppState.style.boxBgOpacity}%`;
+    renderLiveCaptionOverlay(DOM.video ? (DOM.video.currentTime || AppState.currentTime || 0) : 0);
+  });
+}
+
+if (DOM.boxBgPadding) {
+  DOM.boxBgPadding.addEventListener('input', (e) => {
+    AppState.style.boxBgPadding = parseInt(e.target.value) || 10;
+    if (DOM.boxBgPaddingVal) DOM.boxBgPaddingVal.textContent = `${AppState.style.boxBgPadding}px`;
+    renderLiveCaptionOverlay(DOM.video ? (DOM.video.currentTime || AppState.currentTime || 0) : 0);
+  });
+}
+
+if (DOM.boxBgRadius) {
+  DOM.boxBgRadius.addEventListener('input', (e) => {
+    AppState.style.boxBgRadius = parseInt(e.target.value) || 6;
+    if (DOM.boxBgRadiusVal) DOM.boxBgRadiusVal.textContent = `${AppState.style.boxBgRadius}px`;
+    renderLiveCaptionOverlay(DOM.video ? (DOM.video.currentTime || AppState.currentTime || 0) : 0);
+  });
+}
+
+// 11. Tab 2 (Effects): Gradient Fill
+if (DOM.gradOn) {
+  DOM.gradOn.addEventListener('change', (e) => {
+    AppState.style.gradOn = e.target.checked;
+    renderLiveCaptionOverlay(DOM.video ? (DOM.video.currentTime || AppState.currentTime || 0) : 0);
+  });
+}
+
+if (DOM.gradC1) {
+  DOM.gradC1.addEventListener('input', (e) => {
+    AppState.style.gradColor1 = e.target.value;
+    renderLiveCaptionOverlay(DOM.video ? (DOM.video.currentTime || AppState.currentTime || 0) : 0);
+  });
+}
+
+if (DOM.gradC2) {
+  DOM.gradC2.addEventListener('input', (e) => {
+    AppState.style.gradColor2 = e.target.value;
+    renderLiveCaptionOverlay(DOM.video ? (DOM.video.currentTime || AppState.currentTime || 0) : 0);
+  });
+}
+
+if (DOM.gradAngle) {
+  DOM.gradAngle.addEventListener('input', (e) => {
+    AppState.style.gradAngle = parseInt(e.target.value) || 90;
+    if (DOM.gradAngVal) DOM.gradAngVal.textContent = `${AppState.style.gradAngle}°`;
+    renderLiveCaptionOverlay(DOM.video ? (DOM.video.currentTime || AppState.currentTime || 0) : 0);
+  });
+}
+
+// 12. Tab 4 (Motion): Complete 30 Kinetic Animations Suite
+if (DOM.animationPresetSelect) {
+  DOM.animationPresetSelect.addEventListener('change', (e) => {
+    AppState.style.motion = e.target.value;
+    renderLiveCaptionOverlay(DOM.video ? (DOM.video.currentTime || AppState.currentTime || 0) : 0);
+    DOM.statusTxt.textContent = `ANIMATION: ${e.target.options[e.target.selectedIndex].text}`;
+  });
+}
+
+if (DOM.animSpeedSlider) {
+  DOM.animSpeedSlider.addEventListener('input', (e) => {
+    AppState.style.animSpeed = parseFloat(e.target.value) || 0.35;
+    if (DOM.animSpeedVal) DOM.animSpeedVal.textContent = `${AppState.style.animSpeed.toFixed(2)}s`;
+    document.documentElement.style.setProperty('--anim-speed', `${AppState.style.animSpeed}s`);
+    renderLiveCaptionOverlay(DOM.video ? (DOM.video.currentTime || AppState.currentTime || 0) : 0);
+  });
+}
+
+if (DOM.motionBlurOn) {
+  DOM.motionBlurOn.addEventListener('change', (e) => {
+    AppState.style.motionBlur = e.target.checked;
+    renderLiveCaptionOverlay(DOM.video ? (DOM.video.currentTime || AppState.currentTime || 0) : 0);
+  });
+}
+
+if (DOM.activeWordColor) {
+  DOM.activeWordColor.addEventListener('input', (e) => {
+    AppState.style.activeWordColor = e.target.value;
+    renderLiveCaptionOverlay(DOM.video ? (DOM.video.currentTime || AppState.currentTime || 0) : 0);
+  });
+}
+
+document.querySelectorAll('.active-color-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    AppState.style.activeWordColor = btn.dataset.color;
+    if (DOM.activeWordColor) DOM.activeWordColor.value = btn.dataset.color;
+    renderLiveCaptionOverlay(DOM.video ? (DOM.video.currentTime || AppState.currentTime || 0) : 0);
   });
 });
 
-document.getElementById('posYSlider').addEventListener('input', (e) => {
-  AppState.style.posY = parseInt(e.target.value);
-  renderLiveCaptionOverlay(DOM.video.currentTime || AppState.currentTime);
-});
-document.getElementById('posTopBtn').onclick = () => { AppState.style.posY = 80; document.getElementById('posYSlider').value = 80; renderLiveCaptionOverlay(DOM.video.currentTime || AppState.currentTime); };
-document.getElementById('posMidBtn').onclick = () => { AppState.style.posY = 50; document.getElementById('posYSlider').value = 50; renderLiveCaptionOverlay(DOM.video.currentTime || AppState.currentTime); };
-document.getElementById('posBotBtn').onclick = () => { AppState.style.posY = 14; document.getElementById('posYSlider').value = 14; renderLiveCaptionOverlay(DOM.video.currentTime || AppState.currentTime); };
+// UI Sync Helper: Reflect all AppState.style values onto DOM controls
+function syncInspectorUI() {
+  if (DOM.fontFamily) DOM.fontFamily.value = AppState.style.fontFamily || 'Poppins';
+  if (DOM.fontWeight) DOM.fontWeight.value = AppState.style.fontWeight || '500';
+  if (DOM.fontSize) DOM.fontSize.value = AppState.style.fontSize || 32;
+  if (DOM.fontSizeVal) DOM.fontSizeVal.textContent = `${AppState.style.fontSize || 32}px`;
+  if (DOM.fontOpacity) DOM.fontOpacity.value = AppState.style.fontOpacity !== undefined ? AppState.style.fontOpacity : 100;
+  if (DOM.fontOpacityVal) DOM.fontOpacityVal.textContent = `${AppState.style.fontOpacity !== undefined ? AppState.style.fontOpacity : 100}%`;
+  if (DOM.textColor) DOM.textColor.value = AppState.style.textColor || '#FFFFFF';
+  if (DOM.textColorHex) DOM.textColorHex.value = (AppState.style.textColor || '#FFFFFF').toUpperCase();
+  if (DOM.posYSlider) DOM.posYSlider.value = AppState.style.posY || 14;
+  if (DOM.posYVal) DOM.posYVal.textContent = `${AppState.style.posY || 14}%`;
+  if (DOM.lineHeight) DOM.lineHeight.value = AppState.style.lineHeight || 1.25;
+  if (DOM.lineHeightVal) DOM.lineHeightVal.textContent = (AppState.style.lineHeight || 1.25).toFixed(2);
+  if (DOM.letterSpacing) DOM.letterSpacing.value = AppState.style.letterSpacing || 0;
+  if (DOM.letterSpacingVal) DOM.letterSpacingVal.textContent = `${AppState.style.letterSpacing || 0}px`;
+  if (DOM.strokeOn) DOM.strokeOn.checked = !!AppState.style.strokeOn;
+  if (DOM.strokeWidth) DOM.strokeWidth.value = AppState.style.strokeWidth || 2;
+  if (DOM.strokeWVal) DOM.strokeWVal.textContent = `${AppState.style.strokeWidth || 2}px`;
+  if (DOM.strokeColor) DOM.strokeColor.value = AppState.style.strokeColor || '#000000';
+  if (DOM.dropShadowOn) DOM.dropShadowOn.checked = !!AppState.style.dropShadowOn;
+  if (DOM.shadowColor) DOM.shadowColor.value = AppState.style.shadowColor || '#000000';
+  if (DOM.shadowOpacity) DOM.shadowOpacity.value = AppState.style.shadowOpacity !== undefined ? AppState.style.shadowOpacity : 85;
+  if (DOM.shadowOpacityVal) DOM.shadowOpacityVal.textContent = `${AppState.style.shadowOpacity !== undefined ? AppState.style.shadowOpacity : 85}%`;
+  if (DOM.shadowBlur) DOM.shadowBlur.value = AppState.style.shadowBlur || 10;
+  if (DOM.shadowBlurVal) DOM.shadowBlurVal.textContent = `${AppState.style.shadowBlur || 10}px`;
+  if (DOM.shadowOffsetY) DOM.shadowOffsetY.value = AppState.style.shadowOffsetY !== undefined ? AppState.style.shadowOffsetY : 4;
+  if (DOM.shadowOffsetYVal) DOM.shadowOffsetYVal.textContent = `${AppState.style.shadowOffsetY !== undefined ? AppState.style.shadowOffsetY : 4}px`;
+  if (DOM.glowOn) DOM.glowOn.checked = !!AppState.style.glowOn;
+  if (DOM.glowColorA) DOM.glowColorA.value = AppState.style.glowColorA || '#E52E42';
+  if (DOM.glowColorB) DOM.glowColorB.value = AppState.style.glowColorB || '#A81827';
+  if (DOM.glowRadius) DOM.glowRadius.value = AppState.style.glowRadius || 18;
+  if (DOM.glowRVal) DOM.glowRVal.textContent = `${AppState.style.glowRadius || 18}px`;
+  if (DOM.boxBgOn) DOM.boxBgOn.checked = !!AppState.style.boxBgOn;
+  if (DOM.boxBgColor) DOM.boxBgColor.value = AppState.style.boxBgColor || '#000000';
+  if (DOM.boxBgOpacity) DOM.boxBgOpacity.value = AppState.style.boxBgOpacity !== undefined ? AppState.style.boxBgOpacity : 80;
+  if (DOM.boxBgOpacityVal) DOM.boxBgOpacityVal.textContent = `${AppState.style.boxBgOpacity !== undefined ? AppState.style.boxBgOpacity : 80}%`;
+  if (DOM.boxBgPadding) DOM.boxBgPadding.value = AppState.style.boxBgPadding || 10;
+  if (DOM.boxBgPaddingVal) DOM.boxBgPaddingVal.textContent = `${AppState.style.boxBgPadding || 10}px`;
+  if (DOM.boxBgRadius) DOM.boxBgRadius.value = AppState.style.boxBgRadius || 6;
+  if (DOM.boxBgRadiusVal) DOM.boxBgRadiusVal.textContent = `${AppState.style.boxBgRadius || 6}px`;
+  if (DOM.gradOn) DOM.gradOn.checked = !!AppState.style.gradOn;
+  if (DOM.gradC1) DOM.gradC1.value = AppState.style.gradColor1 || '#FFFFFF';
+  if (DOM.gradC2) DOM.gradC2.value = AppState.style.gradColor2 || '#E52E42';
+  if (DOM.gradAngle) DOM.gradAngle.value = AppState.style.gradAngle || 90;
+  if (DOM.gradAngVal) DOM.gradAngVal.textContent = `${AppState.style.gradAngle || 90}°`;
+  if (DOM.animationPresetSelect) DOM.animationPresetSelect.value = AppState.style.motion || 'none';
+  if (DOM.animSpeedSlider) DOM.animSpeedSlider.value = AppState.style.animSpeed || 0.35;
+  if (DOM.animSpeedVal) DOM.animSpeedVal.textContent = `${(AppState.style.animSpeed || 0.35).toFixed(2)}s`;
+  if (DOM.motionBlurOn) DOM.motionBlurOn.checked = !!AppState.style.motionBlur;
+  if (DOM.activeWordColor) DOM.activeWordColor.value = AppState.style.activeWordColor || '#E52E42';
+  
+  if (DOM.formatBoldBtn) {
+    DOM.formatBoldBtn.classList.toggle('bg-[#E52E42]', !!AppState.style.isBold);
+    DOM.formatBoldBtn.classList.toggle('text-white', !!AppState.style.isBold);
+    DOM.formatBoldBtn.classList.toggle('text-[#B0B2C3]', !AppState.style.isBold);
+  }
+  if (DOM.formatItalicBtn) {
+    DOM.formatItalicBtn.classList.toggle('bg-[#E52E42]', !!AppState.style.isItalic);
+    DOM.formatItalicBtn.classList.toggle('text-white', !!AppState.style.isItalic);
+    DOM.formatItalicBtn.classList.toggle('text-[#B0B2C3]', !AppState.style.isItalic);
+  }
+  if (DOM.formatAllCapsBtn) {
+    DOM.formatAllCapsBtn.classList.toggle('bg-[#E52E42]', AppState.style.casing === 'caps');
+    DOM.formatAllCapsBtn.classList.toggle('text-white', AppState.style.casing === 'caps');
+    DOM.formatAllCapsBtn.classList.toggle('text-[#B0B2C3]', AppState.style.casing !== 'caps');
+  }
+  if (DOM.formatSmallCapsBtn) {
+    DOM.formatSmallCapsBtn.classList.toggle('bg-[#E52E42]', AppState.style.casing === 'small-caps');
+    DOM.formatSmallCapsBtn.classList.toggle('text-white', AppState.style.casing === 'small-caps');
+    DOM.formatSmallCapsBtn.classList.toggle('text-[#B0B2C3]', AppState.style.casing !== 'small-caps');
+  }
+}
 
-document.getElementById('textColor').addEventListener('input', (e) => {
-  AppState.style.textColor = e.target.value;
-  renderLiveCaptionOverlay(DOM.video.currentTime || AppState.currentTime);
-});
-
-document.getElementById('strokeOn').addEventListener('change', (e) => {
-  AppState.style.strokeOn = e.target.checked;
-  renderLiveCaptionOverlay(DOM.video.currentTime || AppState.currentTime);
-});
-document.getElementById('strokeWidth').addEventListener('input', (e) => {
-  AppState.style.strokeWidth = parseInt(e.target.value);
-  document.getElementById('strokeWVal').textContent = `${AppState.style.strokeWidth}px`;
-  renderLiveCaptionOverlay(DOM.video.currentTime || AppState.currentTime);
-});
-document.getElementById('strokeColor').addEventListener('input', (e) => {
-  AppState.style.strokeColor = e.target.value;
-  renderLiveCaptionOverlay(DOM.video.currentTime || AppState.currentTime);
-});
-
-document.getElementById('glowOn').addEventListener('change', (e) => {
-  AppState.style.glowOn = e.target.checked;
-  renderLiveCaptionOverlay(DOM.video.currentTime || AppState.currentTime);
-});
-
+// 13. Tab 3 (Presets): Preset Suite Specifications & One-Click Apply
 const PRESETS = {
   filmcom_basic: {
-    fontFamily: 'Anton', fontSize: 38, casing: 'caps', textColor: '#FFFFFF', activeWordColor: '#E52E42',
-    strokeOn: true, strokeWidth: 2, strokeColor: '#000000', glowOn: true, glowRadius: 25,
-    glowColorA: 'rgba(229, 46, 66, 0.45)', glowColorB: 'rgba(0, 0, 0, 0.85)', motion: 'filmcom_pop', dimInactive: true
+    fontFamily: 'Anton', fontWeight: '700', fontSize: 38, fontOpacity: 100, isBold: false, isItalic: false, casing: 'caps', textColor: '#FFFFFF', activeWordColor: '#E52E42',
+    strokeOn: true, strokeWidth: 2, strokeColor: '#000000', dropShadowOn: true, shadowColor: '#000000', shadowOpacity: 85, shadowBlur: 12, shadowOffsetY: 4,
+    glowOn: true, glowRadius: 25, glowColorA: 'rgba(229, 46, 66, 0.45)', glowColorB: 'rgba(0, 0, 0, 0.85)', boxBgOn: false, gradOn: false,
+    motion: '20', animSpeed: 0.35, motionBlur: false, dimInactive: true
   },
   mogrt_master: {
-    fontFamily: 'Anton', fontSize: 40, casing: 'caps', textColor: '#FFFFFF', activeWordColor: '#E52E42',
-    strokeOn: true, strokeWidth: 3, strokeColor: '#000000', glowOn: true, glowRadius: 18,
-    glowColorA: '#E52E42', glowColorB: '#800A16', motion: 'mogrt_bounce', dimInactive: true
+    fontFamily: 'Anton', fontWeight: '700', fontSize: 40, fontOpacity: 100, isBold: false, isItalic: false, casing: 'caps', textColor: '#FFFFFF', activeWordColor: '#E52E42',
+    strokeOn: true, strokeWidth: 3, strokeColor: '#000000', dropShadowOn: true, shadowColor: '#000000', shadowOpacity: 90, shadowBlur: 14, shadowOffsetY: 4,
+    glowOn: true, glowRadius: 24, glowColorA: '#E52E42', glowColorB: '#800A16', boxBgOn: false, gradOn: false,
+    motion: '18', animSpeed: 0.40, motionBlur: false, dimInactive: true
   },
   shaditz_signature: {
-    fontFamily: 'Anton', fontSize: 38, casing: 'caps', textColor: '#FFFFFF', activeWordColor: '#E52E42',
-    strokeOn: true, strokeWidth: 3, strokeColor: '#000000', glowOn: false, motion: 'pop', dimInactive: false
+    fontFamily: 'Anton', fontWeight: '700', fontSize: 38, fontOpacity: 100, isBold: false, isItalic: false, casing: 'caps', textColor: '#FFFFFF', activeWordColor: '#E52E42',
+    strokeOn: true, strokeWidth: 3, strokeColor: '#000000', dropShadowOn: true, shadowColor: '#000000', shadowOpacity: 85, shadowBlur: 10, shadowOffsetY: 3,
+    glowOn: false, boxBgOn: false, gradOn: false, motion: '2', animSpeed: 0.30, motionBlur: false, dimInactive: false
   },
   hormozi: {
-    fontFamily: 'Bebas Neue', fontSize: 42, casing: 'caps', textColor: '#FFFFFF', activeWordColor: '#fde047',
-    strokeOn: true, strokeWidth: 3, strokeColor: '#000000', glowOn: false, motion: 'pop', dimInactive: false
+    fontFamily: 'Bebas Neue', fontWeight: '700', fontSize: 42, fontOpacity: 100, isBold: false, isItalic: false, casing: 'caps', textColor: '#FFFFFF', activeWordColor: '#fde047',
+    strokeOn: true, strokeWidth: 4, strokeColor: '#000000', dropShadowOn: true, shadowColor: '#000000', shadowOpacity: 90, shadowBlur: 8, shadowOffsetY: 4,
+    glowOn: false, boxBgOn: false, gradOn: false, motion: '14', animSpeed: 0.25, motionBlur: false, dimInactive: false
   },
   monolithic: {
-    fontFamily: 'Anton', fontSize: 34, casing: 'caps', textColor: '#FFFFFF', activeWordColor: '#FFFFFF',
-    strokeOn: true, strokeWidth: 3, strokeColor: '#E52E42', glowOn: false, motion: 'karaoke', dimInactive: false
+    fontFamily: 'Anton', fontWeight: '700', fontSize: 34, fontOpacity: 100, isBold: false, isItalic: false, casing: 'caps', textColor: '#FFFFFF', activeWordColor: '#FFFFFF',
+    strokeOn: true, strokeWidth: 3, strokeColor: '#E52E42', dropShadowOn: true, shadowColor: '#000000', shadowOpacity: 80, shadowBlur: 8, shadowOffsetY: 3,
+    glowOn: false, boxBgOn: false, gradOn: false, motion: '11', animSpeed: 0.35, motionBlur: false, dimInactive: false
   },
   minimal: {
-    fontFamily: 'Plus Jakarta Sans', fontSize: 28, casing: 'none', textColor: '#FFFFFF', activeWordColor: '#E52E42',
-    strokeOn: false, glowOn: false, motion: 'slideup', dimInactive: false
+    fontFamily: 'Poppins', fontWeight: '500', fontSize: 26, fontOpacity: 100, isBold: false, isItalic: false, casing: 'none', textColor: '#FFFFFF', activeWordColor: '#E52E42',
+    strokeOn: true, strokeWidth: 2, strokeColor: '#000000', dropShadowOn: false, glowOn: false, boxBgOn: false, gradOn: false,
+    motion: 'none', animSpeed: 0.35, motionBlur: false, dimInactive: false
   }
 };
 
 document.querySelectorAll('[data-preset]').forEach(card => {
   card.addEventListener('click', () => {
-    document.querySelectorAll('[data-preset]').forEach(c => c.classList.remove('active'));
-    card.classList.add('active');
+    document.querySelectorAll('[data-preset]').forEach(c => {
+      c.classList.remove('active', 'border-[#E52E42]', 'bg-[#181820]');
+      c.classList.add('border-[var(--border)]');
+    });
+    card.classList.add('active', 'border-[#E52E42]', 'bg-[#181820]');
+    card.classList.remove('border-[var(--border)]');
+    
     const presetName = card.dataset.preset;
     if (PRESETS[presetName]) {
       Object.assign(AppState.style, PRESETS[presetName]);
-      document.getElementById('fontFamily').value = AppState.style.fontFamily;
-      document.getElementById('fontSize').value = AppState.style.fontSize;
-      document.getElementById('fontSizeVal').textContent = `${AppState.style.fontSize}px`;
-      document.getElementById('strokeOn').checked = AppState.style.strokeOn;
-      document.getElementById('strokeWidth').value = AppState.style.strokeWidth;
-      document.getElementById('strokeWVal').textContent = `${AppState.style.strokeWidth}px`;
-      document.getElementById('strokeColor').value = AppState.style.strokeColor;
-      document.getElementById('glowOn').checked = AppState.style.glowOn;
-      document.getElementById('activeWordColor').value = AppState.style.activeWordColor;
-      
-      // Sync motion buttons
-      document.querySelectorAll('[data-motion]').forEach(b => {
-        const isMatch = b.dataset.motion === AppState.style.motion;
-        b.classList.toggle('active', isMatch);
-        b.classList.toggle('border-[#E52E42]', isMatch);
-        b.classList.toggle('border-[var(--border)]', !isMatch);
-      });
-
-      renderLiveCaptionOverlay(DOM.video.currentTime || AppState.currentTime);
-      DOM.statusTxt.textContent = `PRESET: ${presetName.toUpperCase()}`;
+      syncInspectorUI();
+      renderLiveCaptionOverlay(DOM.video ? (DOM.video.currentTime || AppState.currentTime || 0) : 0);
+      DOM.statusTxt.textContent = `PRESET APPLIED: ${presetName.toUpperCase()}`;
     }
   });
-});
-
-document.querySelectorAll('[data-motion]').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('[data-motion]').forEach(b => {
-      b.classList.remove('active', 'border-[#E52E42]');
-      b.classList.add('border-[var(--border)]');
-    });
-    btn.classList.add('active', 'border-[#E52E42]');
-    btn.classList.remove('border-[var(--border)]');
-    AppState.style.motion = btn.dataset.motion;
-    renderLiveCaptionOverlay(DOM.video.currentTime || AppState.currentTime);
-  });
-});
-
-document.getElementById('activeWordColor').addEventListener('input', (e) => {
-  AppState.style.activeWordColor = e.target.value;
-  renderLiveCaptionOverlay(DOM.video.currentTime || AppState.currentTime);
 });
 
 // ==================== VIDEO MASTER EXPORTER ====================
