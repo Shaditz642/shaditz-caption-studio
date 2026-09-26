@@ -460,6 +460,100 @@
       border-left: 1px solid rgba(255, 255, 255, 0.2);
     }
 
+    /* TRACK T2: HIGHLIGHT ACCENT SEGMENT STYLES */
+    .highlight-segment {
+      position: absolute;
+      top: 3px;
+      bottom: 3px;
+      background: linear-gradient(135deg, #E52E42 0%, #FF3850 100%);
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 800;
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 6px;
+      overflow: hidden;
+      white-space: nowrap;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(229, 46, 66, 0.35);
+      transition: border-color 0.12s, transform 0.12s, background-color 0.12s;
+      text-shadow: none !important;
+      box-sizing: border-box;
+      z-index: 20;
+    }
+    .highlight-segment:hover {
+      border-color: #FFFFFF;
+      background: linear-gradient(135deg, #ED394D 0%, #FF5267 100%);
+      transform: translateY(-1px);
+      z-index: 25;
+    }
+    .highlight-segment.active-seg {
+      border: 1.5px solid #FFE600 !important;
+      box-shadow: 0 0 14px rgba(229, 46, 66, 0.9) !important;
+      background: linear-gradient(135deg, #E52E42 0%, #FFAA00 100%) !important;
+      z-index: 30;
+    }
+    .highlight-segment.selected-seg {
+      border: 2px solid #FFFFFF !important;
+      outline: 2px solid #FFE600 !important;
+      box-shadow: 0 0 16px rgba(255, 230, 0, 0.7) !important;
+      z-index: 35;
+    }
+    .highlight-segment .seg-text {
+      width: 100%;
+      text-align: center;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      pointer-events: none;
+      user-select: none;
+      padding: 0 4px;
+    }
+    .highlight-segment .handle {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 8px;
+      background: rgba(0, 0, 0, 0.75);
+      cursor: ew-resize;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 40;
+      opacity: 0;
+      transition: opacity 0.12s, background-color 0.12s;
+    }
+    .highlight-segment .handle::after {
+      content: '';
+      width: 2px;
+      height: 14px;
+      background: #FFE600;
+      border-radius: 1px;
+    }
+    .highlight-segment:hover .handle,
+    .highlight-segment.selected-seg .handle {
+      opacity: 1;
+    }
+    .highlight-segment .handle:hover {
+      background: #FFFFFF;
+    }
+    .highlight-segment .handle:hover::after {
+      background: #E52E42;
+    }
+    .highlight-segment .handle-left {
+      left: 0;
+      border-radius: 3px 0 0 3px;
+      border-right: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    .highlight-segment .handle-right {
+      right: 0;
+      border-radius: 0 3px 3px 0;
+      border-left: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
     /* Custom Sleek Scrollbars for Timeline */
     #timelineWrapper::-webkit-scrollbar {
       height: 8px;
@@ -1461,28 +1555,37 @@
 
       <div id="tracksStack" class="p-1.5 space-y-1.5 relative w-full">
         
-        <!-- TRACK 1: CAPTIONS -->
+        <!-- TRACK T1: BASE CAPTIONS -->
         <div class="flex items-center justify-between font-technical-mono text-[10px] font-bold text-[#E4E6F0] pl-1">
           <span class="flex items-center gap-1.5">
-            <i class="ph-bold ph-text-t text-[#E52E42]"></i> CAPTIONS TRACK (SYNCHRONIZED)
+            <i class="ph-bold ph-text-t text-white"></i> TRACK T1: BASE CAPTIONS (STATIC WHITE)
           </span>
           <span id="captionTrackCount" class="text-[9px] text-[#8C8E9F]">0 BLOCKS</span>
         </div>
         <div id="captionTrack" class="timeline-track w-full"></div>
 
-        <!-- TRACK 2: VIDEO FRAMES STRIP -->
+        <!-- TRACK T2: HIGHLIGHT KEYWORDS (VIRAL POP LAYER) -->
         <div class="flex items-center justify-between font-technical-mono text-[10px] font-bold text-[#E4E6F0] pl-1 pt-1">
           <span class="flex items-center gap-1.5">
-            <i class="ph-bold ph-film-strip text-white"></i> VIDEO TRACK
+            <i class="ph-bold ph-lightning text-[#E52E42]"></i> TRACK T2: HIGHLIGHT KEYWORDS (ACCENT POP)
+          </span>
+          <span id="highlightTrackCount" class="text-[9px] text-[#E52E42] font-bold">0 KEYWORDS</span>
+        </div>
+        <div id="highlightTrack" class="timeline-track w-full bg-[#141219] border border-[#E52E42]/20"></div>
+
+        <!-- TRACK V: VIDEO FRAMES STRIP -->
+        <div class="flex items-center justify-between font-technical-mono text-[10px] font-bold text-[#E4E6F0] pl-1 pt-1">
+          <span class="flex items-center gap-1.5">
+            <i class="ph-bold ph-film-strip text-white"></i> TRACK V: VIDEO FOOTAGE
           </span>
           <span id="activeVideoName" class="text-[9px] text-[#8C8E9F] truncate max-w-[200px]">NO CLIP LOADED</span>
         </div>
         <div id="videoTrack" class="timeline-track relative overflow-hidden opacity-95 w-full"></div>
 
-        <!-- TRACK 3: AUDIO WAVEFORM SPECTRUM (WEB AUDIO API DECODED) -->
+        <!-- TRACK A: AUDIO WAVEFORM SPECTRUM (WEB AUDIO API DECODED) -->
         <div class="flex items-center justify-between font-technical-mono text-[10px] font-bold text-[#E4E6F0] pl-1 pt-1">
           <span class="flex items-center gap-1.5">
-            <i class="ph-bold ph-waveform text-[#E52E42]"></i> AUDIO TRACK (WAVEFORM PEAKS)
+            <i class="ph-bold ph-waveform text-[#E52E42]"></i> TRACK A: AUDIO MASTER (WAVEFORM)
           </span>
           <span id="audioTrackStatus" class="text-[9px] text-[#8C8E9F]">CLICK TO SELECT AUDIO</span>
         </div>
@@ -1525,65 +1628,113 @@
   </div>
 </div>
 
-<!-- MODAL: VIDEO EXPORT -->
+<!-- MODAL: EXPORT MASTER & LOSSLESS PIPELINE -->
 <div id="exportModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
-  <div class="glass-modal w-full max-w-md rounded-xl p-6 space-y-5 relative">
-    <button id="closeExportModalBtn" class="absolute top-4 right-4 p-1.5 rounded-md text-[#B0B2C3] hover:text-white hover:bg-white/10">
+  <div class="glass-modal w-full max-w-xl rounded-xl p-6 space-y-5 relative bg-[#0E0E14] border border-[var(--border)] shadow-2xl">
+    <button id="closeExportModalBtn" class="absolute top-4 right-4 p-1.5 rounded-md text-[#B0B2C3] hover:text-white hover:bg-white/10 transition-colors">
       <i class="ph-bold ph-x text-base"></i>
     </button>
 
-    <div class="flex items-center gap-3">
-      <div class="w-10 h-10 rounded-lg btn-cherry-primary flex items-center justify-center text-white text-xl">
-        <i class="ph-bold ph-film-strip"></i>
-      </div>
-      <div>
-        <h3 class="font-brand-display text-lg text-white uppercase tracking-wider">EXPORT MASTER VIDEO</h3>
-        <p class="font-technical-mono text-[10px] text-[#B0B2C3] font-semibold">BURNED-IN SUBTITLES · FULL AUDIO MASTER</p>
-      </div>
-    </div>
-
-    <div class="space-y-3">
-      <div>
-        <label class="block font-technical-mono text-[10px] font-bold text-white mb-1">OUTPUT RESOLUTION & FPS</label>
-        <div class="grid grid-cols-2 gap-2">
-          <select id="exportResSelect" class="w-full font-technical-mono font-medium">
-            <option value="1080p" selected>1080p Full HD</option>
-            <option value="720p">720p HD</option>
-            <option value="4k">4K Ultra HD</option>
-          </select>
-          <select id="exportFpsSelect" class="w-full font-technical-mono font-medium">
-            <option value="30" selected>30 FPS</option>
-            <option value="60">60 FPS Ultra</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="glass-card p-3 rounded-lg space-y-2 font-technical-mono">
-        <label class="flex items-center justify-between text-xs text-white cursor-pointer font-semibold">
-          <span>BURN CAPTIONS DIRECTLY</span>
-          <input type="checkbox" checked disabled class="w-4 h-4 rounded accent-[#E52E42]">
-        </label>
-        <label class="flex items-center justify-between text-xs text-white cursor-pointer font-semibold">
-          <span>GENERATE .SRT SUBTITLES</span>
-          <input id="exportSrtCheck" type="checkbox" checked class="w-4 h-4 rounded accent-[#E52E42]">
-        </label>
-      </div>
-    </div>
-
-    <div class="pt-2">
-      <button id="startRenderBtn" class="btn-cherry-primary font-brand-display tracking-wider uppercase w-full py-3 rounded-md text-xs flex items-center justify-center gap-2">
+    <!-- Header -->
+    <div class="flex items-center gap-3.5 border-b border-[var(--border)] pb-4">
+      <div class="w-11 h-11 rounded-lg btn-cherry-primary flex items-center justify-center text-white text-2xl shadow-lg shadow-[#E52E42]/20">
         <i class="ph-bold ph-download-simple"></i>
-        <span>START HIGH-FIDELITY RENDER</span>
-      </button>
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <h3 class="font-brand-display text-xl text-white uppercase tracking-wider">EXPORT MASTER STUDIO</h3>
+          <span class="px-2 py-0.5 rounded bg-[#E52E42]/20 text-[#E52E42] border border-[#E52E42]/40 font-technical-mono text-[9px] font-bold uppercase">Lossless 25 Mbps</span>
+        </div>
+        <p class="font-technical-mono text-[10px] text-[#B0B2C3]">DUAL-TRACK SUBTITLE RENDERING & ACCURATE SRT EXPORTER</p>
+      </div>
     </div>
 
-    <div id="renderProgressBox" class="hidden space-y-2.5 pt-2 border-t border-[var(--border)]">
+    <!-- Two Export Options Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+      
+      <!-- OPTION A: SRT SUBTITLES EXPORT -->
+      <div class="glass-card p-4 rounded-xl border border-[var(--border)] hover:border-white/30 transition-all flex flex-col justify-between space-y-3 bg-[#13131A]">
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <span class="w-8 h-8 rounded-lg bg-blue-500/15 border border-blue-500/30 flex items-center justify-center text-blue-400 text-base font-bold">
+              <i class="ph-bold ph-file-text"></i>
+            </span>
+            <span class="px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-300 font-technical-mono text-[9px] font-bold">INSTANT .SRT</span>
+          </div>
+          <h4 class="font-bold text-sm text-white">Subtitle File (.SRT)</h4>
+          <p class="font-technical-mono text-[10px] text-[#8C8E9F] mt-1 leading-relaxed">
+            Direct sequential timecode subtitle file for Premiere Pro, YouTube, Final Cut, and DaVinci Resolve.
+          </p>
+          <div id="exportSrtStats" class="font-technical-mono text-[10px] text-[#B0B2C3] mt-2.5 pt-2 border-t border-[var(--border)]">
+            <span>0 blocks · 0 words ready</span>
+          </div>
+        </div>
+
+        <button id="downloadSrtBtn" class="w-full py-2.5 px-3 rounded-lg bg-[#1B1B26] hover:bg-[#252535] text-white border border-[var(--border)] font-technical-mono text-xs font-bold flex items-center justify-center gap-2 hover:border-blue-400 transition-all">
+          <i class="ph-bold ph-download text-blue-400"></i>
+          <span>DOWNLOAD .SRT FILE</span>
+        </button>
+      </div>
+
+      <!-- OPTION B: LOSSLESS MASTER VIDEO -->
+      <div class="glass-card p-4 rounded-xl border border-[#E52E42]/40 transition-all flex flex-col justify-between space-y-3 bg-[#171217]">
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <span class="w-8 h-8 rounded-lg bg-[#E52E42]/20 border border-[#E52E42]/40 flex items-center justify-center text-[#E52E42] text-base font-bold">
+              <i class="ph-bold ph-film-strip"></i>
+            </span>
+            <span class="px-1.5 py-0.5 rounded bg-[#E52E42] text-white font-technical-mono text-[9px] font-bold">25 MBPS VP9</span>
+          </div>
+          <h4 class="font-bold text-sm text-white">Master Video (Lossless)</h4>
+          <p class="font-technical-mono text-[10px] text-[#8C8E9F] mt-1 leading-relaxed">
+            Burned-in Dual-Track captions (T1 Base + T2 Highlights) with audio master mixed in pristine quality.
+          </p>
+          
+          <!-- Quality Settings -->
+          <div class="space-y-2 mt-2 pt-2 border-t border-[var(--border)]">
+            <div>
+              <label class="block font-technical-mono text-[9px] text-[#B0B2C3] font-bold mb-1">RESOLUTION</label>
+              <select id="exportResSelect" class="w-full bg-[#181822] border border-[var(--border)] rounded-md px-2 py-1 text-xs text-white font-technical-mono">
+                <option value="match" selected>Match Source Video / Canvas</option>
+                <option value="1080x1920">1080 × 1920 (9:16 Shorts/Reels/TikTok)</option>
+                <option value="1920x1080">1920 × 1080 (16:9 YouTube / HD)</option>
+                <option value="1080x1080">1080 × 1080 (1:1 Feed Square)</option>
+                <option value="1080x1350">1080 × 1350 (4:5 Reels / Posts)</option>
+              </select>
+            </div>
+            <div>
+              <label class="block font-technical-mono text-[9px] text-[#B0B2C3] font-bold mb-1">FRAME RATE & ENCODER</label>
+              <select id="exportFpsSelect" class="w-full bg-[#181822] border border-[var(--border)] rounded-md px-2 py-1 text-xs text-white font-technical-mono">
+                <option value="60" selected>60 FPS (Ultra Smooth Animation)</option>
+                <option value="30">30 FPS (Standard Web)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <button id="startRenderBtn" class="btn-cherry-primary font-brand-display tracking-wider uppercase w-full py-2.5 rounded-lg text-xs flex items-center justify-center gap-2 shadow-lg shadow-[#E52E42]/25">
+          <i class="ph-bold ph-play-circle text-base"></i>
+          <span>START LOSSLESS RENDER</span>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Real-time GPU Render Progress Box -->
+    <div id="renderProgressBox" class="hidden space-y-2.5 pt-3 border-t border-[var(--border)]">
       <div class="flex justify-between font-technical-mono text-xs">
-        <span id="renderStatusTxt" class="text-[#E52E42] font-bold">Rendering frame by frame...</span>
+        <span id="renderStatusTxt" class="text-[#E52E42] font-bold flex items-center gap-2">
+          <i class="ph-bold ph-spinner animate-spin"></i> Rendering frame by frame at 25 Mbps...
+        </span>
         <span id="renderPercentTxt" class="text-white font-bold">0%</span>
       </div>
-      <div class="h-2 w-full bg-[#181820] rounded-full overflow-hidden">
-        <div id="renderProgressBar" class="h-full bg-[#E52E42] w-0 transition-all duration-100"></div>
+      <div class="h-2.5 w-full bg-[#181820] rounded-full overflow-hidden border border-[var(--border)]">
+        <div id="renderProgressBar" class="h-full bg-gradient-to-r from-[#E52E42] to-[#FF5267] w-0 transition-all duration-75"></div>
+      </div>
+      <div id="renderCompleteActions" class="hidden pt-1 flex justify-end gap-2">
+        <a id="downloadFinalBtn" href="#" class="px-4 py-1.5 rounded-md bg-[#E52E42] hover:bg-[#ED394D] text-white font-technical-mono text-xs font-bold flex items-center gap-1.5">
+          <i class="ph-bold ph-download-simple"></i> Download Final Video
+        </a>
       </div>
     </div>
   </div>
@@ -1741,7 +1892,8 @@ const AppState = {
   isPlaying: false,
   aspectRatio: '9/16',
   videoTransform: { x: 0, y: 0, scale: 1.0 }, // Pan & zoom offsets
-  words: [], // Timeline generated caption blocks: { id, text, start, end }
+  words: [], // Timeline generated base caption blocks: { id, text, start, end, rawWords }
+  highlightWords: [], // Timeline generated high-impact keyword blocks: { id, baseCapId, text, start, end, color, motion }
   rawTranscriptWords: [], // Unaltered raw speech recognition tokens: { id, text, start, end }
   rawTranscriptText: '', // Clean prose transcript text
   
@@ -1750,7 +1902,7 @@ const AppState = {
   // MULTI-TRACK SEGMENTS & SELECTION STATE
   videoSegments: [], // [{ id, name, start, end, thumbUrl }]
   audioSegments: [], // [{ id, start, end }]
-  selectedTrackItem: { type: null, index: null, id: null }, // 'caption' | 'video' | 'audio'
+  selectedTrackItem: { type: null, index: null, id: null }, // 'caption' | 'highlight' | 'video' | 'audio'
   selectedWordIndex: null,
 
   style: {
@@ -1845,6 +1997,8 @@ const DOM = {
   timelineInner: document.getElementById('timelineInner'),
   captionTrack: document.getElementById('captionTrack'),
   captionTrackCount: document.getElementById('captionTrackCount'),
+  highlightTrack: document.getElementById('highlightTrack'),
+  highlightTrackCount: document.getElementById('highlightTrackCount'),
   videoTrack: document.getElementById('videoTrack'),
   activeVideoName: document.getElementById('activeVideoName'),
   audioWaveTrack: document.getElementById('audioWaveTrack'),
@@ -1887,11 +2041,17 @@ const DOM = {
   exportModal: document.getElementById('exportModal'),
   openExportModalBtn: document.getElementById('openExportModalBtn'),
   closeExportModalBtn: document.getElementById('closeExportModalBtn'),
+  downloadSrtBtn: document.getElementById('downloadSrtBtn'),
+  exportSrtStats: document.getElementById('exportSrtStats'),
+  exportResSelect: document.getElementById('exportResSelect'),
+  exportFpsSelect: document.getElementById('exportFpsSelect'),
   startRenderBtn: document.getElementById('startRenderBtn'),
   renderProgressBox: document.getElementById('renderProgressBox'),
   renderProgressBar: document.getElementById('renderProgressBar'),
   renderPercentTxt: document.getElementById('renderPercentTxt'),
   renderStatusTxt: document.getElementById('renderStatusTxt'),
+  renderCompleteActions: document.getElementById('renderCompleteActions'),
+  downloadFinalBtn: document.getElementById('downloadFinalBtn'),
   // Create Captions Modal Elements
   createCaptionsModal: document.getElementById('createCaptionsModal'),
   closeCreateCaptionsBtn: document.getElementById('closeCreateCaptionsBtn'),
@@ -2226,12 +2386,21 @@ function selectTrackItem(type, index, id) {
       DOM.sourceTextBox.value = AppState.words[index].text;
     }
     if (DOM.sourceTextStatus) {
-      DOM.sourceTextStatus.textContent = `BLOCK #${index + 1} (${AppState.words[index].start.toFixed(2)}s - ${AppState.words[index].end.toFixed(2)}s)`;
-      DOM.sourceTextStatus.className = 'font-technical-mono text-[9px] text-[#E52E42] font-bold';
+      DOM.sourceTextStatus.textContent = `BASE BLOCK #${index + 1} [T1] (${AppState.words[index].start.toFixed(2)}s - ${AppState.words[index].end.toFixed(2)}s)`;
+      DOM.sourceTextStatus.className = 'font-technical-mono text-[9px] text-white font-bold';
+    }
+  } else if (type === 'highlight' && index !== null && AppState.highlightWords[index]) {
+    AppState.selectedWordIndex = index;
+    if (DOM.sourceTextBox) {
+      DOM.sourceTextBox.value = AppState.highlightWords[index].text;
+    }
+    if (DOM.sourceTextStatus) {
+      DOM.sourceTextStatus.textContent = `KEYWORD #${index + 1} [T2] (${AppState.highlightWords[index].start.toFixed(2)}s - ${AppState.highlightWords[index].end.toFixed(2)}s)`;
+      DOM.sourceTextStatus.className = 'font-technical-mono text-[9px] text-[#FFE600] font-bold';
     }
   } else {
     AppState.selectedWordIndex = null;
-    if (DOM.sourceTextBox && type !== 'caption') {
+    if (DOM.sourceTextBox && type !== 'caption' && type !== 'highlight') {
       const t = DOM.video ? (DOM.video.currentTime || AppState.currentTime || 0) : 0;
       const cur = AppState.words.find(w => t >= w.start && t <= w.end);
       DOM.sourceTextBox.value = cur ? cur.text : '';
@@ -2244,6 +2413,10 @@ function selectTrackItem(type, index, id) {
 
   document.querySelectorAll('.caption-segment').forEach((s, idx) => {
     s.classList.toggle('selected-seg', type === 'caption' && idx === index);
+  });
+
+  document.querySelectorAll('.highlight-segment').forEach((h, idx) => {
+    h.classList.toggle('selected-seg', type === 'highlight' && idx === index);
   });
 
   document.querySelectorAll('.video-clip-segment').forEach((v, idx) => {
@@ -2262,6 +2435,7 @@ function deselectAllTrackItems() {
   AppState.selectedTrackItem = { type: null, index: null, id: null };
   AppState.selectedWordIndex = null;
   document.querySelectorAll('.caption-segment').forEach(s => s.classList.remove('selected-seg'));
+  document.querySelectorAll('.highlight-segment').forEach(h => h.classList.remove('selected-seg'));
   document.querySelectorAll('.video-clip-segment').forEach(v => v.classList.remove('selected-track-item'));
   DOM.audioWaveTrack.classList.remove('selected-track-item');
   DOM.audioTrackStatus.textContent = 'CLICK TO SELECT AUDIO';
@@ -2333,6 +2507,56 @@ DOM.audioWaveTrack.addEventListener('click', (e) => {
   }
 });
 
+// ==================== NLP / AI HEURISTIC KEYWORD ANALYZER ====================
+function detectHighImpactKeywords(captionBlocks) {
+  if (!captionBlocks || !captionBlocks.length) return [];
+  const highlights = [];
+  const powerWordsRegex = /\b(insane|viral|secret|danger|crazy|extreme|epic|amazing|ultimate|flawless|magic|explosive|million|billion|stop|never|always|free|fast|deadly|unbelievable|huge|massive|warning|critical|power|best|worst|top|money|rich|success|growth|hack|formula|killer|guru|genius|retention|precision|speed|boost|scale|grow|win|crush|double|triple|earn|build|create|transform|launch|dominate|beat|destroy|ignite|skyrocket|unlock|shaditz|shaher|pro)\b/i;
+  const metricsRegex = /(\$|₹|€|£|¥)?\b\d+[\d,.]*(?:%|x|k|m|b|st|nd|rd|th)?\b/i;
+  const allCapsRegex = /^[A-Z0-9$%!?,.'"-]{2,}$/;
+
+  captionBlocks.forEach((block, bIdx) => {
+    let tokens = [];
+    if (block.rawWords && block.rawWords.length) {
+      tokens = block.rawWords;
+    } else {
+      const rawToks = (block.text || '').replace(/\n/g, ' ').split(/\s+/).filter(Boolean);
+      const step = (block.end - block.start) / Math.max(1, rawToks.length);
+      tokens = rawToks.map((tk, ti) => ({
+        id: `${block.id}_w${ti}`,
+        text: tk,
+        start: block.start + ti * step,
+        end: block.start + (ti + 1) * step
+      }));
+    }
+
+    tokens.forEach((tok, tIdx) => {
+      const cleanWord = tok.text.replace(/^[^\w$₹€£%]+|[^\w$₹€£%]+$/g, '');
+      if (!cleanWord || cleanWord.length < 2) return;
+
+      const isMetric = metricsRegex.test(cleanWord);
+      const isPowerWord = powerWordsRegex.test(cleanWord);
+      const isPunctEmphasis = /[!?]$/.test(tok.text);
+      const isAllCaps = allCapsRegex.test(cleanWord) && cleanWord.length >= 3;
+
+      if (isMetric || isPowerWord || isAllCaps || isPunctEmphasis) {
+        highlights.push({
+          id: 'hl_' + bIdx + '_' + tIdx + '_' + Date.now(),
+          baseCapId: block.id,
+          text: tok.text.trim(),
+          cleanText: cleanWord,
+          start: parseFloat(tok.start.toFixed(3)),
+          end: parseFloat(tok.end.toFixed(3)),
+          color: isMetric ? '#FFE600' : '#E52E42'
+        });
+      }
+    });
+  });
+
+  highlights.sort((a, b) => a.start - b.start);
+  return highlights;
+}
+
 // ==================== PROCEDURAL DEMO GENERATOR ====================
 function loadDemoSample() {
   DOM.statusTxt.textContent = 'SYNTHESIZING DEMO...';
@@ -2349,27 +2573,53 @@ function loadDemoSample() {
   DOM.activeVideoName.textContent = 'SHADITZ_PRO_DEMO_01.MP4';
   
   const sampleScript = [
-    { id: 'w_0', text: "EVERY", start: 0.2, end: 0.6 },
-    { id: 'w_1', text: "PROJECT", start: 0.6, end: 1.1 },
-    { id: 'w_2', text: "STARTS", start: 1.2, end: 1.5 },
-    { id: 'w_3', text: "WITH", start: 1.5, end: 1.7 },
-    { id: 'w_4', text: "THE", start: 1.7, end: 1.9 },
-    { id: 'w_5', text: "BRAND'S", start: 1.9, end: 2.4 },
-    { id: 'w_6', text: "TONE", start: 2.4, end: 2.9 },
-    { id: 'w_7', text: "AND", start: 2.9, end: 3.2 },
-    { id: 'w_8', text: "ENDS", start: 3.2, end: 3.6 },
-    { id: 'w_9', text: "ON", start: 3.6, end: 3.9 },
-    { id: 'w_10', text: "TIME.", start: 3.9, end: 4.4 },
-    { id: 'w_11', text: "SHADITZ", start: 4.6, end: 5.2 },
-    { id: 'w_12', text: "STUDIO", start: 5.2, end: 5.7 },
-    { id: 'w_13', text: "PRO", start: 5.7, end: 6.2 },
-    { id: 'w_14', text: "RETENTION", start: 6.3, end: 6.8 },
-    { id: 'w_15', text: "SPEED", start: 6.8, end: 7.3 },
-    { id: 'w_16', text: "&", start: 7.3, end: 7.5 },
-    { id: 'w_17', text: "PRECISION.", start: 7.5, end: 8.2 }
+    { 
+      id: 'cap_0', 
+      text: "EVERY PROJECT STARTS WITH\nTHE BRAND'S TONE", 
+      start: 0.2, 
+      end: 2.8,
+      rawWords: [
+        { id: 'w_0', text: "EVERY", start: 0.2, end: 0.6 },
+        { id: 'w_1', text: "PROJECT", start: 0.6, end: 1.1 },
+        { id: 'w_2', text: "STARTS", start: 1.2, end: 1.5 },
+        { id: 'w_3', text: "WITH", start: 1.5, end: 1.7 },
+        { id: 'w_4', text: "THE", start: 1.7, end: 1.9 },
+        { id: 'w_5', text: "BRAND'S", start: 1.9, end: 2.4 },
+        { id: 'w_6', text: "TONE", start: 2.4, end: 2.8 }
+      ]
+    },
+    { 
+      id: 'cap_1', 
+      text: "AND ENDS ON TIME.\nSHADITZ STUDIO PRO", 
+      start: 2.9, 
+      end: 6.2,
+      rawWords: [
+        { id: 'w_7', text: "AND", start: 2.9, end: 3.2 },
+        { id: 'w_8', text: "ENDS", start: 3.2, end: 3.6 },
+        { id: 'w_9', text: "ON", start: 3.6, end: 3.9 },
+        { id: 'w_10', text: "TIME.", start: 3.9, end: 4.4 },
+        { id: 'w_11', text: "SHADITZ", start: 4.6, end: 5.2 },
+        { id: 'w_12', text: "STUDIO", start: 5.2, end: 5.7 },
+        { id: 'w_13', text: "PRO", start: 5.7, end: 6.2 }
+      ]
+    },
+    { 
+      id: 'cap_2', 
+      text: "RETENTION, SPEED\n& 100% PRECISION.", 
+      start: 6.3, 
+      end: 8.2,
+      rawWords: [
+        { id: 'w_14', text: "RETENTION,", start: 6.3, end: 6.8 },
+        { id: 'w_15', text: "SPEED", start: 6.8, end: 7.3 },
+        { id: 'w_16', text: "&", start: 7.3, end: 7.5 },
+        { id: 'w_17', text: "100%", start: 7.5, end: 7.8 },
+        { id: 'w_18', text: "PRECISION.", start: 7.8, end: 8.2 }
+      ]
+    }
   ];
 
   AppState.words = sampleScript;
+  AppState.highlightWords = detectHighImpactKeywords(sampleScript);
   AppState.duration = 8.5;
   AppState.activeMediaId = 'demo_01';
 
@@ -2448,7 +2698,7 @@ function loadDemoSample() {
   buildVideoTrackFilmstrip(null);
   applyTimelineZoom(AppState.timelineZoom);
   
-  DOM.statusTxt.textContent = 'DEMO ACTIVE';
+  DOM.statusTxt.textContent = 'DEMO ACTIVE · DUAL TRACK READY';
   DOM.statusDot.className = 'w-2 h-2 rounded-full bg-[#E52E42]';
   renderTimecode(0, AppState.duration);
 }
@@ -2613,42 +2863,86 @@ function buildTimelineRuler() {
 
 function buildTimelineTracks() {
   const dur = AppState.duration || DOM.video.duration || 8.5;
-  const ct = DOM.captionTrack;
-  if (!ct) return;
-  ct.innerHTML = '';
-  DOM.captionTrackCount.textContent = `${AppState.words.length} BLOCKS`;
   
-  AppState.words.forEach((w, idx) => {
-    const leftPct = (w.start / dur) * 100;
-    const widthPct = Math.max(0.1, ((w.end - w.start) / dur) * 100);
+  // 1. Render Track T1: Base Captions (Static White)
+  const ct = DOM.captionTrack;
+  if (ct) {
+    ct.innerHTML = '';
+    if (DOM.captionTrackCount) DOM.captionTrackCount.textContent = `${AppState.words.length} BLOCKS`;
     
-    const seg = document.createElement('div');
-    seg.className = `caption-segment font-technical-mono ${AppState.selectedTrackItem.type === 'caption' && AppState.selectedTrackItem.index === idx ? 'selected-seg' : ''}`;
-    seg.style.left = `${leftPct}%`;
-    seg.style.width = `${widthPct}%`;
-    seg.setAttribute('data-word-idx', idx);
-    seg.innerHTML = `
-      <div class="handle handle-left" title="Drag to trim start"></div>
-      <span class="seg-text" title="${w.text}">${w.text}</span>
-      <div class="handle handle-right" title="Drag to trim end"></div>
-    `;
-    
-    seg.addEventListener('click', (ev) => {
-      ev.stopPropagation();
-      seekVideo(w.start);
-      selectTrackItem('caption', idx, w.id);
+    AppState.words.forEach((w, idx) => {
+      const leftPct = (w.start / dur) * 100;
+      const widthPct = Math.max(0.1, ((w.end - w.start) / dur) * 100);
+      
+      const seg = document.createElement('div');
+      seg.className = `caption-segment font-technical-mono ${AppState.selectedTrackItem.type === 'caption' && AppState.selectedTrackItem.index === idx ? 'selected-seg' : ''}`;
+      seg.style.left = `${leftPct}%`;
+      seg.style.width = `${widthPct}%`;
+      seg.setAttribute('data-word-idx', idx);
+      seg.innerHTML = `
+        <div class="handle handle-left" title="Drag to trim start"></div>
+        <span class="seg-text" title="${w.text}">${w.text}</span>
+        <div class="handle handle-right" title="Drag to trim end"></div>
+      `;
+      
+      seg.addEventListener('click', (ev) => {
+        ev.stopPropagation();
+        seekVideo(w.start);
+        selectTrackItem('caption', idx, w.id);
+      });
+
+      seg.addEventListener('dblclick', (ev) => {
+        ev.stopPropagation();
+        editCaptionInline(idx);
+      });
+
+      attachTrimHandles(seg, w, idx);
+      ct.appendChild(seg);
     });
+  }
 
-    seg.addEventListener('dblclick', (ev) => {
-      ev.stopPropagation();
-      editCaptionInline(idx);
+  // 2. Render Track T2: Highlight Accent Keywords (Kinetic Pop Layer)
+  const ht = DOM.highlightTrack;
+  if (ht) {
+    ht.innerHTML = '';
+    if (DOM.highlightTrackCount) DOM.highlightTrackCount.textContent = `${AppState.highlightWords.length} KEYWORDS`;
+
+    AppState.highlightWords.forEach((hl, idx) => {
+      const leftPct = (hl.start / dur) * 100;
+      const widthPct = Math.max(0.1, ((hl.end - hl.start) / dur) * 100);
+
+      const seg = document.createElement('div');
+      seg.className = `highlight-segment font-technical-mono ${AppState.selectedTrackItem.type === 'highlight' && AppState.selectedTrackItem.index === idx ? 'selected-seg' : ''}`;
+      seg.style.left = `${leftPct}%`;
+      seg.style.width = `${widthPct}%`;
+      seg.setAttribute('data-hl-idx', idx);
+      seg.innerHTML = `
+        <div class="handle handle-left" title="Drag to trim start"></div>
+        <span class="seg-text" title="${hl.text}">⚡ ${hl.text}</span>
+        <div class="handle handle-right" title="Drag to trim end"></div>
+      `;
+
+      seg.addEventListener('click', (ev) => {
+        ev.stopPropagation();
+        seekVideo(hl.start);
+        selectTrackItem('highlight', idx, hl.id);
+      });
+
+      seg.addEventListener('dblclick', (ev) => {
+        ev.stopPropagation();
+        editHighlightInline(idx);
+      });
+
+      attachHighlightTrimHandles(seg, hl, idx);
+      ht.appendChild(seg);
     });
+  }
 
-    // Attach Frame-Accurate Trim Dragging on Left & Right handles
-    attachTrimHandles(seg, w, idx);
-
-    ct.appendChild(seg);
-  });
+  // 3. Update SRT stats info badge in Export modal
+  if (DOM.exportSrtStats) {
+    const totalWords = AppState.words.reduce((acc, w) => acc + (w.text ? w.text.split(/\s+/).filter(Boolean).length : 0), 0);
+    DOM.exportSrtStats.textContent = `${AppState.words.length} blocks · ${totalWords} words · ${AppState.highlightWords.length} keywords ready`;
+  }
 }
 
 function attachTrimHandles(seg, word, idx) {
@@ -2705,13 +2999,78 @@ function attachTrimHandles(seg, word, idx) {
   if (rightHandle) rightHandle.addEventListener('pointerdown', (e) => onTrimStart('right', e));
 }
 
+function attachHighlightTrimHandles(seg, hlItem, idx) {
+  const leftHandle = seg.querySelector('.handle-left');
+  const rightHandle = seg.querySelector('.handle-right');
+
+  const onTrimStart = (side, e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    const dur = AppState.duration || DOM.video.duration || 8.5;
+    const startX = e.clientX;
+    const origStart = hlItem.start;
+    const origEnd = hlItem.end;
+    const trackWidth = DOM.timelineInner ? DOM.timelineInner.clientWidth : DOM.timelineWrapper.clientWidth;
+
+    const onTrimMove = (moveEvent) => {
+      const deltaX = moveEvent.clientX - startX;
+      const deltaTime = (deltaX / trackWidth) * dur;
+
+      if (side === 'left') {
+        const minBoundary = idx > 0 ? AppState.highlightWords[idx - 1].start : 0;
+        const newStart = Math.max(minBoundary, Math.min(origEnd - 0.05, origStart + deltaTime));
+        hlItem.start = newStart;
+        seg.style.left = `${(hlItem.start / dur) * 100}%`;
+        seg.style.width = `${((hlItem.end - hlItem.start) / dur) * 100}%`;
+        seekVideo(hlItem.start);
+      } else {
+        const maxBoundary = idx < AppState.highlightWords.length - 1 ? AppState.highlightWords[idx + 1].end : dur;
+        const newEnd = Math.max(hlItem.start + 0.05, Math.min(maxBoundary, origEnd + deltaTime));
+        hlItem.end = newEnd;
+        seg.style.width = `${((hlItem.end - hlItem.start) / dur) * 100}%`;
+        seekVideo(hlItem.end);
+      }
+
+      renderLiveCaptionOverlay(DOM.video.currentTime || AppState.currentTime);
+      DOM.statusTxt.textContent = `TRIM HIGHLIGHT [${hlItem.text}]: ${formatTimecode(hlItem.start).substring(3, 11)} → ${formatTimecode(hlItem.end).substring(3, 11)}`;
+    };
+
+    const onTrimEnd = () => {
+      window.removeEventListener('pointermove', onTrimMove);
+      window.removeEventListener('pointerup', onTrimEnd);
+      window.removeEventListener('pointercancel', onTrimEnd);
+      buildTimelineTracks();
+      DOM.statusTxt.textContent = 'HIGHLIGHT TRIM APPLIED';
+    };
+
+    window.addEventListener('pointermove', onTrimMove);
+    window.addEventListener('pointerup', onTrimEnd);
+    window.addEventListener('pointercancel', onTrimEnd);
+  };
+
+  if (leftHandle) leftHandle.addEventListener('pointerdown', (e) => onTrimStart('left', e));
+  if (rightHandle) rightHandle.addEventListener('pointerdown', (e) => onTrimStart('right', e));
+}
+
 function editCaptionInline(index) {
   const word = AppState.words[index];
   if (!word) return;
-  const newText = prompt(`Edit Caption Text (Start: ${formatTimecode(word.start).substring(3, 8)}):`, word.text);
+  const newText = prompt(`Edit Base Caption Text (Start: ${formatTimecode(word.start).substring(3, 8)}):`, word.text);
   if (newText !== null && newText.trim() !== '') {
     word.text = newText.trim();
+    AppState.highlightWords = detectHighImpactKeywords(AppState.words);
     buildTranscriptPanel();
+    buildTimelineTracks();
+    renderLiveCaptionOverlay(DOM.video.currentTime || AppState.currentTime);
+  }
+}
+
+function editHighlightInline(index) {
+  const hl = AppState.highlightWords[index];
+  if (!hl) return;
+  const newText = prompt(`Edit Highlight Keyword (Start: ${formatTimecode(hl.start).substring(3, 8)}):`, hl.text);
+  if (newText !== null && newText.trim() !== '') {
+    hl.text = newText.trim();
     buildTimelineTracks();
     renderLiveCaptionOverlay(DOM.video.currentTime || AppState.currentTime);
   }
@@ -2928,13 +3287,14 @@ function generateParametricCaptions(options = {}) {
 
   // Update AppState.words with generated timeline blocks
   AppState.words = generatedChunks;
+  AppState.highlightWords = detectHighImpactKeywords(generatedChunks);
   AppState.selectedTrackItem = { type: null, index: null, id: null };
 
   buildTimelineTracks();
   renderLiveCaptionOverlay(DOM.video.currentTime || AppState.currentTime);
   closeCreateCaptionsModal();
 
-  DOM.statusTxt.textContent = `CAPTIONS CREATED: ${generatedChunks.length} BLOCKS`;
+  DOM.statusTxt.textContent = `CAPTIONS CREATED: ${generatedChunks.length} BLOCKS · ${AppState.highlightWords.length} KEYWORDS`;
   DOM.statusDot.className = 'w-2 h-2 rounded-full bg-[#E52E42]';
 }
 
@@ -3131,6 +3491,7 @@ DOM.applyTranscript.addEventListener('click', () => {
 DOM.clearTranscriptBtn.addEventListener('click', () => {
   AppState.rawTranscriptWords = [];
   AppState.words = [];
+  AppState.highlightWords = [];
   AppState.rawTranscriptText = '';
   DOM.transcriptBox.value = '';
   buildTranscriptPanel();
@@ -3203,6 +3564,7 @@ DOM.splitAtPlayheadBtn.addEventListener('click', () => {
           end: origEnd
         };
         AppState.words.splice(wordIdx + 1, 0, newWord);
+        AppState.highlightWords = detectHighImpactKeywords(AppState.words);
         didSplit = true;
       }
     }
@@ -3221,7 +3583,19 @@ DOM.deleteWordBtn.addEventListener('click', () => {
   const t = DOM.video.currentTime || AppState.currentTime || 0;
   const selected = AppState.selectedTrackItem;
 
-  // 1. Delete Selected Video Segment (No restrictions)
+  // 1. Delete Selected Highlight Keyword
+  if (selected.type === 'highlight') {
+    if (selected.index !== null && selected.index < AppState.highlightWords.length) {
+      AppState.highlightWords.splice(selected.index, 1);
+    }
+    deselectAllTrackItems();
+    buildTimelineTracks();
+    renderLiveCaptionOverlay(DOM.video.currentTime || AppState.currentTime);
+    DOM.statusTxt.textContent = 'HIGHLIGHT KEYWORD DELETED';
+    return;
+  }
+
+  // 2. Delete Selected Video Segment (No restrictions)
   if (selected.type === 'video') {
     if (selected.index !== null && selected.index < AppState.videoSegments.length) {
       AppState.videoSegments.splice(selected.index, 1);
@@ -3245,7 +3619,7 @@ DOM.deleteWordBtn.addEventListener('click', () => {
     return;
   }
 
-  // 2. Delete Selected Audio Segment
+  // 3. Delete Selected Audio Segment
   if (selected.type === 'audio') {
     if (selected.index !== null && selected.index < AppState.audioSegments.length && AppState.audioSegments.length > 1) {
       AppState.audioSegments.splice(selected.index, 1);
@@ -3259,10 +3633,11 @@ DOM.deleteWordBtn.addEventListener('click', () => {
     return;
   }
 
-  // 3. Delete Selected Caption Block (or caption at playhead)
+  // 4. Delete Selected Caption Block (or caption at playhead)
   let wordIdx = selected.type === 'caption' ? selected.index : AppState.words.findIndex(w => t >= w.start && t <= w.end);
   if (wordIdx !== -1 && wordIdx < AppState.words.length) {
     AppState.words.splice(wordIdx, 1);
+    AppState.highlightWords = detectHighImpactKeywords(AppState.words);
     deselectAllTrackItems();
     buildTranscriptPanel();
     buildTimelineTracks();
@@ -3285,6 +3660,7 @@ DOM.addWordSegmentBtn.addEventListener('click', () => {
 
   AppState.words.push(newWord);
   AppState.words.sort((a, b) => a.start - b.start);
+  AppState.highlightWords = detectHighImpactKeywords(AppState.words);
   const newIdx = AppState.words.indexOf(newWord);
   selectTrackItem('caption', newIdx, newWord.id);
 
@@ -3677,22 +4053,49 @@ function renderLiveCaptionOverlay(currentTime) {
   }
 
   const motionId = String(AppState.style.motion || 'none');
+  const activeHighlightsInBlock = AppState.highlightWords.filter(h => currentTime >= h.start && currentTime <= h.end);
 
-  // ==================== MODE A: 100% STATIC PREMIERE PRO SUBTITLES ====================
+  // Helper to test if a word token matches any active Track T2 highlight keyword
+  function findHighlightMatch(rawWordText) {
+    if (!activeHighlightsInBlock.length) return null;
+    const clean = rawWordText.replace(/^[^\w$₹€£%]+|[^\w$₹€£%]+$/g, '').toLowerCase();
+    return activeHighlightsInBlock.find(h => {
+      const hClean = (h.cleanText || h.text).replace(/^[^\w$₹€£%]+|[^\w$₹€£%]+$/g, '').toLowerCase();
+      return clean === hClean || (clean.length > 2 && hClean.includes(clean)) || (hClean.length > 2 && clean.includes(hClean));
+    });
+  }
+
+  // ==================== MODE A: 100% STATIC PREMIERE PRO SUBTITLES WITH DUAL-TRACK HIGHLIGHTS ====================
   if (motionId === 'none' || motionId === '0') {
     const blockDiv = document.createElement('div');
     blockDiv.className = 'static-subtitle-block select-none pointer-events-none';
     applyCaptionStyles(blockDiv, false);
-    blockDiv.textContent = displayTxt;
     blockDiv.style.whiteSpace = 'pre-line';
     blockDiv.style.textAlign = 'center';
+
+    if (activeHighlightsInBlock.length > 0) {
+      const lines = displayTxt.split('\n');
+      blockDiv.innerHTML = lines.map(line => {
+        const words = line.split(/\s+/).filter(Boolean);
+        return words.map(w => {
+          const matchHl = findHighlightMatch(w);
+          if (matchHl) {
+            const hlCol = matchHl.color || AppState.style.activeWordColor || '#E52E42';
+            return `<span class="inline-block font-black anim-filmcom-pop" style="color: ${hlCol} !important; text-shadow: 0 0 16px ${hlCol}, 0 4px 12px rgba(0,0,0,0.9) !important; transform: scale(1.08);">${w}</span>`;
+          }
+          return `<span>${w}</span>`;
+        }).join(' ');
+      }).join('<br>');
+    } else {
+      blockDiv.textContent = displayTxt;
+    }
 
     DOM.capOverlay.appendChild(blockDiv);
     if (DOM.fsCapOverlay) DOM.fsCapOverlay.appendChild(blockDiv.cloneNode(true));
     return;
   }
 
-  // ==================== MODE B: 30 KINETIC FILMCOM ANIMATIONS SUITE ====================
+  // ==================== MODE B: 30 KINETIC FILMCOM ANIMATIONS SUITE WITH DUAL-TRACK HIGHLIGHTS ====================
   const wrapper = document.createElement('div');
   wrapper.className = 'select-none pointer-events-none flex flex-col items-center justify-center text-center';
   if (AppState.style.boxBgOn) {
@@ -3709,7 +4112,17 @@ function renderLiveCaptionOverlay(currentTime) {
     lines.forEach((lTxt, lIdx) => {
       const lineDiv = document.createElement('div');
       applyCaptionStyles(lineDiv, false);
-      lineDiv.textContent = lTxt;
+      
+      const words = lTxt.split(/\s+/).filter(Boolean);
+      lineDiv.innerHTML = words.map(w => {
+        const matchHl = findHighlightMatch(w);
+        if (matchHl) {
+          const hlCol = matchHl.color || AppState.style.activeWordColor || '#E52E42';
+          return `<span class="inline-block font-black anim-filmcom-pop" style="color: ${hlCol} !important; text-shadow: 0 0 16px ${hlCol}, 0 4px 12px rgba(0,0,0,0.9) !important;">${w}</span>`;
+        }
+        return `<span>${w}</span>`;
+      }).join(' ');
+      
       lineDiv.style.animationDelay = `${lIdx * 0.08}s`;
 
       if (motionId === '1') lineDiv.className = 'anim-1-slideup-lines';
@@ -3731,6 +4144,14 @@ function renderLiveCaptionOverlay(currentTime) {
       applyCaptionStyles(wordSpan, true);
       wordSpan.textContent = w;
       wordSpan.style.animationDelay = `${wIdx * 0.06}s`;
+
+      const matchHl = findHighlightMatch(w);
+      if (matchHl) {
+        const hlCol = matchHl.color || AppState.style.activeWordColor || '#E52E42';
+        wordSpan.style.color = hlCol;
+        wordSpan.style.textShadow = `0 0 16px ${hlCol}, 0 4px 12px rgba(0,0,0,0.9)`;
+        wordSpan.style.fontWeight = '800';
+      }
 
       if (motionId === '2') wordSpan.className = 'anim-2-slideup-words';
       else if (motionId === '5') wordSpan.className = 'anim-5-slidedown-words';
@@ -3754,11 +4175,19 @@ function renderLiveCaptionOverlay(currentTime) {
     words.forEach((w) => {
       const wordWrap = document.createElement('span');
       wordWrap.className = 'inline-block whitespace-nowrap mr-2';
+      const matchHl = findHighlightMatch(w);
+      const hlCol = matchHl ? (matchHl.color || AppState.style.activeWordColor || '#E52E42') : null;
 
       for (let ch of w) {
         const charSpan = document.createElement('span');
         applyCaptionStyles(charSpan, true);
         charSpan.textContent = ch;
+
+        if (hlCol) {
+          charSpan.style.color = hlCol;
+          charSpan.style.textShadow = `0 0 16px ${hlCol}, 0 4px 12px rgba(0,0,0,0.9)`;
+          charSpan.style.fontWeight = '800';
+        }
 
         if (motionId === '24') {
           charSpan.style.animationDelay = `${(Math.random() * 0.22).toFixed(2)}s`;
@@ -3789,9 +4218,25 @@ function renderLiveCaptionOverlay(currentTime) {
   else {
     const blockEl = document.createElement('div');
     applyCaptionStyles(blockEl, false);
-    blockEl.textContent = displayTxt;
     blockEl.style.whiteSpace = 'pre-line';
     blockEl.style.textAlign = 'center';
+
+    if (activeHighlightsInBlock.length > 0) {
+      const lines = displayTxt.split('\n');
+      blockEl.innerHTML = lines.map(line => {
+        const words = line.split(/\s+/).filter(Boolean);
+        return words.map(w => {
+          const matchHl = findHighlightMatch(w);
+          if (matchHl) {
+            const hlCol = matchHl.color || AppState.style.activeWordColor || '#E52E42';
+            return `<span class="inline-block font-black anim-filmcom-pop" style="color: ${hlCol} !important; text-shadow: 0 0 16px ${hlCol}, 0 4px 12px rgba(0,0,0,0.9) !important; transform: scale(1.08);">${w}</span>`;
+          }
+          return `<span>${w}</span>`;
+        }).join(' ');
+      }).join('<br>');
+    } else {
+      blockEl.textContent = displayTxt;
+    }
 
     if (motionId === '11') blockEl.className = 'anim-11-simple-fade';
     else if (motionId === '12') blockEl.className = 'anim-12-smooth-fade';
@@ -4185,7 +4630,21 @@ document.querySelectorAll('.inspector-tab').forEach(tab => {
 if (DOM.sourceTextBox) {
   DOM.sourceTextBox.addEventListener('input', (e) => {
     const newText = e.target.value;
-    let activeIdx = AppState.selectedWordIndex;
+
+    // Case 1: Track T2 Highlight Keyword is selected
+    if (AppState.selectedTrackItem.type === 'highlight' && AppState.selectedTrackItem.index !== null) {
+      const hIdx = AppState.selectedTrackItem.index;
+      if (AppState.highlightWords[hIdx]) {
+        AppState.highlightWords[hIdx].text = newText;
+        const hlText = document.querySelector(`.highlight-segment[data-hl-idx="${hIdx}"] .seg-text`);
+        if (hlText) hlText.textContent = `⚡ ${newText}`;
+        renderLiveCaptionOverlay(DOM.video ? (DOM.video.currentTime || AppState.currentTime || 0) : 0);
+      }
+      return;
+    }
+
+    // Case 2: Track T1 Base Caption Block is selected
+    let activeIdx = (AppState.selectedTrackItem.type === 'caption') ? AppState.selectedTrackItem.index : AppState.selectedWordIndex;
     if (activeIdx === null || activeIdx === -1 || !AppState.words[activeIdx]) {
       const t = DOM.video ? (DOM.video.currentTime || AppState.currentTime || 0) : 0;
       activeIdx = AppState.words.findIndex(w => t >= w.start && t <= w.end);
@@ -4701,29 +5160,135 @@ document.querySelectorAll('[data-preset]').forEach(card => {
   });
 });
 
-// ==================== VIDEO MASTER EXPORTER ====================
-DOM.openExportModalBtn.addEventListener('click', () => DOM.exportModal.classList.remove('hidden'));
+// ==================== SRT SUBTITLE EXPORTER ====================
+function downloadSRTFile() {
+  const blocks = AppState.words;
+  if (!blocks || !blocks.length) {
+    alert('No captions available to export. Please generate captions from your transcript first.');
+    return;
+  }
+
+  function formatSrtTime(seconds) {
+    const s = Math.max(0, seconds || 0);
+    const hrs = Math.floor(s / 3600);
+    const mins = Math.floor((s % 3600) / 60);
+    const secs = Math.floor(s % 60);
+    const millis = Math.floor((s % 1) * 1000);
+    return `${String(hrs).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')},${String(millis).padStart(3, '0')}`;
+  }
+
+  let srtContent = '';
+  blocks.forEach((block, idx) => {
+    const seq = idx + 1;
+    const timecode = `${formatSrtTime(block.start)} --> ${formatSrtTime(block.end)}`;
+    const text = (block.text || '').trim();
+    srtContent += `${seq}\r\n${timecode}\r\n${text}\r\n\r\n`;
+  });
+
+  const blob = new Blob([srtContent], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `SHADITZ_SUBTITLES_${Date.now()}.srt`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+
+  DOM.statusTxt.textContent = 'SRT SUBTITLE EXPORTED';
+  DOM.statusDot.className = 'w-2 h-2 rounded-full bg-[#E52E42]';
+}
+
+if (DOM.downloadSrtBtn) {
+  DOM.downloadSrtBtn.addEventListener('click', downloadSRTFile);
+}
+
+// ==================== VIDEO MASTER EXPORTER (LOSSLESS 25 MBPS) ====================
+DOM.openExportModalBtn.addEventListener('click', () => {
+  if (DOM.exportSrtStats) {
+    const totalWords = AppState.words.reduce((acc, w) => acc + (w.text ? w.text.split(/\s+/).filter(Boolean).length : 0), 0);
+    DOM.exportSrtStats.textContent = `${AppState.words.length} blocks · ${totalWords} words · ${AppState.highlightWords.length} keywords ready`;
+  }
+  DOM.exportModal.classList.remove('hidden');
+});
 DOM.closeExportModalBtn.addEventListener('click', () => DOM.exportModal.classList.add('hidden'));
 
 DOM.startRenderBtn.addEventListener('click', async () => {
   const dur = AppState.duration || DOM.video.duration || 8.5;
-  if (!AppState.words.length) return;
+  if (!AppState.words.length) {
+    alert('Please generate captions or load media before rendering.');
+    return;
+  }
 
   DOM.renderProgressBox.classList.remove('hidden');
-  DOM.renderStatusTxt.textContent = 'INITIALIZING GPU RENDER PIPELINE...';
+  if (DOM.renderCompleteActions) DOM.renderCompleteActions.classList.add('hidden');
+  DOM.renderStatusTxt.textContent = 'INITIALIZING 25 MBPS LOSSLESS PIPELINE...';
   DOM.renderProgressBar.style.width = '0%';
   DOM.renderPercentTxt.textContent = '0%';
 
-  const isLandscape = AppState.aspectRatio === '16/9';
-  const renderCanvas = document.createElement('canvas');
-  renderCanvas.width = isLandscape ? 1920 : 1080;
-  renderCanvas.height = isLandscape ? 1080 : 1920;
-  const ctx = renderCanvas.getContext('2d');
+  // Resolution selection
+  const resChoice = DOM.exportResSelect ? DOM.exportResSelect.value : 'match';
+  let targetWidth = 1080;
+  let targetHeight = 1920;
 
-  const stream = renderCanvas.captureStream(30);
-  const mediaRecorder = new MediaRecorder(stream, {
-    mimeType: MediaRecorder.isTypeSupported('video/webm;codecs=vp9') ? 'video/webm;codecs=vp9' : 'video/webm',
-    videoBitsPerSecond: 16000000
+  if (resChoice === 'match') {
+    if (DOM.video.videoWidth && DOM.video.videoHeight) {
+      targetWidth = DOM.video.videoWidth;
+      targetHeight = DOM.video.videoHeight;
+    } else if (AppState.aspectRatio === '16/9') {
+      targetWidth = 1920;
+      targetHeight = 1080;
+    } else if (AppState.aspectRatio === '1/1') {
+      targetWidth = 1080;
+      targetHeight = 1080;
+    } else if (AppState.aspectRatio === '4/5') {
+      targetWidth = 1080;
+      targetHeight = 1350;
+    } else {
+      targetWidth = 1080;
+      targetHeight = 1920;
+    }
+  } else {
+    const parts = resChoice.split('x');
+    if (parts.length === 2) {
+      targetWidth = parseInt(parts[0]) || 1080;
+      targetHeight = parseInt(parts[1]) || 1920;
+    }
+  }
+
+  // Frame rate
+  const fps = parseInt(DOM.exportFpsSelect ? DOM.exportFpsSelect.value : '60') || 60;
+
+  const renderCanvas = document.createElement('canvas');
+  renderCanvas.width = targetWidth;
+  renderCanvas.height = targetHeight;
+  const ctx = renderCanvas.getContext('2d', { alpha: false });
+
+  // Capture canvas video stream
+  const canvasStream = renderCanvas.captureStream(fps);
+  
+  // Mix in native audio stream if available
+  try {
+    if (DOM.video.captureStream) {
+      const vAudio = DOM.video.captureStream().getAudioTracks();
+      if (vAudio.length > 0) canvasStream.addTrack(vAudio[0]);
+    } else if (DOM.video.mozCaptureStream) {
+      const vAudio = DOM.video.mozCaptureStream().getAudioTracks();
+      if (vAudio.length > 0) canvasStream.addTrack(vAudio[0]);
+    }
+  } catch (err) {
+    console.warn('Audio capture note:', err);
+  }
+
+  // MediaRecorder with 25 Mbps VP9 lossless codec lock
+  let mimeType = 'video/webm;codecs=vp9';
+  if (!MediaRecorder.isTypeSupported(mimeType)) {
+    mimeType = MediaRecorder.isTypeSupported('video/webm;codecs=vp8') ? 'video/webm;codecs=vp8' : 'video/webm';
+  }
+
+  const mediaRecorder = new MediaRecorder(canvasStream, {
+    mimeType: mimeType,
+    videoBitsPerSecond: 25000000 // Exact 25 Mbps high-profile lock
   });
 
   const recordedChunks = [];
@@ -4732,36 +5297,45 @@ DOM.startRenderBtn.addEventListener('click', async () => {
   };
 
   mediaRecorder.onstop = () => {
-    const blob = new Blob(recordedChunks, { type: 'video/webm' });
+    const blob = new Blob(recordedChunks, { type: mimeType });
     const url = URL.createObjectURL(blob);
+    const fileName = `SHADITZ_MASTER_${targetWidth}x${targetHeight}_25MBPS_${Date.now()}.webm`;
+    
+    // Auto-trigger download
     const a = document.createElement('a');
     a.href = url;
-    a.download = `SHADITZ_MASTER_${Date.now()}.webm`;
+    a.download = fileName;
+    document.body.appendChild(a);
     a.click();
+    document.body.removeChild(a);
 
-    DOM.renderStatusTxt.textContent = 'RENDER COMPLETE · DOWNLOADING';
+    DOM.renderStatusTxt.textContent = 'RENDER COMPLETE · 25 MBPS MASTER SAVED';
     DOM.renderProgressBar.style.width = '100%';
     DOM.renderPercentTxt.textContent = '100%';
 
-    setTimeout(() => {
-      DOM.exportModal.classList.add('hidden');
-      DOM.renderProgressBox.classList.add('hidden');
-    }, 1500);
+    if (DOM.renderCompleteActions && DOM.downloadFinalBtn) {
+      DOM.renderCompleteActions.classList.remove('hidden');
+      DOM.downloadFinalBtn.href = url;
+      DOM.downloadFinalBtn.download = fileName;
+    }
   };
 
   mediaRecorder.start();
 
-  const totalFrames = Math.floor(dur * 30);
+  const totalFrames = Math.floor(dur * fps);
   let currentFrame = 0;
 
   function renderExportFrame() {
     currentFrame++;
-    const t = currentFrame / 30;
+    const t = currentFrame / fps;
 
+    // 1. Render Video Background / Stage Canvas
     if (DOM.video.videoWidth) {
       const { x, y, scale } = AppState.videoTransform;
       ctx.save();
-      ctx.translate(renderCanvas.width / 2 + x * (renderCanvas.width / DOM.stageContainer.clientWidth), renderCanvas.height / 2 + y * (renderCanvas.height / DOM.stageContainer.clientHeight));
+      const stageW = DOM.stageContainer ? DOM.stageContainer.clientWidth : 360;
+      const stageH = DOM.stageContainer ? DOM.stageContainer.clientHeight : 640;
+      ctx.translate(renderCanvas.width / 2 + x * (renderCanvas.width / stageW), renderCanvas.height / 2 + y * (renderCanvas.height / stageH));
       ctx.scale(scale, scale);
       ctx.drawImage(DOM.video, -renderCanvas.width / 2, -renderCanvas.height / 2, renderCanvas.width, renderCanvas.height);
       ctx.restore();
@@ -4777,60 +5351,140 @@ DOM.startRenderBtn.addEventListener('click', async () => {
       ctx.fillRect(0, 0, renderCanvas.width, renderCanvas.height);
     }
 
+    // 2. Render Track T1 Base Captions + Track T2 Highlight Keywords
     const activeBlock = AppState.words.find(w => t >= w.start && t <= w.end);
     if (activeBlock) {
+      const activeHighlights = AppState.highlightWords.filter(h => t >= h.start && t <= h.end);
       const scaleFactor = renderCanvas.width / 360;
-      const fontSizePx = AppState.style.fontSize * scaleFactor;
+      const fontSizePx = (AppState.style.fontSize || 32) * scaleFactor;
       
-      ctx.font = `600 ${fontSizePx}px "${AppState.style.fontFamily || 'Poppins'}", "Montserrat", sans-serif`;
+      ctx.font = `${AppState.style.isBold ? '700' : (AppState.style.fontWeight || '600')} ${fontSizePx}px "${AppState.style.fontFamily || 'Poppins'}", "Montserrat", sans-serif`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
 
       let fullText = activeBlock.text;
       if (AppState.style.casing === 'caps') fullText = fullText.toUpperCase();
       else if (AppState.style.casing === 'lower') fullText = fullText.toLowerCase();
-      else if (AppState.style.casing === 'title') fullText = fullText.charAt(0).toUpperCase() + fullText.slice(1);
+      else if (AppState.style.casing === 'title') fullText = fullText.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
 
       const posX = renderCanvas.width / 2;
-      const posY = renderCanvas.height * (1 - (AppState.style.posY / 100));
+      const posY = renderCanvas.height * (1 - ((AppState.style.posY || 14) / 100));
 
       const lines = fullText.split('\n');
-      const lineHeightPx = fontSizePx * 1.3;
+      const lineHeightPx = fontSizePx * (AppState.style.lineHeight || 1.3);
       const totalBlockHeight = (lines.length - 1) * lineHeightPx;
       const startY = posY - (totalBlockHeight / 2);
 
+      // Optional Text Box Plate Background
+      if (AppState.style.boxBgOn) {
+        ctx.save();
+        const boxPad = (AppState.style.boxBgPadding || 10) * scaleFactor;
+        const boxAlpha = (AppState.style.boxBgOpacity !== undefined ? AppState.style.boxBgOpacity : 80) / 100;
+        ctx.fillStyle = hexToRgba(AppState.style.boxBgColor || '#000000', boxAlpha);
+        
+        let maxLineWidth = 0;
+        lines.forEach(l => {
+          const lw = ctx.measureText(l).width;
+          if (lw > maxLineWidth) maxLineWidth = lw;
+        });
+        const boxW = maxLineWidth + (boxPad * 2.8);
+        const boxH = (lines.length * lineHeightPx) + (boxPad * 1.5);
+        ctx.fillRect(posX - (boxW / 2), startY - (lineHeightPx / 2) - boxPad, boxW, boxH);
+        ctx.restore();
+      }
+
       lines.forEach((lineText, lineIdx) => {
         const curY = startY + (lineIdx * lineHeightPx);
+        const lineWords = lineText.split(/\s+/).filter(Boolean);
 
-        if (AppState.style.strokeOn) {
-          ctx.strokeStyle = AppState.style.strokeColor || '#000000';
-          ctx.lineWidth = (AppState.style.strokeWidth || 2) * scaleFactor * 1.5;
-          ctx.lineJoin = 'round';
-          ctx.strokeText(lineText, posX, curY);
-        }
+        // Check if any word in this line matches active highlights
+        const hasHighlights = lineWords.some(w => {
+          const clean = w.replace(/^[^\w$₹€£%]+|[^\w$₹€£%]+$/g, '').toLowerCase();
+          return activeHighlights.some(h => {
+            const hClean = (h.cleanText || h.text).replace(/^[^\w$₹€£%]+|[^\w$₹€£%]+$/g, '').toLowerCase();
+            return clean === hClean || (clean.length > 2 && hClean.includes(clean));
+          });
+        });
 
-        if (AppState.style.glowOn) {
-          ctx.shadowColor = AppState.style.glowColorA || '#E52E42';
-          ctx.shadowBlur = (AppState.style.glowRadius || 18) * scaleFactor;
-          ctx.shadowOffsetY = 4 * scaleFactor;
+        if (!hasHighlights) {
+          // Render standard line
+          if (AppState.style.strokeOn) {
+            ctx.strokeStyle = AppState.style.strokeColor || '#000000';
+            ctx.lineWidth = (AppState.style.strokeWidth || 2) * scaleFactor * 1.5;
+            ctx.lineJoin = 'round';
+            ctx.strokeText(lineText, posX, curY);
+          }
+
+          if (AppState.style.glowOn) {
+            ctx.shadowColor = AppState.style.glowColorA || '#E52E42';
+            ctx.shadowBlur = (AppState.style.glowRadius || 18) * scaleFactor;
+            ctx.shadowOffsetY = 4 * scaleFactor;
+          } else if (AppState.style.dropShadowOn) {
+            ctx.shadowColor = hexToRgba(AppState.style.shadowColor || '#000000', (AppState.style.shadowOpacity || 85) / 100);
+            ctx.shadowBlur = (AppState.style.shadowBlur || 10) * scaleFactor;
+            ctx.shadowOffsetY = (AppState.style.shadowOffsetY || 4) * scaleFactor;
+          } else {
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.85)';
+            ctx.shadowBlur = 6 * scaleFactor;
+            ctx.shadowOffsetY = 2 * scaleFactor;
+          }
+
+          ctx.fillStyle = AppState.style.textColor || '#FFFFFF';
+          ctx.fillText(lineText, posX, curY);
+          
+          ctx.shadowColor = 'transparent';
+          ctx.shadowBlur = 0;
+          ctx.shadowOffsetY = 0;
         } else {
-          ctx.shadowColor = 'rgba(0, 0, 0, 0.85)';
-          ctx.shadowBlur = 6 * scaleFactor;
-          ctx.shadowOffsetY = 2 * scaleFactor;
-        }
+          // Render word by word with highlight colors
+          const spaceWidth = ctx.measureText(' ').width;
+          const wordMeasures = lineWords.map(w => ctx.measureText(w).width);
+          const totalLineWidth = wordMeasures.reduce((a, b) => a + b, 0) + (spaceWidth * (lineWords.length - 1));
+          let wordStartX = posX - (totalLineWidth / 2);
 
-        ctx.fillStyle = AppState.style.textColor || '#FFFFFF';
-        ctx.fillText(lineText, posX, curY);
-        
-        ctx.shadowColor = 'transparent';
-        ctx.shadowBlur = 0;
-        ctx.shadowOffsetY = 0;
+          lineWords.forEach((w, wIdx) => {
+            const clean = w.replace(/^[^\w$₹€£%]+|[^\w$₹€£%]+$/g, '').toLowerCase();
+            const matchHl = activeHighlights.find(h => {
+              const hClean = (h.cleanText || h.text).replace(/^[^\w$₹€£%]+|[^\w$₹€£%]+$/g, '').toLowerCase();
+              return clean === hClean || (clean.length > 2 && hClean.includes(clean)) || (hClean.length > 2 && clean.includes(hClean));
+            });
+
+            ctx.save();
+            ctx.textAlign = 'left';
+
+            if (AppState.style.strokeOn) {
+              ctx.strokeStyle = AppState.style.strokeColor || '#000000';
+              ctx.lineWidth = (AppState.style.strokeWidth || 2) * scaleFactor * 1.5;
+              ctx.lineJoin = 'round';
+              ctx.strokeText(w, wordStartX, curY);
+            }
+
+            if (matchHl) {
+              const hlCol = matchHl.color || AppState.style.activeWordColor || '#E52E42';
+              ctx.shadowColor = hlCol;
+              ctx.shadowBlur = 18 * scaleFactor;
+              ctx.shadowOffsetY = 2 * scaleFactor;
+              ctx.fillStyle = hlCol;
+            } else {
+              ctx.shadowColor = 'rgba(0, 0, 0, 0.85)';
+              ctx.shadowBlur = 6 * scaleFactor;
+              ctx.shadowOffsetY = 2 * scaleFactor;
+              ctx.fillStyle = AppState.style.textColor || '#FFFFFF';
+            }
+
+            ctx.fillText(w, wordStartX, curY);
+            ctx.restore();
+
+            wordStartX += wordMeasures[wIdx] + spaceWidth;
+          });
+        }
       });
     }
 
     const pct = Math.min(100, Math.floor((currentFrame / totalFrames) * 100));
     DOM.renderProgressBar.style.width = `${pct}%`;
     DOM.renderPercentTxt.textContent = `${pct}%`;
+    DOM.renderStatusTxt.textContent = `RENDERING FRAME ${currentFrame}/${totalFrames} [${pct}%] @ 25 MBPS...`;
 
     if (currentFrame < totalFrames) {
       requestAnimationFrame(renderExportFrame);
