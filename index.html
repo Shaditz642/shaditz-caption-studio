@@ -1693,6 +1693,13 @@
           <!-- Quality Settings -->
           <div class="space-y-2 mt-2 pt-2 border-t border-[var(--border)]">
             <div>
+              <label class="block font-technical-mono text-[9px] text-[#B0B2C3] font-bold mb-1">FORMAT / CODEC</label>
+              <select id="exportFormatSelect" class="w-full bg-[#181822] border border-[var(--border)] rounded-md px-2 py-1 text-xs text-white font-technical-mono">
+                <option value="mp4" selected>MP4 Video (Universal H.264 / AAC)</option>
+                <option value="webm">WebM Video (Lossless 25 Mbps VP9)</option>
+              </select>
+            </div>
+            <div>
               <label class="block font-technical-mono text-[9px] text-[#B0B2C3] font-bold mb-1">RESOLUTION</label>
               <select id="exportResSelect" class="w-full bg-[#181822] border border-[var(--border)] rounded-md px-2 py-1 text-xs text-white font-technical-mono">
                 <option value="match" selected>Match Source Video / Canvas</option>
@@ -1703,9 +1710,9 @@
               </select>
             </div>
             <div>
-              <label class="block font-technical-mono text-[9px] text-[#B0B2C3] font-bold mb-1">FRAME RATE & ENCODER</label>
+              <label class="block font-technical-mono text-[9px] text-[#B0B2C3] font-bold mb-1">FRAME RATE & QUALITY</label>
               <select id="exportFpsSelect" class="w-full bg-[#181822] border border-[var(--border)] rounded-md px-2 py-1 text-xs text-white font-technical-mono">
-                <option value="60" selected>60 FPS (Ultra Smooth Animation)</option>
+                <option value="60" selected>60 FPS (Ultra Smooth 25 Mbps)</option>
                 <option value="30">30 FPS (Standard Web)</option>
               </select>
             </div>
@@ -2043,6 +2050,7 @@ const DOM = {
   closeExportModalBtn: document.getElementById('closeExportModalBtn'),
   downloadSrtBtn: document.getElementById('downloadSrtBtn'),
   exportSrtStats: document.getElementById('exportSrtStats'),
+  exportFormatSelect: document.getElementById('exportFormatSelect'),
   exportResSelect: document.getElementById('exportResSelect'),
   exportFpsSelect: document.getElementById('exportFpsSelect'),
   startRenderBtn: document.getElementById('startRenderBtn'),
@@ -5213,18 +5221,67 @@ DOM.openExportModalBtn.addEventListener('click', () => {
 });
 DOM.closeExportModalBtn.addEventListener('click', () => DOM.exportModal.classList.add('hidden'));
 
+function getBestMimeType(preferredFormat) {
+  const mp4Types = [
+    'video/mp4;codecs=avc1.42E01E,mp4a.40.2',
+    'video/mp4;codecs=avc1',
+    'video/mp4'
+  ];
+  const webmTypes = [
+    'video/webm;codecs=vp9,opus',
+    'video/webm;codecs=vp9',
+    'video/webm;codecs=h264,opus',
+    'video/webm;codecs=h264',
+    'video/webm;codecs=vp8,opus',
+    'video/webm;codecs=vp8',
+    'video/webm'
+  ];
+
+  if (preferredFormat === 'mp4') {
+    for (const t of mp4Types) {
+      if (typeof MediaRecorder !== 'undefined' && MediaRecorder.isTypeSupported(t)) {
+        return { mimeType: t, ext: 'mp4' };
+      }
+    }
+    for (const t of webmTypes) {
+      if (typeof MediaRecorder !== 'undefined' && MediaRecorder.isTypeSupported(t)) {
+        return { mimeType: t, ext: 'webm' };
+      }
+    }
+  } else {
+    for (const t of webmTypes) {
+      if (typeof MediaRecorder !== 'undefined' && MediaRecorder.isTypeSupported(t)) {
+        return { mimeType: t, ext: 'webm' };
+      }
+    }
+    for (const t of mp4Types) {
+      if (typeof MediaRecorder !== 'undefined' && MediaRecorder.isTypeSupported(t)) {
+        return { mimeType: t, ext: 'mp4' };
+      }
+    }
+  }
+  return { mimeType: 'video/webm', ext: 'webm' };
+}
+
 DOM.startRenderBtn.addEventListener('click', async () => {
-  const dur = AppState.duration || DOM.video.duration || 8.5;
-  if (!AppState.words.length) {
-    alert('Please generate captions or load media before rendering.');
+  const dur = (DOM.video && DOM.video.duration && !isNaN(DOM.video.duration) && DOM.video.duration > 0.1) 
+    ? DOM.video.duration 
+    : (AppState.duration || 8.5);
+
+  if (!AppState.words.length && (!DOM.video || !DOM.video.videoWidth)) {
+    alert('Please import a video or generate captions before rendering.');
     return;
   }
 
   DOM.renderProgressBox.classList.remove('hidden');
   if (DOM.renderCompleteActions) DOM.renderCompleteActions.classList.add('hidden');
-  DOM.renderStatusTxt.textContent = 'INITIALIZING 25 MBPS LOSSLESS PIPELINE...';
+  DOM.renderStatusTxt.innerHTML = '<i class="ph-bold ph-spinner animate-spin"></i> INITIALIZING LOSSLESS STREAM PIPELINE...';
   DOM.renderProgressBar.style.width = '0%';
   DOM.renderPercentTxt.textContent = '0%';
+
+  // Format preference
+  const formatChoice = DOM.exportFormatSelect ? DOM.exportFormatSelect.value : 'mp4';
+  const chosenCodec = getBestMimeType(formatChoice);
 
   // Resolution selection
   const resChoice = DOM.exportResSelect ? DOM.exportResSelect.value : 'match';
@@ -5232,7 +5289,7 @@ DOM.startRenderBtn.addEventListener('click', async () => {
   let targetHeight = 1920;
 
   if (resChoice === 'match') {
-    if (DOM.video.videoWidth && DOM.video.videoHeight) {
+    if (DOM.video && DOM.video.videoWidth && DOM.video.videoHeight) {
       targetWidth = DOM.video.videoWidth;
       targetHeight = DOM.video.videoHeight;
     } else if (AppState.aspectRatio === '16/9') {
@@ -5269,37 +5326,54 @@ DOM.startRenderBtn.addEventListener('click', async () => {
   
   // Mix in native audio stream if available
   try {
-    if (DOM.video.captureStream) {
-      const vAudio = DOM.video.captureStream().getAudioTracks();
-      if (vAudio.length > 0) canvasStream.addTrack(vAudio[0]);
-    } else if (DOM.video.mozCaptureStream) {
-      const vAudio = DOM.video.mozCaptureStream().getAudioTracks();
-      if (vAudio.length > 0) canvasStream.addTrack(vAudio[0]);
+    let audioStream = null;
+    if (DOM.video && DOM.video.captureStream) {
+      audioStream = DOM.video.captureStream();
+    } else if (DOM.video && DOM.video.mozCaptureStream) {
+      audioStream = DOM.video.mozCaptureStream();
+    }
+    if (audioStream) {
+      const audioTracks = audioStream.getAudioTracks();
+      if (audioTracks && audioTracks.length > 0) {
+        canvasStream.addTrack(audioTracks[0]);
+      }
     }
   } catch (err) {
     console.warn('Audio capture note:', err);
   }
 
-  // MediaRecorder with 25 Mbps VP9 lossless codec lock
-  let mimeType = 'video/webm;codecs=vp9';
-  if (!MediaRecorder.isTypeSupported(mimeType)) {
-    mimeType = MediaRecorder.isTypeSupported('video/webm;codecs=vp8') ? 'video/webm;codecs=vp8' : 'video/webm';
+  // MediaRecorder with 25 Mbps high-profile lock
+  let mediaRecorder;
+  try {
+    mediaRecorder = new MediaRecorder(canvasStream, {
+      mimeType: chosenCodec.mimeType,
+      videoBitsPerSecond: 25000000 // Exact 25 Mbps high-profile lock
+    });
+  } catch (err) {
+    console.warn('Fallback media recorder:', err);
+    mediaRecorder = new MediaRecorder(canvasStream, {
+      videoBitsPerSecond: 25000000
+    });
   }
-
-  const mediaRecorder = new MediaRecorder(canvasStream, {
-    mimeType: mimeType,
-    videoBitsPerSecond: 25000000 // Exact 25 Mbps high-profile lock
-  });
 
   const recordedChunks = [];
   mediaRecorder.ondataavailable = (e) => {
-    if (e.data.size > 0) recordedChunks.push(e.data);
+    if (e.data && e.data.size > 0) {
+      recordedChunks.push(e.data);
+    }
   };
 
   mediaRecorder.onstop = () => {
-    const blob = new Blob(recordedChunks, { type: mimeType });
+    const blob = new Blob(recordedChunks, { type: chosenCodec.mimeType });
+    if (blob.size < 500) {
+      DOM.renderStatusTxt.innerHTML = '<i class="ph-bold ph-warning text-[#E52E42]"></i> RENDER ERROR: Empty capture stream. Please try again.';
+      alert('Render produced an empty file. Please ensure video playback is permitted.');
+      return;
+    }
+
     const url = URL.createObjectURL(blob);
-    const fileName = `SHADITZ_MASTER_${targetWidth}x${targetHeight}_25MBPS_${Date.now()}.webm`;
+    const sizeMb = (blob.size / (1024 * 1024)).toFixed(2);
+    const fileName = `SHADITZ_MASTER_${targetWidth}x${targetHeight}_${Date.now()}.${chosenCodec.ext}`;
     
     // Auto-trigger download
     const a = document.createElement('a');
@@ -5309,7 +5383,7 @@ DOM.startRenderBtn.addEventListener('click', async () => {
     a.click();
     document.body.removeChild(a);
 
-    DOM.renderStatusTxt.textContent = 'RENDER COMPLETE · 25 MBPS MASTER SAVED';
+    DOM.renderStatusTxt.innerHTML = `<i class="ph-bold ph-check-circle text-green-500"></i> RENDER COMPLETE · ${sizeMb} MB ${chosenCodec.ext.toUpperCase()} SAVED`;
     DOM.renderProgressBar.style.width = '100%';
     DOM.renderPercentTxt.textContent = '100%';
 
@@ -5317,20 +5391,17 @@ DOM.startRenderBtn.addEventListener('click', async () => {
       DOM.renderCompleteActions.classList.remove('hidden');
       DOM.downloadFinalBtn.href = url;
       DOM.downloadFinalBtn.download = fileName;
+      DOM.downloadFinalBtn.innerHTML = `<i class="ph-bold ph-download-simple"></i> Download Final Video (${sizeMb} MB)`;
     }
+
+    DOM.statusTxt.textContent = `RENDER COMPLETED: ${sizeMb} MB`;
+    DOM.statusDot.className = 'w-2 h-2 rounded-full bg-green-500';
   };
 
-  mediaRecorder.start();
-
-  const totalFrames = Math.floor(dur * fps);
-  let currentFrame = 0;
-
-  function renderExportFrame() {
-    currentFrame++;
-    const t = currentFrame / fps;
-
+  // Helper to draw background and dual-track captions at timestamp t
+  function drawCompositeFrame(t) {
     // 1. Render Video Background / Stage Canvas
-    if (DOM.video.videoWidth) {
+    if (DOM.video && DOM.video.videoWidth > 0) {
       const { x, y, scale } = AppState.videoTransform;
       ctx.save();
       const stageW = DOM.stageContainer ? DOM.stageContainer.clientWidth : 360;
@@ -5480,20 +5551,82 @@ DOM.startRenderBtn.addEventListener('click', async () => {
         }
       });
     }
-
-    const pct = Math.min(100, Math.floor((currentFrame / totalFrames) * 100));
-    DOM.renderProgressBar.style.width = `${pct}%`;
-    DOM.renderPercentTxt.textContent = `${pct}%`;
-    DOM.renderStatusTxt.textContent = `RENDERING FRAME ${currentFrame}/${totalFrames} [${pct}%] @ 25 MBPS...`;
-
-    if (currentFrame < totalFrames) {
-      requestAnimationFrame(renderExportFrame);
-    } else {
-      mediaRecorder.stop();
-    }
   }
 
-  renderExportFrame();
+  let isRecording = true;
+  mediaRecorder.start(100);
+
+  function stopAndFinalize() {
+    if (!isRecording) return;
+    isRecording = false;
+    if (DOM.video && !DOM.video.paused) {
+      DOM.video.pause();
+    }
+    DOM.renderStatusTxt.innerHTML = '<i class="ph-bold ph-spinner animate-spin"></i> FINALIZING & ENCODING VIDEO CONTAINER...';
+    DOM.renderProgressBar.style.width = '99%';
+    DOM.renderPercentTxt.textContent = '99%';
+
+    try {
+      mediaRecorder.requestData();
+    } catch (err) {}
+
+    setTimeout(() => {
+      if (mediaRecorder.state !== 'inactive') {
+        mediaRecorder.stop();
+      }
+    }, 300);
+  }
+
+  const hasVideo = (DOM.video && DOM.video.src && DOM.video.videoWidth > 0);
+
+  if (hasVideo) {
+    DOM.video.currentTime = 0;
+    try {
+      await DOM.video.play();
+    } catch (playErr) {
+      console.warn('Playback notice, retrying muted:', playErr);
+      DOM.video.muted = true;
+      await DOM.video.play();
+    }
+
+    function videoRenderLoop() {
+      if (!isRecording) return;
+      const t = DOM.video.currentTime;
+      drawCompositeFrame(t);
+
+      const pct = Math.min(99, Math.floor((t / dur) * 100));
+      DOM.renderProgressBar.style.width = `${pct}%`;
+      DOM.renderPercentTxt.textContent = `${pct}%`;
+      DOM.renderStatusTxt.innerHTML = `<i class="ph-bold ph-spinner animate-spin"></i> RECORDING ${t.toFixed(1)}s / ${dur.toFixed(1)}s [${pct}%] @ 25 MBPS...`;
+
+      if (DOM.video.ended || t >= dur - 0.05) {
+        stopAndFinalize();
+      } else {
+        requestAnimationFrame(videoRenderLoop);
+      }
+    }
+    requestAnimationFrame(videoRenderLoop);
+  } else {
+    const startTime = performance.now();
+    function canvasRenderLoop() {
+      if (!isRecording) return;
+      const elapsed = (performance.now() - startTime) / 1000;
+      const t = Math.min(dur, elapsed);
+      drawCompositeFrame(t);
+
+      const pct = Math.min(99, Math.floor((t / dur) * 100));
+      DOM.renderProgressBar.style.width = `${pct}%`;
+      DOM.renderPercentTxt.textContent = `${pct}%`;
+      DOM.renderStatusTxt.innerHTML = `<i class="ph-bold ph-spinner animate-spin"></i> RECORDING ${t.toFixed(1)}s / ${dur.toFixed(1)}s [${pct}%] @ 25 MBPS...`;
+
+      if (elapsed >= dur) {
+        stopAndFinalize();
+      } else {
+        requestAnimationFrame(canvasRenderLoop);
+      }
+    }
+    requestAnimationFrame(canvasRenderLoop);
+  }
 });
 
 document.addEventListener('DOMContentLoaded', () => {
