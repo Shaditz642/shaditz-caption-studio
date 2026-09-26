@@ -242,7 +242,7 @@
 
     .timeline-track {
       position: relative;
-      height: 40px;
+      height: 42px;
       border-radius: 6px;
       background: #14141C;
       border: 1px solid var(--border);
@@ -272,7 +272,8 @@
     }
     .caption-segment.active-seg {
       border: 1.5px solid #FFFFFF;
-      background: #FF354D;
+      background: #FF2E47 !important;
+      box-shadow: 0 0 8px rgba(229, 46, 66, 0.6);
       z-index: 10;
     }
     .caption-segment .handle {
@@ -294,20 +295,85 @@
       bottom: 0;
       width: 2px;
       background: #E52E42;
-      z-index: 40;
+      z-index: 45;
       pointer-events: none;
       box-shadow: none !important;
+      transition: none;
     }
     #playhead::before {
       content: '';
       position: absolute;
-      top: -4px;
+      top: 0px;
       left: -5px;
       width: 12px;
       height: 12px;
       background: #E52E42;
       clip-path: polygon(50% 100%, 0% 0%, 100% 0%);
       box-shadow: none !important;
+    }
+
+    .video-clip-block {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      background: #14141E;
+      border-radius: 5px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      user-select: none;
+    }
+    .video-frame-thumb {
+      flex: 1;
+      height: 100%;
+      border-right: 1px solid rgba(0, 0, 0, 0.5);
+      position: relative;
+      overflow: hidden;
+      background: #181824;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .video-frame-thumb:last-child {
+      border-right: none;
+    }
+    .video-frame-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      pointer-events: none;
+    }
+    .video-frame-thumb .timecode-tag {
+      position: absolute;
+      bottom: 2px;
+      right: 3px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      color: #FFFFFF;
+      background: rgba(0, 0, 0, 0.75);
+      padding: 1px 3px;
+      border-radius: 2px;
+      pointer-events: none;
+    }
+    .video-clip-badge {
+      position: absolute;
+      top: 3px;
+      left: 6px;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(11, 11, 14, 0.88);
+      backdrop-filter: blur(4px);
+      padding: 2px 7px;
+      border-radius: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      font-weight: 700;
+      color: #FFFFFF;
+      pointer-events: none;
     }
 
     .media-card {
@@ -953,39 +1019,41 @@
     </div>
   </div>
 
-  <div id="timelineWrapper" class="relative rounded-lg bg-[#0E0E14] border border-[var(--border)] overflow-x-auto overflow-y-hidden cursor-crosshair">
-    <div id="timelineRuler" class="h-5 border-b border-[var(--border)] relative font-technical-mono text-[10px] text-[#9DA0B5]"></div>
-    <div id="playhead" style="left: 0%;"></div>
+  <div id="timelineWrapper" class="relative rounded-lg bg-[#0E0E14] border border-[var(--border)] overflow-x-auto overflow-y-hidden cursor-crosshair select-none">
+    <div id="timelineInner" class="relative" style="min-width: 100%; width: 100%;">
+      <div id="timelineRuler" class="h-5 border-b border-[var(--border)] relative font-technical-mono text-[10px] text-[#9DA0B5]"></div>
+      <div id="playhead" style="left: 0%;"></div>
 
-    <div id="tracksStack" class="p-1.5 space-y-1.5 relative" style="min-width: 100%;">
-      
-      <!-- TRACK 1: CAPTIONS -->
-      <div class="flex items-center justify-between font-technical-mono text-[10px] font-bold text-[#E4E6F0] pl-1">
-        <span class="flex items-center gap-1.5">
-          <i class="ph-bold ph-text-t text-[#E52E42]"></i> CAPTIONS TRACK (SYNCHRONIZED)
-        </span>
-        <span id="captionTrackCount" class="text-[9px] text-[#8C8E9F]">0 BLOCKS</span>
-      </div>
-      <div id="captionTrack" class="timeline-track"></div>
+      <div id="tracksStack" class="p-1.5 space-y-1.5 relative">
+        
+        <!-- TRACK 1: CAPTIONS -->
+        <div class="flex items-center justify-between font-technical-mono text-[10px] font-bold text-[#E4E6F0] pl-1">
+          <span class="flex items-center gap-1.5">
+            <i class="ph-bold ph-text-t text-[#E52E42]"></i> CAPTIONS TRACK (SYNCHRONIZED)
+          </span>
+          <span id="captionTrackCount" class="text-[9px] text-[#8C8E9F]">0 BLOCKS</span>
+        </div>
+        <div id="captionTrack" class="timeline-track"></div>
 
-      <!-- TRACK 2: VIDEO FRAMES STRIP -->
-      <div class="flex items-center justify-between font-technical-mono text-[10px] font-bold text-[#E4E6F0] pl-1 pt-1">
-        <span class="flex items-center gap-1.5">
-          <i class="ph-bold ph-film-strip text-white"></i> VIDEO TRACK
-        </span>
-        <span id="activeVideoName" class="text-[9px] text-[#8C8E9F] truncate max-w-[200px]">NO CLIP LOADED</span>
-      </div>
-      <div id="videoTrack" class="timeline-track flex overflow-hidden opacity-90"></div>
+        <!-- TRACK 2: VIDEO FRAMES STRIP -->
+        <div class="flex items-center justify-between font-technical-mono text-[10px] font-bold text-[#E4E6F0] pl-1 pt-1">
+          <span class="flex items-center gap-1.5">
+            <i class="ph-bold ph-film-strip text-white"></i> VIDEO TRACK
+          </span>
+          <span id="activeVideoName" class="text-[9px] text-[#8C8E9F] truncate max-w-[200px]">NO CLIP LOADED</span>
+        </div>
+        <div id="videoTrack" class="timeline-track flex overflow-hidden opacity-95"></div>
 
-      <!-- TRACK 3: AUDIO WAVEFORM SPECTRUM (WEB AUDIO API DECODED) -->
-      <div class="flex items-center justify-between font-technical-mono text-[10px] font-bold text-[#E4E6F0] pl-1 pt-1">
-        <span class="flex items-center gap-1.5">
-          <i class="ph-bold ph-waveform text-[#E52E42]"></i> AUDIO TRACK (WAVEFORM PEAKS)
-        </span>
-        <span class="text-[9px] text-[#8C8E9F]">CLICK TO SELECT AUDIO</span>
-      </div>
-      <div id="audioWaveTrack" class="timeline-track relative overflow-hidden bg-[#101017] cursor-pointer border border-[var(--border)] hover:border-[#E52E42]/60 transition-colors">
-        <canvas id="waveformCanvas" class="w-full h-full block"></canvas>
+        <!-- TRACK 3: AUDIO WAVEFORM SPECTRUM (WEB AUDIO API DECODED) -->
+        <div class="flex items-center justify-between font-technical-mono text-[10px] font-bold text-[#E4E6F0] pl-1 pt-1">
+          <span class="flex items-center gap-1.5">
+            <i class="ph-bold ph-waveform text-[#E52E42]"></i> AUDIO TRACK (WAVEFORM PEAKS)
+          </span>
+          <span class="text-[9px] text-[#8C8E9F]">CLICK TO SELECT AUDIO</span>
+        </div>
+        <div id="audioWaveTrack" class="timeline-track relative overflow-hidden bg-[#101017] cursor-pointer border border-[var(--border)] hover:border-[#E52E42]/60 transition-colors">
+          <canvas id="waveformCanvas" class="w-full h-full block"></canvas>
+        </div>
       </div>
     </div>
   </div>
@@ -1139,6 +1207,7 @@ const DOM = {
   wordCountBadge: document.getElementById('wordCountBadge'),
   timelineRuler: document.getElementById('timelineRuler'),
   playhead: document.getElementById('playhead'),
+  timelineInner: document.getElementById('timelineInner'),
   captionTrack: document.getElementById('captionTrack'),
   captionTrackCount: document.getElementById('captionTrackCount'),
   videoTrack: document.getElementById('videoTrack'),
@@ -1323,12 +1392,31 @@ async function loadAssetToTimeline(assetId) {
   DOM.video.src = asset.url;
   DOM.video.load();
 
+  DOM.video.onloadedmetadata = () => {
+    if (DOM.video.duration && !isNaN(DOM.video.duration)) {
+      AppState.duration = DOM.video.duration;
+      asset.duration = DOM.video.duration;
+      buildTimelineRuler();
+      buildVideoTrackFilmstrip(asset);
+      buildTimelineTracks();
+      renderTimecode(0, AppState.duration);
+    }
+  };
+
+  // Immediate rendering so track is never blank
+  buildTimelineRuler();
+  buildVideoTrackFilmstrip(asset);
+  buildTimelineTracks();
+
   // Extract Web Audio Waveform from File
   try {
     const arrayBuffer = await asset.file.arrayBuffer();
     const audioBuf = await audioContext.decodeAudioData(arrayBuffer);
     AppState.audioBuffer = audioBuf;
-    AppState.duration = audioBuf.duration;
+    if (audioBuf.duration) {
+      AppState.duration = audioBuf.duration;
+      asset.duration = audioBuf.duration;
+    }
     extractWaveformPeaks(audioBuf);
   } catch (err) {
     console.warn('Audio decoding fallback:', err);
@@ -1512,14 +1600,107 @@ DOM.emptySampleBtn.addEventListener('click', loadDemoSample);
 // ==================== TIMELINE VIDEO FILMSTRIP ====================
 function buildVideoTrackFilmstrip(asset) {
   const vt = DOM.videoTrack;
+  if (!vt) return;
   vt.innerHTML = '';
-  const numFrames = 20;
-  for (let i = 0; i < numFrames; i++) {
-    const frame = document.createElement('div');
-    frame.className = 'flex-1 border-r border-black/50 flex items-center justify-center font-technical-mono text-[8px] text-[#B0B2C3] font-semibold';
-    frame.style.background = i % 2 ? '#181822' : '#20202C';
-    frame.textContent = `00:${String(i).padStart(2, '0')}`;
-    vt.appendChild(frame);
+
+  const clipName = asset ? asset.name : (DOM.activeVideoName.textContent || 'ACTIVE_VIDEO_CLIP.MP4');
+  const dur = AppState.duration || DOM.video.duration || 8.5;
+  const numThumbnails = 8;
+
+  // Solid clip block container spanning the full duration
+  const clipBlock = document.createElement('div');
+  clipBlock.className = 'video-clip-block';
+
+  // Badge with clip name and duration
+  const badge = document.createElement('div');
+  badge.className = 'video-clip-badge';
+  badge.innerHTML = `<i class="ph-bold ph-film-strip text-[#E52E42]"></i> <span class="truncate max-w-[160px]">${clipName}</span> <span class="text-[#B0B2C3]">(${formatTimecode(dur).substring(3, 8)})</span>`;
+  clipBlock.appendChild(badge);
+
+  // Initial slate frames so the track is NEVER empty or blank
+  const thumbDivs = [];
+  for (let i = 0; i < numThumbnails; i++) {
+    const frameTime = (i / Math.max(1, numThumbnails - 1)) * dur;
+    const thumbDiv = document.createElement('div');
+    thumbDiv.className = 'video-frame-thumb';
+    thumbDiv.innerHTML = `
+      <div class="w-full h-full flex items-center justify-center bg-[#181824] text-[#8C8E9F] font-technical-mono text-[9px]">
+        <i class="ph-bold ph-image text-xs opacity-40"></i>
+      </div>
+      <span class="timecode-tag">${formatTimecode(frameTime).substring(3, 8)}</span>
+    `;
+    clipBlock.appendChild(thumbDiv);
+    thumbDivs.push({ div: thumbDiv, time: frameTime });
+  }
+
+  vt.appendChild(clipBlock);
+
+  // Extract periodic thumbnails using off-screen canvas from video file
+  if (asset && asset.url && asset.type === 'video') {
+    const offscreenVid = document.createElement('video');
+    offscreenVid.src = asset.url;
+    offscreenVid.muted = true;
+    offscreenVid.playsInline = true;
+    offscreenVid.preload = 'auto';
+
+    let currentIndex = 0;
+
+    const extractNextFrame = () => {
+      if (currentIndex >= thumbDivs.length) return;
+      const targetTime = Math.min(Math.max(0.05, thumbDivs[currentIndex].time), Math.max(0.05, dur - 0.05));
+      offscreenVid.currentTime = targetTime;
+    };
+
+    offscreenVid.onloadeddata = () => {
+      extractNextFrame();
+    };
+
+    offscreenVid.onseeked = () => {
+      if (currentIndex < thumbDivs.length) {
+        try {
+          const c = document.createElement('canvas');
+          c.width = 160;
+          c.height = 90;
+          const ctx = c.getContext('2d');
+          ctx.drawImage(offscreenVid, 0, 0, c.width, c.height);
+          const dataUrl = c.toDataURL('image/jpeg', 0.75);
+
+          const targetDiv = thumbDivs[currentIndex].div;
+          const timeTag = targetDiv.querySelector('.timecode-tag');
+          targetDiv.innerHTML = `<img src="${dataUrl}" alt="frame"><span class="timecode-tag">${timeTag ? timeTag.textContent : ''}</span>`;
+        } catch (e) {
+          console.warn('Thumbnail capture error:', e);
+        }
+
+        currentIndex++;
+        extractNextFrame();
+      }
+    };
+  } else if (!asset || asset.id === 'demo_01') {
+    // For demo procedural synthesis, generate filmstrip preview frames
+    thumbDivs.forEach((item, idx) => {
+      const c = document.createElement('canvas');
+      c.width = 160;
+      c.height = 90;
+      const ctx = c.getContext('2d');
+      const grad = ctx.createLinearGradient(0, 0, 160, 90);
+      grad.addColorStop(0, idx % 2 === 0 ? '#1f1418' : '#14141e');
+      grad.addColorStop(1, '#0B0B0E');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 160, 90);
+      ctx.strokeStyle = 'rgba(229, 46, 66, 0.4)';
+      ctx.lineWidth = 1.5;
+      ctx.strokeRect(8, 8, 144, 74);
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = 'bold 10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(`FRAME ${idx + 1}`, 80, 48);
+
+      const dataUrl = c.toDataURL('image/jpeg', 0.8);
+      const targetDiv = item.div;
+      const timeTag = targetDiv.querySelector('.timecode-tag');
+      targetDiv.innerHTML = `<img src="${dataUrl}" alt="demo-frame"><span class="timecode-tag">${timeTag ? timeTag.textContent : ''}</span>`;
+    });
   }
 }
 
@@ -1917,7 +2098,7 @@ window.addEventListener('mouseup', () => {
   }
 });
 
-// ==================== PLAYBACK CONTROLS ====================
+// ==================== PLAYBACK CONTROLS & REAL-TIME SYNC ====================
 function formatTimecode(seconds) {
   if (isNaN(seconds) || seconds < 0) seconds = 0;
   const h = Math.floor(seconds / 3600);
@@ -1932,32 +2113,71 @@ function renderTimecode(current, total) {
   DOM.timecodeDuration.textContent = formatTimecode(total || 0);
 }
 
+function updatePlayPauseUI(playing) {
+  DOM.playIcon.className = playing ? 'ph-fill ph-pause text-base' : 'ph-fill ph-play text-base';
+}
+
 function togglePlay() {
   if (DOM.video.srcObject) {
     AppState.isPlaying = !AppState.isPlaying;
-    DOM.playIcon.className = AppState.isPlaying ? 'ph-fill ph-pause text-base' : 'ph-fill ph-play text-base';
+    updatePlayPauseUI(AppState.isPlaying);
+    return;
+  }
+  if (!DOM.video.src) {
+    if (AppState.mediaBin.length > 0) {
+      loadAssetToTimeline(AppState.mediaBin[0].id);
+    } else {
+      loadDemoSample();
+    }
     return;
   }
   if (DOM.video.paused) {
-    DOM.video.play();
+    DOM.video.play().then(() => {
+      AppState.isPlaying = true;
+      updatePlayPauseUI(true);
+    }).catch(err => console.warn('Playback error:', err));
   } else {
     DOM.video.pause();
+    AppState.isPlaying = false;
+    updatePlayPauseUI(false);
   }
 }
 
 DOM.playBtn.addEventListener('click', togglePlay);
-DOM.video.addEventListener('play', () => DOM.playIcon.className = 'ph-fill ph-pause text-base');
-DOM.video.addEventListener('pause', () => DOM.playIcon.className = 'ph-fill ph-play text-base');
+DOM.video.addEventListener('play', () => {
+  AppState.isPlaying = true;
+  updatePlayPauseUI(true);
+});
+DOM.video.addEventListener('pause', () => {
+  AppState.isPlaying = false;
+  updatePlayPauseUI(false);
+});
+DOM.video.addEventListener('ended', () => {
+  AppState.isPlaying = false;
+  updatePlayPauseUI(false);
+});
 
 window.addEventListener('keydown', (e) => {
-  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  const tag = e.target.tagName;
+  if (tag === 'INPUT' || tag === 'TEXTAREA' || e.target.isContentEditable) return;
   if (e.code === 'Space') {
     e.preventDefault();
     togglePlay();
   } else if (e.code === 'ArrowLeft') {
-    seekVideo((DOM.video.currentTime || AppState.currentTime) - 1/30);
+    e.preventDefault();
+    seekVideo((DOM.video.currentTime || AppState.currentTime) - (e.shiftKey ? 1.0 : 1/30));
   } else if (e.code === 'ArrowRight') {
-    seekVideo((DOM.video.currentTime || AppState.currentTime) + 1/30);
+    e.preventDefault();
+    seekVideo((DOM.video.currentTime || AppState.currentTime) + (e.shiftKey ? 1.0 : 1/30));
+  } else if (e.code === 'KeyK') {
+    e.preventDefault();
+    togglePlay();
+  } else if (e.code === 'KeyJ') {
+    e.preventDefault();
+    seekVideo((DOM.video.currentTime || AppState.currentTime) - 1.0);
+  } else if (e.code === 'KeyL') {
+    e.preventDefault();
+    seekVideo((DOM.video.currentTime || AppState.currentTime) + 1.0);
   }
 });
 
@@ -1967,51 +2187,106 @@ DOM.skipFwd.addEventListener('click', () => seekVideo((DOM.video.currentTime || 
 function seekVideo(time) {
   const max = AppState.duration || DOM.video.duration || 8.5;
   const target = Math.max(0, Math.min(max, time));
-  if (!DOM.video.srcObject) {
+  if (!DOM.video.srcObject && DOM.video.src) {
     DOM.video.currentTime = target;
   }
   AppState.currentTime = target;
   onTimeUpdate(target);
 }
 
-let lastTime = performance.now();
+// 60FPS Continuous Sync Loop for Silky Smooth Playhead and Audio/Video Tracking
+let lastLoopTime = performance.now();
 function syncLoop(now) {
-  const dt = (now - lastTime) / 1000;
-  lastTime = now;
-  if (AppState.isPlaying && DOM.video.srcObject) {
-    AppState.currentTime += dt;
-    if (AppState.currentTime >= AppState.duration) {
-      AppState.currentTime = 0;
+  const dt = (now - lastLoopTime) / 1000;
+  lastLoopTime = now;
+
+  if (AppState.isPlaying) {
+    if (DOM.video.srcObject) {
+      AppState.currentTime += dt;
+      if (AppState.currentTime >= (AppState.duration || 8.5)) {
+        AppState.currentTime = 0;
+      }
+      onTimeUpdate(AppState.currentTime);
+    } else if (!DOM.video.paused) {
+      AppState.currentTime = DOM.video.currentTime;
+      onTimeUpdate(DOM.video.currentTime);
     }
-    onTimeUpdate(AppState.currentTime);
   }
+
   requestAnimationFrame(syncLoop);
 }
 requestAnimationFrame(syncLoop);
 
 DOM.video.addEventListener('timeupdate', () => {
-  onTimeUpdate(DOM.video.currentTime);
+  if (!DOM.video.paused) {
+    onTimeUpdate(DOM.video.currentTime);
+  }
 });
 
 function onTimeUpdate(t) {
   const dur = AppState.duration || DOM.video.duration || 8.5;
   renderTimecode(t, dur);
   if (dur > 0) {
-    const pct = (t / dur) * 100;
-    DOM.playhead.style.left = `${pct}%`;
+    const progress = Math.max(0, Math.min(1, t / dur));
+    DOM.playhead.style.left = `${progress * 100}%`;
   }
+
+  // Real-time Active Caption Segment highlight on the timeline track
+  document.querySelectorAll('.caption-segment').forEach((seg, idx) => {
+    const word = AppState.words[idx];
+    if (word && t >= word.start && t <= word.end) {
+      seg.classList.add('active-seg');
+    } else {
+      seg.classList.remove('active-seg');
+    }
+  });
+
   renderLiveCaptionOverlay(t);
   syncTranscriptHighlight(t);
 }
 
-DOM.timelineWrapper.addEventListener('click', (e) => {
+// Fluid Timeline Scrubbing across Ruler and All Tracks
+let isScrubbing = false;
+
+function handleTimelineScrub(e) {
   const dur = AppState.duration || DOM.video.duration || 8.5;
   if (!dur) return;
-  const rect = DOM.timelineWrapper.getBoundingClientRect();
-  const clickX = e.clientX - rect.left + DOM.timelineWrapper.scrollLeft;
-  const totalW = DOM.timelineWrapper.scrollWidth;
-  const targetTime = (clickX / totalW) * dur;
+  const rect = DOM.timelineInner.getBoundingClientRect();
+  const clickX = e.clientX - rect.left;
+  const progress = Math.max(0, Math.min(1, clickX / rect.width));
+  const targetTime = progress * dur;
   seekVideo(targetTime);
+}
+
+DOM.timelineWrapper.addEventListener('pointerdown', (e) => {
+  if (e.target.closest('button') || e.target.closest('input')) return;
+  isScrubbing = true;
+  DOM.timelineWrapper.setPointerCapture(e.pointerId);
+  handleTimelineScrub(e);
+});
+
+DOM.timelineWrapper.addEventListener('pointermove', (e) => {
+  if (isScrubbing) {
+    handleTimelineScrub(e);
+  }
+});
+
+const endTimelineScrub = (e) => {
+  if (isScrubbing) {
+    isScrubbing = false;
+    try { DOM.timelineWrapper.releasePointerCapture(e.pointerId); } catch (_) {}
+  }
+};
+DOM.timelineWrapper.addEventListener('pointerup', endTimelineScrub);
+DOM.timelineWrapper.addEventListener('pointercancel', endTimelineScrub);
+
+// Zoom timeline width
+DOM.timelineZoom.addEventListener('input', (e) => {
+  const zoom = parseInt(e.target.value);
+  AppState.timelineZoom = zoom;
+  DOM.timelineInner.style.width = `${zoom}%`;
+  drawWaveformCanvas();
+  buildTimelineRuler();
 });
 
 // Aspect Ratio selectors
