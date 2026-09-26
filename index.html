@@ -188,9 +188,9 @@
       color: #7D8096;
     }
 
-    ::-webkit-scrollbar { width: 4px; height: 4px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: #2E2E3E; border-radius: 2px; }
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: #0E0E14; }
+    ::-webkit-scrollbar-thumb { background: #2E2E3E; border-radius: 3px; }
     ::-webkit-scrollbar-thumb:hover { background: #E52E42; }
 
     .word-chip {
@@ -247,6 +247,7 @@
       background: #14141C;
       border: 1px solid var(--border);
     }
+    
     .caption-segment {
       position: absolute;
       top: 4px;
@@ -263,7 +264,7 @@
       overflow: hidden;
       white-space: nowrap;
       cursor: pointer;
-      transition: border-color 0.15s, background-color 0.15s, box-shadow 0.15s;
+      transition: border-color 0.12s, background-color 0.12s, outline 0.12s;
     }
     .caption-segment:hover {
       border-color: #FFFFFF;
@@ -279,7 +280,8 @@
     .caption-segment.selected-seg {
       border: 2px solid #FFFFFF !important;
       outline: 2px solid #E52E42;
-      z-index: 12;
+      box-shadow: 0 0 12px rgba(229, 46, 66, 0.6) !important;
+      z-index: 15;
     }
     .caption-segment .handle {
       position: absolute;
@@ -294,40 +296,31 @@
     .caption-segment .handle-left { left: 0; }
     .caption-segment .handle-right { right: 0; }
 
-    #playhead {
+    /* MULTI-TRACK SELECTION & SEGMENTS */
+    .selected-track-item {
+      border: 2px solid #E52E42 !important;
+      outline: 1px solid #FFFFFF !important;
+      box-shadow: 0 0 12px rgba(229, 46, 66, 0.5) !important;
+      z-index: 15 !important;
+    }
+
+    .video-clip-segment {
       position: absolute;
       top: 0;
       bottom: 0;
-      width: 2px;
-      background: #E52E42;
-      z-index: 50;
-      pointer-events: none;
-      box-shadow: none !important;
-      transition: none;
-    }
-    #playhead::before {
-      content: '';
-      position: absolute;
-      top: 0px;
-      left: -5px;
-      width: 12px;
-      height: 12px;
-      background: #E52E42;
-      clip-path: polygon(50% 100%, 0% 0%, 100% 0%);
-      box-shadow: none !important;
-    }
-
-    .video-clip-block {
-      position: relative;
-      width: 100%;
-      height: 100%;
       display: flex;
       background: #14141E;
       border-radius: 5px;
       overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.16);
+      border: 1px solid rgba(255, 255, 255, 0.18);
       user-select: none;
+      cursor: pointer;
+      transition: border-color 0.15s, box-shadow 0.15s;
     }
+    .video-clip-segment:hover {
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+
     .video-frame-thumb {
       flex: 1;
       height: 100%;
@@ -381,6 +374,21 @@
       pointer-events: none;
     }
 
+    .audio-segment-block {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      border-radius: 5px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      cursor: pointer;
+      background: #101017;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .audio-segment-block:hover {
+      border-color: rgba(255, 255, 255, 0.35);
+    }
+
     .media-card {
       background: #181820;
       border: 1px solid var(--border);
@@ -418,11 +426,6 @@
       background: rgba(229, 46, 66, 0.15);
     }
 
-    .audio-block-selected {
-      border: 1.5px solid #E52E42 !important;
-      background: rgba(229, 46, 66, 0.15) !important;
-    }
-
     /* Video Canvas Draggable & Pannable Canvas Viewport */
     #videoTransformWrapper {
       position: absolute;
@@ -437,6 +440,32 @@
     }
     #videoTransformWrapper.is-panning {
       cursor: grabbing;
+    }
+
+    /* VERTICAL CHERRY RED PLAYHEAD */
+    #playhead {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: #E52E42;
+      z-index: 50;
+      pointer-events: none;
+      box-shadow: none !important;
+      transform: translateX(-50%);
+      will-change: left;
+    }
+    #playhead::before {
+      content: '';
+      position: absolute;
+      top: 0px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 12px;
+      height: 12px;
+      background: #E52E42;
+      clip-path: polygon(50% 100%, 0% 0%, 100% 0%);
+      box-shadow: none !important;
     }
   </style>
 </head>
@@ -683,29 +712,21 @@
           </div>
         </div>
 
-        <!-- Safe Zone Overlay -->
+        <!-- DYNAMIC SAFE ZONE OVERLAY (Responsive to Aspect Ratio) -->
         <div id="safeZoneOverlay" class="absolute inset-0 pointer-events-none hidden z-20 transition-opacity">
-          <div class="absolute top-0 left-0 right-0 h-[10%] bg-[#E52E42]/10 border-b border-[#E52E42]/40 flex items-start justify-center pt-1 font-technical-mono text-[9px] text-white">
-            TOP INTERFACE SAFE LIMIT
-          </div>
-          <div class="absolute bottom-0 left-0 right-0 h-[18%] bg-[#E52E42]/10 border-t border-[#E52E42]/40 flex items-end justify-center pb-1 font-technical-mono text-[9px] text-white">
-            AUDIO TITLE & CAPTION SAFE LIMIT
-          </div>
-          <div class="absolute top-0 bottom-0 right-0 w-[16%] bg-[#E52E42]/10 border-l border-[#E52E42]/40 flex items-center justify-center font-technical-mono text-[9px] text-white [writing-mode:vertical-rl]">
-            ENGAGEMENT ICONS
-          </div>
+          <!-- Injected dynamically based on Aspect Ratio -->
         </div>
 
-        <!-- Grid 3x3 Overlay -->
+        <!-- Grid 3x3 Overlay (Rule of Thirds) -->
         <div id="gridOverlay" class="absolute inset-0 pointer-events-none hidden z-20 grid grid-cols-3 grid-rows-3">
-          <div class="border-r border-b border-[#E52E42]/20"></div>
-          <div class="border-r border-b border-[#E52E42]/20"></div>
-          <div class="border-b border-[#E52E42]/20"></div>
-          <div class="border-r border-b border-[#E52E42]/20"></div>
-          <div class="border-r border-b border-[#E52E42]/20"></div>
-          <div class="border-b border-[#E52E42]/20"></div>
-          <div class="border-r border-b border-[#E52E42]/20"></div>
-          <div class="border-r border-b border-[#E52E42]/20"></div>
+          <div class="border-r border-b border-[#E52E42]/30"></div>
+          <div class="border-r border-b border-[#E52E42]/30"></div>
+          <div class="border-b border-[#E52E42]/30"></div>
+          <div class="border-r border-b border-[#E52E42]/30"></div>
+          <div class="border-r border-b border-[#E52E42]/30"></div>
+          <div class="border-b border-[#E52E42]/30"></div>
+          <div class="border-r border-[#E52E42]/30"></div>
+          <div class="border-r border-[#E52E42]/30"></div>
           <div></div>
         </div>
 
@@ -1013,12 +1034,12 @@
 <footer class="glass-surface shrink-0 px-4 py-3 z-30 border-t border-[var(--border)] select-none">
   <div class="flex items-center justify-between mb-2.5 text-xs text-[#B0B2C3]">
     <div class="flex items-center gap-2">
-      <button id="splitAtPlayheadBtn" class="px-2.5 py-1 rounded-md bg-[#181820] border border-[var(--border)] hover:text-white hover:border-white/30 flex items-center gap-1.5 font-technical-mono font-semibold transition-all" title="Split Selected Caption Block at Playhead">
+      <button id="splitAtPlayheadBtn" class="px-2.5 py-1 rounded-md bg-[#181820] border border-[var(--border)] hover:text-white hover:border-white/30 flex items-center gap-1.5 font-technical-mono font-semibold transition-all" title="Split Selected Track / Clip / Caption at Playhead (or all tracks if none selected)">
         <i class="ph-bold ph-scissors text-[#E52E42]"></i>
         <span>SPLIT</span>
       </button>
 
-      <button id="deleteWordBtn" class="px-2.5 py-1 rounded-md bg-[#181820] border border-[var(--border)] hover:text-[#E52E42] hover:border-[#E52E42]/50 flex items-center gap-1.5 font-technical-mono font-semibold transition-all" title="Delete Selected Caption Block">
+      <button id="deleteWordBtn" class="px-2.5 py-1 rounded-md bg-[#181820] border border-[var(--border)] hover:text-[#E52E42] hover:border-[#E52E42]/50 flex items-center gap-1.5 font-technical-mono font-semibold transition-all" title="Delete Selected Track Segment or Caption Block">
         <i class="ph-bold ph-trash text-[#E52E42]"></i>
         <span>DELETE</span>
       </button>
@@ -1051,18 +1072,26 @@
       </label>
     </div>
 
+    <!-- TIMELINE ZOOM CONTROLS (100% to 400%) -->
     <div class="flex items-center gap-3">
-      <div class="flex items-center gap-2">
-        <i class="ph-bold ph-magnifying-glass-minus text-[#B0B2C3]"></i>
-        <input id="timelineZoom" type="range" min="100" max="500" value="100" class="w-28" title="Timeline Zoom">
-        <i class="ph-bold ph-magnifying-glass-plus text-[#B0B2C3]"></i>
+      <div class="flex items-center gap-1.5 bg-[#181820] px-2.5 py-1 rounded-lg border border-[var(--border)]">
+        <button id="zoomOutBtn" class="p-1 text-[#B0B2C3] hover:text-white transition-colors" title="Zoom Out Timeline (-25%)">
+          <i class="ph-bold ph-magnifying-glass-minus text-xs"></i>
+        </button>
+        <input id="timelineZoom" type="range" min="100" max="400" step="10" value="100" class="w-24 cursor-pointer" title="Timeline Zoom (100% - 400%)">
+        <button id="zoomInBtn" class="p-1 text-[#B0B2C3] hover:text-white transition-colors" title="Zoom In Timeline (+25%)">
+          <i class="ph-bold ph-magnifying-glass-plus text-xs"></i>
+        </button>
+        <span id="zoomValBadge" class="font-technical-mono text-[10px] text-white font-bold ml-1 min-w-[32px] text-right">1.0x</span>
       </div>
     </div>
   </div>
 
-  <div id="timelineWrapper" class="relative rounded-lg bg-[#0E0E14] border border-[var(--border)] overflow-x-auto overflow-y-hidden cursor-crosshair select-none">
+  <div id="timelineWrapper" class="relative rounded-lg bg-[#0E0E14] border border-[var(--border)] overflow-x-auto overflow-y-hidden cursor-crosshair select-none" style="min-height: 195px;">
     <div id="timelineInner" class="relative" style="min-width: 100%; width: 100%;">
       <div id="timelineRuler" class="h-5 border-b border-[var(--border)] relative font-technical-mono text-[10px] text-[#9DA0B5]"></div>
+      
+      <!-- CHERRY RED PLAYHEAD -->
       <div id="playhead" style="left: 0%;"></div>
 
       <div id="tracksStack" class="p-1.5 space-y-1.5 relative">
@@ -1083,14 +1112,14 @@
           </span>
           <span id="activeVideoName" class="text-[9px] text-[#8C8E9F] truncate max-w-[200px]">NO CLIP LOADED</span>
         </div>
-        <div id="videoTrack" class="timeline-track flex overflow-hidden opacity-95"></div>
+        <div id="videoTrack" class="timeline-track relative overflow-hidden opacity-95"></div>
 
         <!-- TRACK 3: AUDIO WAVEFORM SPECTRUM (WEB AUDIO API DECODED) -->
         <div class="flex items-center justify-between font-technical-mono text-[10px] font-bold text-[#E4E6F0] pl-1 pt-1">
           <span class="flex items-center gap-1.5">
             <i class="ph-bold ph-waveform text-[#E52E42]"></i> AUDIO TRACK (WAVEFORM PEAKS)
           </span>
-          <span class="text-[9px] text-[#8C8E9F]">CLICK TO SELECT AUDIO</span>
+          <span id="audioTrackStatus" class="text-[9px] text-[#8C8E9F]">CLICK TO SELECT AUDIO</span>
         </div>
         <div id="audioWaveTrack" class="timeline-track relative overflow-hidden bg-[#101017] cursor-pointer border border-[var(--border)] hover:border-[#E52E42]/60 transition-colors">
           <canvas id="waveformCanvas" class="w-full h-full block"></canvas>
@@ -1175,14 +1204,19 @@ const AppState = {
   activeFile: null,
   audioBuffer: null,
   waveformPeaks: [],
-  isAudioSelected: false,
   duration: 8.5,
   currentTime: 0,
   isPlaying: false,
   aspectRatio: '9/16',
   videoTransform: { x: 0, y: 0, scale: 1.0 }, // Pan & zoom offsets
   words: [], // Transcribed word timestamps: { id, text, start, end }
+  
+  // MULTI-TRACK SEGMENTS & SELECTION STATE
+  videoSegments: [], // [{ id, name, start, end, thumbUrl }]
+  audioSegments: [], // [{ id, start, end }]
+  selectedTrackItem: { type: null, index: null, id: null }, // 'caption' | 'video' | 'audio'
   selectedWordIndex: null,
+
   style: {
     fontFamily: 'Anton',
     fontSize: 36,
@@ -1256,9 +1290,13 @@ const DOM = {
   videoTrack: document.getElementById('videoTrack'),
   activeVideoName: document.getElementById('activeVideoName'),
   audioWaveTrack: document.getElementById('audioWaveTrack'),
+  audioTrackStatus: document.getElementById('audioTrackStatus'),
   waveformCanvas: document.getElementById('waveformCanvas'),
   timelineWrapper: document.getElementById('timelineWrapper'),
   timelineZoom: document.getElementById('timelineZoom'),
+  zoomInBtn: document.getElementById('zoomInBtn'),
+  zoomOutBtn: document.getElementById('zoomOutBtn'),
+  zoomValBadge: document.getElementById('zoomValBadge'),
   splitAtPlayheadBtn: document.getElementById('splitAtPlayheadBtn'),
   deleteWordBtn: document.getElementById('deleteWordBtn'),
   addWordSegmentBtn: document.getElementById('addWordSegmentBtn'),
@@ -1420,7 +1458,7 @@ function renderMediaBinUI() {
   });
 }
 
-// ==================== LOAD ASSET ONTO TIMELINE (SPLIT VIDEO & AUDIO) ====================
+// ==================== LOAD ASSET ONTO TIMELINE ====================
 async function loadAssetToTimeline(assetId) {
   const asset = AppState.mediaBin.find(a => a.id === assetId);
   if (!asset) return;
@@ -1443,6 +1481,21 @@ async function loadAssetToTimeline(assetId) {
     if (DOM.video.duration && !isNaN(DOM.video.duration)) {
       AppState.duration = DOM.video.duration;
       asset.duration = DOM.video.duration;
+      
+      // Initialize segments
+      AppState.videoSegments = [{
+        id: 'v_seg_0',
+        name: asset.name,
+        start: 0,
+        end: AppState.duration,
+        thumbUrl: asset.thumbUrl
+      }];
+      AppState.audioSegments = [{
+        id: 'a_seg_0',
+        start: 0,
+        end: AppState.duration
+      }];
+
       buildTimelineRuler();
       buildVideoTrackFilmstrip(asset);
       buildTimelineTracks();
@@ -1450,7 +1503,20 @@ async function loadAssetToTimeline(assetId) {
     }
   };
 
-  // Immediate rendering so track is never blank
+  // Immediate rendering
+  AppState.videoSegments = [{
+    id: 'v_seg_0',
+    name: asset.name,
+    start: 0,
+    end: AppState.duration || 8.5,
+    thumbUrl: asset.thumbUrl
+  }];
+  AppState.audioSegments = [{
+    id: 'a_seg_0',
+    start: 0,
+    end: AppState.duration || 8.5
+  }];
+
   buildTimelineRuler();
   buildVideoTrackFilmstrip(asset);
   buildTimelineTracks();
@@ -1463,6 +1529,8 @@ async function loadAssetToTimeline(assetId) {
     if (audioBuf.duration) {
       AppState.duration = audioBuf.duration;
       asset.duration = audioBuf.duration;
+      AppState.videoSegments[0].end = audioBuf.duration;
+      AppState.audioSegments[0].end = audioBuf.duration;
     }
     extractWaveformPeaks(audioBuf);
   } catch (err) {
@@ -1479,7 +1547,7 @@ async function loadAssetToTimeline(assetId) {
 
 function extractWaveformPeaks(audioBuf) {
   const rawData = audioBuf.getChannelData(0); // Left channel
-  const totalBars = 300;
+  const totalBars = 350;
   const blockSize = Math.floor(rawData.length / totalBars);
   const peaks = [];
 
@@ -1499,10 +1567,50 @@ function extractWaveformPeaks(audioBuf) {
 
 function generateSyntheticPeaks() {
   const peaks = [];
-  for (let i = 0; i < 300; i++) {
-    peaks.push(0.1 + Math.abs(Math.sin(i * 0.15)) * 0.8 + (Math.random() * 0.1));
+  for (let i = 0; i < 350; i++) {
+    peaks.push(0.1 + Math.abs(Math.sin(i * 0.12)) * 0.75 + (Math.random() * 0.15));
   }
   AppState.waveformPeaks = peaks;
+  drawWaveformCanvas();
+}
+
+// ==================== UNIVERSAL TRACK SELECTION SYSTEM ====================
+function selectTrackItem(type, index, id) {
+  AppState.selectedTrackItem = { type, index, id };
+  
+  if (type === 'caption') {
+    AppState.selectedWordIndex = index;
+  } else {
+    AppState.selectedWordIndex = null;
+  }
+
+  // Update Caption segments styling
+  document.querySelectorAll('.caption-segment').forEach((s, idx) => {
+    s.classList.toggle('selected-seg', type === 'caption' && idx === index);
+  });
+
+  // Update Video segments styling
+  document.querySelectorAll('.video-clip-segment').forEach((v, idx) => {
+    v.classList.toggle('selected-track-item', type === 'video' && idx === index);
+  });
+
+  // Update Audio track styling
+  const isAudioSel = (type === 'audio');
+  DOM.audioWaveTrack.classList.toggle('selected-track-item', isAudioSel);
+  DOM.audioTrackStatus.textContent = isAudioSel ? 'AUDIO TRACK SELECTED' : 'CLICK TO SELECT AUDIO';
+  DOM.audioTrackStatus.className = isAudioSel ? 'text-[9px] text-[#E52E42] font-bold' : 'text-[9px] text-[#8C8E9F]';
+
+  drawWaveformCanvas();
+}
+
+function deselectAllTrackItems() {
+  AppState.selectedTrackItem = { type: null, index: null, id: null };
+  AppState.selectedWordIndex = null;
+  document.querySelectorAll('.caption-segment').forEach(s => s.classList.remove('selected-seg'));
+  document.querySelectorAll('.video-clip-segment').forEach(v => v.classList.remove('selected-track-item'));
+  DOM.audioWaveTrack.classList.remove('selected-track-item');
+  DOM.audioTrackStatus.textContent = 'CLICK TO SELECT AUDIO';
+  DOM.audioTrackStatus.className = 'text-[9px] text-[#8C8E9F]';
   drawWaveformCanvas();
 }
 
@@ -1510,8 +1618,9 @@ function drawWaveformCanvas() {
   const canvas = DOM.waveformCanvas;
   const ctx = canvas.getContext('2d');
   const rect = DOM.audioWaveTrack.getBoundingClientRect();
-  canvas.width = rect.width * (window.devicePixelRatio || 1);
-  canvas.height = rect.height * (window.devicePixelRatio || 1);
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   const peaks = AppState.waveformPeaks;
@@ -1519,21 +1628,41 @@ function drawWaveformCanvas() {
 
   const barWidth = canvas.width / peaks.length;
   const centerY = canvas.height / 2;
+  const isAudioSelected = AppState.selectedTrackItem.type === 'audio';
 
-  ctx.fillStyle = AppState.isAudioSelected ? '#E52E42' : '#8A8A99';
+  ctx.fillStyle = isAudioSelected ? '#E52E42' : '#8A8A99';
   for (let i = 0; i < peaks.length; i++) {
     const val = peaks[i];
-    const barHeight = Math.max(3, val * (canvas.height - 8));
-    ctx.fillRect(i * barWidth, centerY - barHeight / 2, Math.max(1.5, barWidth - 1), barHeight);
+    const barHeight = Math.max(3 * dpr, val * (canvas.height - 10 * dpr));
+    ctx.fillRect(i * barWidth, centerY - barHeight / 2, Math.max(1.5 * dpr, barWidth - 1), barHeight);
+  }
+
+  // Render split divider markers across audio segments if multiple
+  if (AppState.audioSegments && AppState.audioSegments.length > 1) {
+    const dur = AppState.duration || 8.5;
+    ctx.strokeStyle = '#FFFFFF';
+    ctx.lineWidth = 2 * dpr;
+    AppState.audioSegments.forEach((seg, i) => {
+      if (i > 0) {
+        const splitX = (seg.start / dur) * canvas.width;
+        ctx.beginPath();
+        ctx.moveTo(splitX, 0);
+        ctx.lineTo(splitX, canvas.height);
+        ctx.stroke();
+      }
+    });
   }
 }
 
 window.addEventListener('resize', drawWaveformCanvas);
 
-DOM.audioWaveTrack.addEventListener('click', () => {
-  AppState.isAudioSelected = !AppState.isAudioSelected;
-  DOM.audioWaveTrack.classList.toggle('audio-block-selected', AppState.isAudioSelected);
-  drawWaveformCanvas();
+DOM.audioWaveTrack.addEventListener('click', (e) => {
+  e.stopPropagation();
+  if (AppState.selectedTrackItem.type === 'audio') {
+    deselectAllTrackItems();
+  } else {
+    selectTrackItem('audio', 0, 'audio_main');
+  }
 });
 
 // ==================== PROCEDURAL DEMO GENERATOR ====================
@@ -1574,6 +1703,19 @@ function loadDemoSample() {
   AppState.words = sampleScript;
   AppState.duration = 8.5;
   AppState.activeMediaId = 'demo_01';
+
+  AppState.videoSegments = [{
+    id: 'v_seg_0',
+    name: 'SHADITZ_PRO_DEMO_01.MP4',
+    start: 0,
+    end: 8.5,
+    thumbUrl: null
+  }];
+  AppState.audioSegments = [{
+    id: 'a_seg_0',
+    start: 0,
+    end: 8.5
+  }];
 
   // Register in Media Bin
   if (!AppState.mediaBin.find(m => m.id === 'demo_01')) {
@@ -1651,105 +1793,115 @@ function buildVideoTrackFilmstrip(asset) {
   if (!vt) return;
   vt.innerHTML = '';
 
-  const clipName = asset ? asset.name : (DOM.activeVideoName.textContent || 'ACTIVE_VIDEO_CLIP.MP4');
   const dur = AppState.duration || DOM.video.duration || 8.5;
-  const numThumbnails = 8;
-
-  // Solid clip block container spanning the full duration
-  const clipBlock = document.createElement('div');
-  clipBlock.className = 'video-clip-block';
-
-  // Badge with clip name and duration
-  const badge = document.createElement('div');
-  badge.className = 'video-clip-badge';
-  badge.innerHTML = `<i class="ph-bold ph-film-strip text-[#E52E42]"></i> <span class="truncate max-w-[160px]">${clipName}</span> <span class="text-[#B0B2C3]">(${formatTimecode(dur).substring(3, 8)})</span>`;
-  clipBlock.appendChild(badge);
-
-  // Initial slate frames so the track is NEVER empty or blank
-  const thumbDivs = [];
-  for (let i = 0; i < numThumbnails; i++) {
-    const frameTime = (i / Math.max(1, numThumbnails - 1)) * dur;
-    const thumbDiv = document.createElement('div');
-    thumbDiv.className = 'video-frame-thumb';
-    thumbDiv.innerHTML = `
-      <div class="w-full h-full flex items-center justify-center bg-[#181824] text-[#8C8E9F] font-technical-mono text-[9px]">
-        <i class="ph-bold ph-image text-xs opacity-40"></i>
-      </div>
-      <span class="timecode-tag">${formatTimecode(frameTime).substring(3, 8)}</span>
-    `;
-    clipBlock.appendChild(thumbDiv);
-    thumbDivs.push({ div: thumbDiv, time: frameTime });
+  if (!AppState.videoSegments || !AppState.videoSegments.length) {
+    AppState.videoSegments = [{
+      id: 'v_seg_0',
+      name: asset ? asset.name : (DOM.activeVideoName.textContent || 'ACTIVE_CLIP.MP4'),
+      start: 0,
+      end: dur,
+      thumbUrl: asset ? asset.thumbUrl : null
+    }];
   }
 
-  vt.appendChild(clipBlock);
+  AppState.videoSegments.forEach((seg, segIdx) => {
+    const leftPct = (seg.start / dur) * 100;
+    const widthPct = Math.max(1.0, ((seg.end - seg.start) / dur) * 100);
+    const segDur = seg.end - seg.start;
+    const numThumbs = Math.max(1, Math.round((widthPct / 100) * 8));
 
-  // Extract periodic thumbnails using off-screen canvas from video file
-  if (asset && asset.url && asset.type === 'video') {
-    const offscreenVid = document.createElement('video');
-    offscreenVid.src = asset.url;
-    offscreenVid.muted = true;
-    offscreenVid.playsInline = true;
-    offscreenVid.preload = 'auto';
+    const segEl = document.createElement('div');
+    segEl.className = `video-clip-segment ${AppState.selectedTrackItem.type === 'video' && AppState.selectedTrackItem.index === segIdx ? 'selected-track-item' : ''}`;
+    segEl.style.left = `${leftPct}%`;
+    segEl.style.width = `${widthPct}%`;
 
-    let currentIndex = 0;
+    const badge = document.createElement('div');
+    badge.className = 'video-clip-badge';
+    badge.innerHTML = `<i class="ph-bold ph-film-strip text-[#E52E42]"></i> <span class="truncate max-w-[140px]">${seg.name || 'VIDEO CLIP'}</span> <span class="text-[#B0B2C3]">(${formatTimecode(segDur).substring(3, 8)})</span>`;
+    segEl.appendChild(badge);
 
-    const extractNextFrame = () => {
-      if (currentIndex >= thumbDivs.length) return;
-      const targetTime = Math.min(Math.max(0.05, thumbDivs[currentIndex].time), Math.max(0.05, dur - 0.05));
-      offscreenVid.currentTime = targetTime;
-    };
+    const thumbDivs = [];
+    for (let i = 0; i < numThumbs; i++) {
+      const frameTime = seg.start + (i / Math.max(1, numThumbs - 1)) * segDur;
+      const thumbDiv = document.createElement('div');
+      thumbDiv.className = 'video-frame-thumb';
+      thumbDiv.innerHTML = `
+        <div class="w-full h-full flex items-center justify-center bg-[#181824] text-[#8C8E9F] font-technical-mono text-[9px]">
+          <i class="ph-bold ph-image text-xs opacity-40"></i>
+        </div>
+        <span class="timecode-tag">${formatTimecode(frameTime).substring(3, 8)}</span>
+      `;
+      segEl.appendChild(thumbDiv);
+      thumbDivs.push({ div: thumbDiv, time: frameTime });
+    }
 
-    offscreenVid.onloadeddata = () => {
-      extractNextFrame();
-    };
-
-    offscreenVid.onseeked = () => {
-      if (currentIndex < thumbDivs.length) {
-        try {
-          const c = document.createElement('canvas');
-          c.width = 160;
-          c.height = 90;
-          const ctx = c.getContext('2d');
-          ctx.drawImage(offscreenVid, 0, 0, c.width, c.height);
-          const dataUrl = c.toDataURL('image/jpeg', 0.75);
-
-          const targetDiv = thumbDivs[currentIndex].div;
-          const timeTag = targetDiv.querySelector('.timecode-tag');
-          targetDiv.innerHTML = `<img src="${dataUrl}" alt="frame"><span class="timecode-tag">${timeTag ? timeTag.textContent : ''}</span>`;
-        } catch (e) {
-          console.warn('Thumbnail capture error:', e);
-        }
-
-        currentIndex++;
-        extractNextFrame();
-      }
-    };
-  } else if (!asset || asset.id === 'demo_01') {
-    // For demo procedural synthesis, generate filmstrip preview frames
-    thumbDivs.forEach((item, idx) => {
-      const c = document.createElement('canvas');
-      c.width = 160;
-      c.height = 90;
-      const ctx = c.getContext('2d');
-      const grad = ctx.createLinearGradient(0, 0, 160, 90);
-      grad.addColorStop(0, idx % 2 === 0 ? '#1f1418' : '#14141e');
-      grad.addColorStop(1, '#0B0B0E');
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, 160, 90);
-      ctx.strokeStyle = 'rgba(229, 46, 66, 0.4)';
-      ctx.lineWidth = 1.5;
-      ctx.strokeRect(8, 8, 144, 74);
-      ctx.fillStyle = '#FFFFFF';
-      ctx.font = 'bold 10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.fillText(`FRAME ${idx + 1}`, 80, 48);
-
-      const dataUrl = c.toDataURL('image/jpeg', 0.8);
-      const targetDiv = item.div;
-      const timeTag = targetDiv.querySelector('.timecode-tag');
-      targetDiv.innerHTML = `<img src="${dataUrl}" alt="demo-frame"><span class="timecode-tag">${timeTag ? timeTag.textContent : ''}</span>`;
+    segEl.addEventListener('click', (ev) => {
+      ev.stopPropagation();
+      selectTrackItem('video', segIdx, seg.id);
     });
-  }
+
+    vt.appendChild(segEl);
+
+    // Extract periodic thumbnails
+    if (asset && asset.url && asset.type === 'video') {
+      const offscreenVid = document.createElement('video');
+      offscreenVid.src = asset.url;
+      offscreenVid.muted = true;
+      offscreenVid.playsInline = true;
+      offscreenVid.preload = 'auto';
+
+      let currentIndex = 0;
+      const extractNextFrame = () => {
+        if (currentIndex >= thumbDivs.length) return;
+        const targetTime = Math.min(Math.max(0.05, thumbDivs[currentIndex].time), Math.max(0.05, dur - 0.05));
+        offscreenVid.currentTime = targetTime;
+      };
+
+      offscreenVid.onloadeddata = extractNextFrame;
+      offscreenVid.onseeked = () => {
+        if (currentIndex < thumbDivs.length) {
+          try {
+            const c = document.createElement('canvas');
+            c.width = 160;
+            c.height = 90;
+            const ctx = c.getContext('2d');
+            ctx.drawImage(offscreenVid, 0, 0, c.width, c.height);
+            const dataUrl = c.toDataURL('image/jpeg', 0.75);
+            const targetDiv = thumbDivs[currentIndex].div;
+            const timeTag = targetDiv.querySelector('.timecode-tag');
+            targetDiv.innerHTML = `<img src="${dataUrl}" alt="frame"><span class="timecode-tag">${timeTag ? timeTag.textContent : ''}</span>`;
+          } catch (e) {}
+          currentIndex++;
+          extractNextFrame();
+        }
+      };
+    } else {
+      // Demo graphics for procedural synthesis
+      thumbDivs.forEach((item, idx) => {
+        const c = document.createElement('canvas');
+        c.width = 160;
+        c.height = 90;
+        const ctx = c.getContext('2d');
+        const grad = ctx.createLinearGradient(0, 0, 160, 90);
+        grad.addColorStop(0, (segIdx + idx) % 2 === 0 ? '#1f1418' : '#14141e');
+        grad.addColorStop(1, '#0B0B0E');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, 160, 90);
+        ctx.strokeStyle = 'rgba(229, 46, 66, 0.4)';
+        ctx.lineWidth = 1.5;
+        ctx.strokeRect(8, 8, 144, 74);
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = 'bold 10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText(`FRAME ${segIdx + 1}.${idx + 1}`, 80, 48);
+
+        const dataUrl = c.toDataURL('image/jpeg', 0.8);
+        const targetDiv = item.div;
+        const timeTag = targetDiv.querySelector('.timecode-tag');
+        targetDiv.innerHTML = `<img src="${dataUrl}" alt="demo-frame"><span class="timecode-tag">${timeTag ? timeTag.textContent : ''}</span>`;
+      });
+    }
+  });
 }
 
 // ==================== TIMELINE CAPTIONS & RULER ====================
@@ -1757,7 +1909,13 @@ function buildTimelineRuler() {
   const dur = AppState.duration || DOM.video.duration || 8.5;
   const ruler = DOM.timelineRuler;
   ruler.innerHTML = '';
-  const stepSec = dur <= 10 ? 1 : dur <= 30 ? 2 : 5;
+  
+  const zoom = AppState.timelineZoom || 100;
+  let stepSec = 1;
+  if (zoom >= 300) stepSec = 0.5;
+  else if (zoom >= 200) stepSec = 1;
+  else stepSec = dur <= 10 ? 1 : dur <= 30 ? 2 : 5;
+
   const marks = Math.floor(dur / stepSec);
   for (let i = 0; i <= marks; i++) {
     const sec = i * stepSec;
@@ -1778,10 +1936,10 @@ function buildTimelineTracks() {
   
   AppState.words.forEach((w, idx) => {
     const leftPct = (w.start / dur) * 100;
-    const widthPct = Math.max(1.2, ((w.end - w.start) / dur) * 100);
+    const widthPct = Math.max(1.0, ((w.end - w.start) / dur) * 100);
     
     const seg = document.createElement('div');
-    seg.className = `caption-segment font-technical-mono ${AppState.selectedWordIndex === idx ? 'selected-seg' : ''}`;
+    seg.className = `caption-segment font-technical-mono ${AppState.selectedTrackItem.type === 'caption' && AppState.selectedTrackItem.index === idx ? 'selected-seg' : ''}`;
     seg.style.left = `${leftPct}%`;
     seg.style.width = `${widthPct}%`;
     seg.innerHTML = `
@@ -1793,7 +1951,7 @@ function buildTimelineTracks() {
     seg.addEventListener('click', (ev) => {
       ev.stopPropagation();
       seekVideo(w.start);
-      selectCaptionSegment(idx);
+      selectTrackItem('caption', idx, w.id);
     });
 
     // Double-click inline caption text editing
@@ -1803,13 +1961,6 @@ function buildTimelineTracks() {
     });
 
     ct.appendChild(seg);
-  });
-}
-
-function selectCaptionSegment(index) {
-  AppState.selectedWordIndex = index;
-  document.querySelectorAll('.caption-segment').forEach((s, idx) => {
-    s.classList.toggle('selected-seg', idx === index);
   });
 }
 
@@ -1948,47 +2099,121 @@ DOM.clearTranscriptBtn.addEventListener('click', () => {
   DOM.capOverlay.innerHTML = '';
 });
 
-// ==================== TIMELINE EDITING ACTIONS (SPLIT, DELETE, + WORD) ====================
+// ==================== UNIVERSAL SPLIT & DELETE ACROSS ALL TRACKS ====================
 DOM.splitAtPlayheadBtn.addEventListener('click', () => {
   const t = DOM.video.currentTime || AppState.currentTime || 0;
-  if (!AppState.words.length) return;
+  const dur = AppState.duration || DOM.video.duration || 8.5;
+  if (t <= 0 || t >= dur) return;
 
-  // Find word at playhead
-  let wordIdx = AppState.words.findIndex(w => t > w.start && t < w.end);
-  if (wordIdx === -1 && AppState.selectedWordIndex !== null) {
-    wordIdx = AppState.selectedWordIndex;
+  const selected = AppState.selectedTrackItem;
+  let didSplit = false;
+
+  // 1. If a Video segment is selected (or split all)
+  if (selected.type === 'video' || selected.type === null) {
+    let segIdx = selected.type === 'video' ? selected.index : AppState.videoSegments.findIndex(s => t > s.start && t < s.end);
+    if (segIdx !== -1 && segIdx < AppState.videoSegments.length) {
+      const origSeg = AppState.videoSegments[segIdx];
+      if (t > origSeg.start && t < origSeg.end) {
+        const origEnd = origSeg.end;
+        origSeg.end = t;
+        const newSeg = {
+          id: 'v_seg_' + Date.now(),
+          name: origSeg.name,
+          start: t,
+          end: origEnd,
+          thumbUrl: origSeg.thumbUrl
+        };
+        AppState.videoSegments.splice(segIdx + 1, 0, newSeg);
+        didSplit = true;
+      }
+    }
   }
 
-  if (wordIdx !== -1) {
-    const target = AppState.words[wordIdx];
-    const origEnd = target.end;
-    const splitTime = (t > target.start && t < target.end) ? t : (target.start + target.end) / 2;
+  // 2. If an Audio segment is selected (or split all)
+  if (selected.type === 'audio' || selected.type === null) {
+    let aIdx = selected.type === 'audio' ? selected.index : AppState.audioSegments.findIndex(s => t > s.start && t < s.end);
+    if (aIdx !== -1 && aIdx < AppState.audioSegments.length) {
+      const origAudio = AppState.audioSegments[aIdx];
+      if (t > origAudio.start && t < origAudio.end) {
+        const origEnd = origAudio.end;
+        origAudio.end = t;
+        AppState.audioSegments.splice(aIdx + 1, 0, {
+          id: 'a_seg_' + Date.now(),
+          start: t,
+          end: origEnd
+        });
+        didSplit = true;
+      }
+    }
+  }
 
-    target.end = splitTime;
-    const newWord = {
-      id: 'w_' + Date.now(),
-      text: target.text + ' (2)',
-      start: splitTime,
-      end: origEnd
-    };
-    AppState.words.splice(wordIdx + 1, 0, newWord);
-    AppState.selectedWordIndex = wordIdx + 1;
+  // 3. If a Caption block is selected (or split all)
+  if (selected.type === 'caption' || selected.type === null) {
+    let wordIdx = selected.type === 'caption' ? selected.index : AppState.words.findIndex(w => t > w.start && t < w.end);
+    if (wordIdx !== -1 && wordIdx < AppState.words.length) {
+      const target = AppState.words[wordIdx];
+      if (t > target.start && t < target.end) {
+        const origEnd = target.end;
+        target.end = t;
+        const newWord = {
+          id: 'w_' + Date.now(),
+          text: target.text + ' (2)',
+          start: t,
+          end: origEnd
+        };
+        AppState.words.splice(wordIdx + 1, 0, newWord);
+        didSplit = true;
+      }
+    }
+  }
+
+  if (didSplit) {
+    buildVideoTrackFilmstrip(null);
+    drawWaveformCanvas();
     buildTranscriptPanel();
     buildTimelineTracks();
-    DOM.statusTxt.textContent = 'SPLIT AT PLAYHEAD';
+    DOM.statusTxt.textContent = `SPLIT AT ${formatTimecode(t).substring(3, 8)}`;
   }
 });
 
 DOM.deleteWordBtn.addEventListener('click', () => {
   const t = DOM.video.currentTime || AppState.currentTime || 0;
-  let wordIdx = AppState.selectedWordIndex;
-  if (wordIdx === null || wordIdx === undefined) {
-    wordIdx = AppState.words.findIndex(w => t >= w.start && t <= w.end);
+  const selected = AppState.selectedTrackItem;
+
+  // 1. Delete Selected Video Segment
+  if (selected.type === 'video' && selected.index !== null) {
+    if (AppState.videoSegments.length > 1) {
+      AppState.videoSegments.splice(selected.index, 1);
+      deselectAllTrackItems();
+      buildVideoTrackFilmstrip(null);
+      DOM.statusTxt.textContent = 'VIDEO SEGMENT DELETED';
+    } else {
+      DOM.statusTxt.textContent = 'CANNOT DELETE SOLE VIDEO CLIP';
+    }
+    return;
   }
 
+  // 2. Delete Selected Audio Segment
+  if (selected.type === 'audio') {
+    if (AppState.audioSegments.length > 1 && selected.index !== null) {
+      AppState.audioSegments.splice(selected.index, 1);
+      deselectAllTrackItems();
+      drawWaveformCanvas();
+      DOM.statusTxt.textContent = 'AUDIO SEGMENT DELETED';
+    } else {
+      AppState.waveformPeaks = [];
+      deselectAllTrackItems();
+      drawWaveformCanvas();
+      DOM.statusTxt.textContent = 'AUDIO TRACK MUTED';
+    }
+    return;
+  }
+
+  // 3. Delete Selected Caption Block (or caption at playhead)
+  let wordIdx = selected.type === 'caption' ? selected.index : AppState.words.findIndex(w => t >= w.start && t <= w.end);
   if (wordIdx !== -1 && wordIdx < AppState.words.length) {
     AppState.words.splice(wordIdx, 1);
-    AppState.selectedWordIndex = null;
+    deselectAllTrackItems();
     buildTranscriptPanel();
     buildTimelineTracks();
     DOM.statusTxt.textContent = 'CAPTION DELETED';
@@ -2009,7 +2234,8 @@ DOM.addWordSegmentBtn.addEventListener('click', () => {
 
   AppState.words.push(newWord);
   AppState.words.sort((a, b) => a.start - b.start);
-  AppState.selectedWordIndex = AppState.words.indexOf(newWord);
+  const newIdx = AppState.words.indexOf(newWord);
+  selectTrackItem('caption', newIdx, newWord.id);
 
   buildTranscriptPanel();
   buildTimelineTracks();
@@ -2199,7 +2425,54 @@ DOM.videoTransformWrapper.addEventListener('wheel', (e) => {
   updateVideoTransform();
 }, { passive: false });
 
-// ==================== ASPECT RATIO CONTROLS ====================
+// ==================== ASPECT RATIO CONTROLS & SAFE ZONES ====================
+function updateSafeZoneOverlay() {
+  const overlay = DOM.safeZoneOverlay;
+  if (!overlay) return;
+  
+  const ar = AppState.aspectRatio;
+  if (ar === '9/16') {
+    overlay.innerHTML = `
+      <div class="absolute top-0 left-0 right-0 h-[15%] bg-[#E52E42]/10 border-b border-dashed border-[#E52E42]/50 flex items-start justify-center pt-1 font-technical-mono text-[9px] text-white">
+        <span class="bg-black/60 px-2 py-0.5 rounded">TOP UI SAFE LIMIT (15%)</span>
+      </div>
+      <div class="absolute bottom-0 left-0 right-0 h-[20%] bg-[#E52E42]/10 border-t border-dashed border-[#E52E42]/50 flex items-end justify-center pb-1 font-technical-mono text-[9px] text-white">
+        <span class="bg-black/60 px-2 py-0.5 rounded">CAPTION & AUDIO SAFE LIMIT (20%)</span>
+      </div>
+      <div class="absolute top-[15%] bottom-[20%] right-0 w-[12%] bg-[#E52E42]/10 border-l border-dashed border-[#E52E42]/50 flex items-center justify-center font-technical-mono text-[9px] text-white [writing-mode:vertical-rl]">
+        <span class="bg-black/60 px-1 py-1 rounded">ENGAGEMENT ICONS (12%)</span>
+      </div>
+      <div class="absolute top-[15%] bottom-[20%] left-[4%] right-[12%] border-2 border-dashed border-[#E52E42]/60 pointer-events-none rounded-sm"></div>
+    `;
+  } else if (ar === '16/9') {
+    overlay.innerHTML = `
+      <div class="absolute inset-[10%] border-2 border-dashed border-[#E52E42]/50 pointer-events-none rounded-sm flex items-start justify-end p-1 font-technical-mono text-[9px] text-white">
+        <span class="bg-black/60 px-2 py-0.5 rounded">ACTION SAFE (90%)</span>
+      </div>
+      <div class="absolute inset-[20%] border border-[#E52E42]/30 pointer-events-none rounded-sm flex items-start justify-end p-1 font-technical-mono text-[9px] text-white">
+        <span class="bg-black/60 px-2 py-0.5 rounded">TITLE SAFE (80%)</span>
+      </div>
+    `;
+  } else if (ar === '4/5') {
+    overlay.innerHTML = `
+      <div class="absolute top-0 left-0 right-0 h-[12%] bg-[#E52E42]/10 border-b border-dashed border-[#E52E42]/50 flex items-start justify-center pt-1 font-technical-mono text-[9px] text-white">
+        <span class="bg-black/60 px-2 py-0.5 rounded">REELS HEADER SAFE (12%)</span>
+      </div>
+      <div class="absolute bottom-0 left-0 right-0 h-[18%] bg-[#E52E42]/10 border-t border-dashed border-[#E52E42]/50 flex items-end justify-center pb-1 font-technical-mono text-[9px] text-white">
+        <span class="bg-black/60 px-2 py-0.5 rounded">REELS FOOTER SAFE (18%)</span>
+      </div>
+      <div class="absolute top-[12%] bottom-[18%] left-[5%] right-[10%] border-2 border-dashed border-[#E52E42]/60 pointer-events-none rounded-sm"></div>
+    `;
+  } else {
+    // 1:1 Feed
+    overlay.innerHTML = `
+      <div class="absolute inset-[10%] border-2 border-dashed border-[#E52E42]/50 pointer-events-none rounded-sm flex items-start justify-end p-1 font-technical-mono text-[9px] text-white">
+        <span class="bg-black/60 px-2 py-0.5 rounded">FEED SAFE ZONE (90%)</span>
+      </div>
+    `;
+  }
+}
+
 document.querySelectorAll('.ar-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.ar-btn').forEach(b => {
@@ -2216,7 +2489,24 @@ document.querySelectorAll('.ar-btn').forEach(btn => {
     DOM.stageContainer.style.aspectRatio = ratio;
     document.getElementById('canvasDimBadge').textContent = dim;
     DOM.statusTxt.textContent = `ASPECT RATIO: ${ratio}`;
+    updateSafeZoneOverlay();
   });
+});
+
+// UI Overlays Toggles
+DOM.safeZoneToggle.addEventListener('click', () => {
+  const isHidden = DOM.safeZoneOverlay.classList.contains('hidden');
+  DOM.safeZoneOverlay.classList.toggle('hidden', !isHidden);
+  DOM.safeZoneToggle.classList.toggle('border-[#E52E42]', isHidden);
+  DOM.safeZoneToggle.classList.toggle('bg-[#22222D]', isHidden);
+  if (isHidden) updateSafeZoneOverlay();
+});
+
+DOM.gridToggle.addEventListener('click', () => {
+  const isHidden = DOM.gridOverlay.classList.contains('hidden');
+  DOM.gridOverlay.classList.toggle('hidden', !isHidden);
+  DOM.gridToggle.classList.toggle('border-[#E52E42]', isHidden);
+  DOM.gridToggle.classList.toggle('bg-[#22222D]', isHidden);
 });
 
 // ==================== LIVE CAPTION OVERLAY RENDERING ====================
@@ -2251,7 +2541,7 @@ function renderLiveCaptionOverlay(currentTime) {
     span.style.letterSpacing = `${AppState.style.letterSpacing}px`;
     span.style.fontWeight = '800';
     span.style.display = 'inline-block';
-    span.style.transition = 'all 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+    span.style.transition = 'all 0.12s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
 
     if (AppState.style.gradOn && !isCurrent) {
       span.style.background = `linear-gradient(${AppState.style.gradAngle}deg, ${AppState.style.gradColor1}, ${AppState.style.gradColor2})`;
@@ -2449,7 +2739,7 @@ function syncLoop(now) {
       }
       onTimeUpdate(AppState.currentTime);
     }
-  } else if (!DOM.video.paused) {
+  } else if (!DOM.video.paused && !DOM.video.ended) {
     AppState.isPlaying = true;
     AppState.currentTime = DOM.video.currentTime;
     onTimeUpdate(DOM.video.currentTime);
@@ -2525,24 +2815,36 @@ const endTimelineScrub = (e) => {
 DOM.timelineWrapper.addEventListener('pointerup', endTimelineScrub);
 DOM.timelineWrapper.addEventListener('pointercancel', endTimelineScrub);
 
-// Zoom timeline width
-DOM.timelineZoom.addEventListener('input', (e) => {
-  const zoom = parseInt(e.target.value);
-  AppState.timelineZoom = zoom;
-  DOM.timelineInner.style.width = `${zoom}%`;
+// Click on empty space in timeline stack clears selection
+DOM.timelineInner.addEventListener('click', (e) => {
+  if (e.target === DOM.timelineInner || e.target === DOM.timelineRuler || e.target.id === 'tracksStack') {
+    deselectAllTrackItems();
+  }
+});
+
+// ==================== INTERACTIVE TIMELINE ZOOM CONTROLS ====================
+function applyTimelineZoom(newZoom) {
+  const clamped = Math.max(100, Math.min(400, newZoom));
+  AppState.timelineZoom = clamped;
+  DOM.timelineZoom.value = clamped;
+  DOM.timelineInner.style.width = `${clamped}%`;
+  DOM.zoomValBadge.textContent = `${(clamped / 100).toFixed(1)}x`;
+  
   drawWaveformCanvas();
   buildTimelineRuler();
+  onTimeUpdate(DOM.video.currentTime || AppState.currentTime);
+}
+
+DOM.timelineZoom.addEventListener('input', (e) => {
+  applyTimelineZoom(parseInt(e.target.value));
 });
 
-// UI Overlays Toggles
-DOM.safeZoneToggle.addEventListener('click', () => {
-  DOM.safeZoneOverlay.classList.toggle('hidden');
-  DOM.safeZoneToggle.classList.toggle('border-[#E52E42]');
+DOM.zoomInBtn.addEventListener('click', () => {
+  applyTimelineZoom(AppState.timelineZoom + 25);
 });
 
-DOM.gridToggle.addEventListener('click', () => {
-  DOM.gridOverlay.classList.toggle('hidden');
-  DOM.gridToggle.classList.toggle('border-[#E52E42]');
+DOM.zoomOutBtn.addEventListener('click', () => {
+  applyTimelineZoom(AppState.timelineZoom - 25);
 });
 
 // ==================== INSPECTORS & STYLING ====================
@@ -2807,6 +3109,7 @@ DOM.startRenderBtn.addEventListener('click', async () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
+  updateSafeZoneOverlay();
   loadDemoSample();
 });
 </script>
