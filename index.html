@@ -720,13 +720,13 @@
 
     <!-- Center Playback Bar -->
     <div class="glass-surface flex items-center gap-3 px-4 py-2 rounded-xl border border-[var(--border)] z-20 mt-1">
-      <button id="skipBack" class="p-1.5 rounded-md text-[#B0B2C3] hover:text-white hover:bg-[#22222D] transition-all" title="Back 1 sec">
+      <button id="skipBack" class="p-1.5 rounded-md text-[#B0B2C3] hover:text-white hover:bg-[#22222D] transition-all" title="Jump to Start (|◀)">
         <i class="ph-bold ph-skip-back text-base"></i>
       </button>
       <button id="playBtn" class="w-9 h-9 rounded-lg btn-cherry-primary flex items-center justify-center text-white transition-transform active:scale-95" title="Play / Pause (Space)">
         <i id="playIcon" class="ph-fill ph-play text-base"></i>
       </button>
-      <button id="skipFwd" class="p-1.5 rounded-md text-[#B0B2C3] hover:text-white hover:bg-[#22222D] transition-all" title="Forward 1 sec">
+      <button id="skipFwd" class="p-1.5 rounded-md text-[#B0B2C3] hover:text-white hover:bg-[#22222D] transition-all" title="Jump to End (▶|)">
         <i class="ph-bold ph-skip-forward text-base"></i>
       </button>
       <div class="h-4 w-[1px] bg-white/15 mx-1"></div>
@@ -744,7 +744,7 @@
         <option value="1.5">1.5x</option>
         <option value="2">2.0x</option>
       </select>
-      <button id="fullscreenBtn" class="p-1.5 rounded-md text-[#B0B2C3] hover:text-white hover:bg-[#22222D] transition-all" title="Fullscreen Cinematic Preview (Modal)">
+      <button id="fullscreenBtn" class="p-1.5 rounded-md text-[#B0B2C3] hover:text-white hover:bg-[#22222D] transition-all" title="Fullscreen Preview (Modal / Viewport)">
         <i class="ph-bold ph-arrows-out text-base"></i>
       </button>
     </div>
@@ -1064,14 +1064,14 @@
     </div>
   </div>
 
-  <div id="timelineWrapper" class="relative rounded-lg bg-[#0E0E14] border border-[var(--border)] overflow-x-auto overflow-y-hidden cursor-crosshair select-none" style="min-height: 195px;">
-    <div id="timelineInner" class="relative" style="min-width: 100%; width: 100%;">
+  <div id="timelineWrapper" class="relative rounded-lg bg-[#0E0E14] border border-[var(--border)] overflow-x-auto overflow-y-hidden cursor-crosshair select-none" style="min-height: 195px; width: 100%;">
+    <div id="timelineInner" class="relative transition-none" style="min-width: 100%; width: 100%;">
       <div id="timelineRuler" class="h-5 border-b border-[var(--border)] relative font-technical-mono text-[10px] text-[#9DA0B5]"></div>
       
       <!-- CHERRY RED PLAYHEAD -->
       <div id="playhead" style="left: 0px;"></div>
 
-      <div id="tracksStack" class="p-1.5 space-y-1.5 relative">
+      <div id="tracksStack" class="p-1.5 space-y-1.5 relative w-full">
         
         <!-- TRACK 1: CAPTIONS -->
         <div class="flex items-center justify-between font-technical-mono text-[10px] font-bold text-[#E4E6F0] pl-1">
@@ -1080,7 +1080,7 @@
           </span>
           <span id="captionTrackCount" class="text-[9px] text-[#8C8E9F]">0 BLOCKS</span>
         </div>
-        <div id="captionTrack" class="timeline-track"></div>
+        <div id="captionTrack" class="timeline-track w-full"></div>
 
         <!-- TRACK 2: VIDEO FRAMES STRIP -->
         <div class="flex items-center justify-between font-technical-mono text-[10px] font-bold text-[#E4E6F0] pl-1 pt-1">
@@ -1089,7 +1089,7 @@
           </span>
           <span id="activeVideoName" class="text-[9px] text-[#8C8E9F] truncate max-w-[200px]">NO CLIP LOADED</span>
         </div>
-        <div id="videoTrack" class="timeline-track relative overflow-hidden opacity-95"></div>
+        <div id="videoTrack" class="timeline-track relative overflow-hidden opacity-95 w-full"></div>
 
         <!-- TRACK 3: AUDIO WAVEFORM SPECTRUM (WEB AUDIO API DECODED) -->
         <div class="flex items-center justify-between font-technical-mono text-[10px] font-bold text-[#E4E6F0] pl-1 pt-1">
@@ -1098,7 +1098,7 @@
           </span>
           <span id="audioTrackStatus" class="text-[9px] text-[#8C8E9F]">CLICK TO SELECT AUDIO</span>
         </div>
-        <div id="audioWaveTrack" class="timeline-track relative overflow-hidden bg-[#101017] cursor-pointer border border-[var(--border)] hover:border-[#E52E42]/60 transition-colors">
+        <div id="audioWaveTrack" class="timeline-track relative overflow-hidden bg-[#101017] cursor-pointer border border-[var(--border)] hover:border-[#E52E42]/60 transition-colors w-full">
           <canvas id="waveformCanvas" class="w-full h-full block"></canvas>
         </div>
       </div>
@@ -1280,6 +1280,8 @@ const DOM = {
   emptySampleBtn: document.getElementById('emptySampleBtn'),
   playBtn: document.getElementById('playBtn'),
   playIcon: document.getElementById('playIcon'),
+  skipBack: document.getElementById('skipBack'),
+  skipFwd: document.getElementById('skipFwd'),
   timecodeCurrent: document.getElementById('timecodeCurrent'),
   timecodeDuration: document.getElementById('timecodeDuration'),
   statusTxt: document.getElementById('statusTxt'),
@@ -1411,7 +1413,6 @@ DOM.multiFileInput.addEventListener('change', (e) => handleFilesImport(e.target.
 DOM.mediaBinFileInput.addEventListener('change', (e) => handleFilesImport(e.target.files));
 DOM.emptyFileInput.addEventListener('change', (e) => handleFilesImport(e.target.files));
 
-// Drag and drop onto media dropzone
 DOM.mediaDropzone.addEventListener('click', () => DOM.mediaBinFileInput.click());
 DOM.mediaDropzone.addEventListener('dragover', (e) => { e.preventDefault(); DOM.mediaDropzone.classList.add('border-[#E52E42]'); });
 DOM.mediaDropzone.addEventListener('dragleave', () => DOM.mediaDropzone.classList.remove('border-[#E52E42]'));
@@ -1519,6 +1520,7 @@ async function loadAssetToTimeline(assetId) {
       buildTimelineRuler();
       buildVideoTrackFilmstrip(asset);
       buildTimelineTracks();
+      applyTimelineZoom(AppState.timelineZoom);
       renderTimecode(0, AppState.duration);
     }
   };
@@ -1539,6 +1541,7 @@ async function loadAssetToTimeline(assetId) {
   buildTimelineRuler();
   buildVideoTrackFilmstrip(asset);
   buildTimelineTracks();
+  applyTimelineZoom(AppState.timelineZoom);
 
   // Extract Web Audio Waveform from File
   try {
@@ -1578,7 +1581,6 @@ function extractWaveformPeaks(audioBuf) {
     peaks.push(sum / blockSize);
   }
 
-  // Normalize
   const max = Math.max(...peaks, 0.01);
   AppState.waveformPeaks = peaks.map(p => p / max);
   drawWaveformCanvas();
@@ -1632,11 +1634,12 @@ function deselectAllTrackItems() {
 
 function drawWaveformCanvas() {
   const canvas = DOM.waveformCanvas;
+  if (!canvas || !DOM.audioWaveTrack) return;
   const ctx = canvas.getContext('2d');
-  const rect = DOM.audioWaveTrack.getBoundingClientRect();
   const dpr = window.devicePixelRatio || 1;
-  canvas.width = rect.width * dpr;
-  canvas.height = rect.height * dpr;
+  const trackWidth = DOM.audioWaveTrack.clientWidth || 800;
+  canvas.width = trackWidth * dpr;
+  canvas.height = (DOM.audioWaveTrack.clientHeight || 44) * dpr;
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   const peaks = AppState.waveformPeaks;
@@ -1653,7 +1656,7 @@ function drawWaveformCanvas() {
     ctx.fillRect(i * barWidth, centerY - barHeight / 2, Math.max(1.5 * dpr, barWidth - 1), barHeight);
   }
 
-  // Render split divider markers across audio segments if multiple
+  // Render split divider markers across audio segments
   if (AppState.audioSegments && AppState.audioSegments.length > 1) {
     const dur = AppState.duration || 8.5;
     ctx.strokeStyle = '#FFFFFF';
@@ -1670,7 +1673,10 @@ function drawWaveformCanvas() {
   }
 }
 
-window.addEventListener('resize', drawWaveformCanvas);
+window.addEventListener('resize', () => {
+  drawWaveformCanvas();
+  onTimeUpdate(DOM.video.currentTime || AppState.currentTime);
+});
 
 DOM.audioWaveTrack.addEventListener('click', (e) => {
   e.stopPropagation();
@@ -1794,6 +1800,7 @@ function loadDemoSample() {
   buildTimelineTracks();
   buildTimelineRuler();
   buildVideoTrackFilmstrip(null);
+  applyTimelineZoom(AppState.timelineZoom);
   
   DOM.statusTxt.textContent = 'DEMO ACTIVE';
   DOM.statusDot.className = 'w-2 h-2 rounded-full bg-[#E52E42]';
@@ -1811,13 +1818,8 @@ function buildVideoTrackFilmstrip(asset) {
 
   const dur = AppState.duration || DOM.video.duration || 8.5;
   if (!AppState.videoSegments || !AppState.videoSegments.length) {
-    AppState.videoSegments = [{
-      id: 'v_seg_0',
-      name: asset ? asset.name : (DOM.activeVideoName.textContent || 'ACTIVE_CLIP.MP4'),
-      start: 0,
-      end: dur,
-      thumbUrl: asset ? asset.thumbUrl : null
-    }];
+    vt.innerHTML = `<div class="w-full h-full flex items-center justify-center font-technical-mono text-[10px] text-[#8C8E9F] bg-[#14141E] rounded-md border border-dashed border-[var(--border)]">NO VIDEO CLIPS ON TRACK</div>`;
+    return;
   }
 
   AppState.videoSegments.forEach((seg, segIdx) => {
@@ -1922,6 +1924,7 @@ function buildVideoTrackFilmstrip(asset) {
 function buildTimelineRuler() {
   const dur = AppState.duration || DOM.video.duration || 8.5;
   const ruler = DOM.timelineRuler;
+  if (!ruler) return;
   ruler.innerHTML = '';
   
   const zoom = AppState.timelineZoom || 100;
@@ -1945,6 +1948,7 @@ function buildTimelineRuler() {
 function buildTimelineTracks() {
   const dur = AppState.duration || DOM.video.duration || 8.5;
   const ct = DOM.captionTrack;
+  if (!ct) return;
   ct.innerHTML = '';
   DOM.captionTrackCount.textContent = `${AppState.words.length} BLOCKS`;
   
@@ -2191,32 +2195,41 @@ DOM.deleteWordBtn.addEventListener('click', () => {
   const t = DOM.video.currentTime || AppState.currentTime || 0;
   const selected = AppState.selectedTrackItem;
 
-  // 1. Delete Selected Video Segment
-  if (selected.type === 'video' && selected.index !== null) {
-    if (AppState.videoSegments.length > 1) {
+  // 1. Delete Selected Video Segment (No restrictions)
+  if (selected.type === 'video') {
+    if (selected.index !== null && selected.index < AppState.videoSegments.length) {
       AppState.videoSegments.splice(selected.index, 1);
-      deselectAllTrackItems();
-      buildVideoTrackFilmstrip(null);
-      DOM.statusTxt.textContent = 'VIDEO SEGMENT DELETED';
     } else {
-      DOM.statusTxt.textContent = 'CANNOT DELETE SOLE VIDEO CLIP';
+      AppState.videoSegments = [];
     }
+    
+    if (AppState.videoSegments.length === 0) {
+      DOM.video.pause();
+      DOM.video.src = '';
+      DOM.video.srcObject = null;
+      AppState.isPlaying = false;
+      updatePlayPauseUI(false);
+      DOM.emptyState.style.display = 'flex';
+      DOM.activeVideoName.textContent = 'NO CLIP LOADED';
+    }
+    
+    deselectAllTrackItems();
+    buildVideoTrackFilmstrip(null);
+    DOM.statusTxt.textContent = 'VIDEO CLIP DELETED';
     return;
   }
 
   // 2. Delete Selected Audio Segment
   if (selected.type === 'audio') {
-    if (AppState.audioSegments.length > 1 && selected.index !== null) {
+    if (selected.index !== null && selected.index < AppState.audioSegments.length && AppState.audioSegments.length > 1) {
       AppState.audioSegments.splice(selected.index, 1);
-      deselectAllTrackItems();
-      drawWaveformCanvas();
-      DOM.statusTxt.textContent = 'AUDIO SEGMENT DELETED';
     } else {
+      AppState.audioSegments = [];
       AppState.waveformPeaks = [];
-      deselectAllTrackItems();
-      drawWaveformCanvas();
-      DOM.statusTxt.textContent = 'AUDIO TRACK MUTED';
     }
+    deselectAllTrackItems();
+    drawWaveformCanvas();
+    DOM.statusTxt.textContent = 'AUDIO TRACK DELETED';
     return;
   }
 
@@ -2227,6 +2240,7 @@ DOM.deleteWordBtn.addEventListener('click', () => {
     deselectAllTrackItems();
     buildTranscriptPanel();
     buildTimelineTracks();
+    renderLiveCaptionOverlay(DOM.video.currentTime || AppState.currentTime);
     DOM.statusTxt.textContent = 'CAPTION DELETED';
   }
 });
@@ -2280,7 +2294,6 @@ async function runDirectGroqTranscription() {
   DOM.statusTxt.textContent = 'AI TRANSCRIBING...';
   DOM.statusDot.className = 'w-2 h-2 rounded-full bg-[#E52E42] animate-ping';
 
-  // If synthetic demo without file
   if (!fileToUpload) {
     setTimeout(() => updateProgressState('Transcribing with Whisper... [65%]', 65), 500);
     setTimeout(() => updateProgressState('Syncing Captions... [90%]', 90), 1000);
@@ -2689,7 +2702,20 @@ function togglePlay() {
 }
 
 DOM.playBtn.addEventListener('click', togglePlay);
-DOM.fsPlayBtn.addEventListener('click', togglePlay);
+if (DOM.fsPlayBtn) DOM.fsPlayBtn.addEventListener('click', togglePlay);
+
+// JUMP TO START (|◀)
+DOM.skipBack.addEventListener('click', () => {
+  seekVideo(0);
+  DOM.statusTxt.textContent = 'JUMP TO START';
+});
+
+// JUMP TO END (▶|)
+DOM.skipFwd.addEventListener('click', () => {
+  const dur = AppState.duration || DOM.video.duration || 8.5;
+  seekVideo(dur);
+  DOM.statusTxt.textContent = 'JUMP TO END';
+});
 
 DOM.video.addEventListener('play', () => {
   AppState.isPlaying = true;
@@ -2722,6 +2748,12 @@ window.addEventListener('keydown', (e) => {
   } else if (e.code === 'Delete' || e.code === 'Backspace') {
     e.preventDefault();
     DOM.deleteWordBtn.click();
+  } else if (e.code === 'Home') {
+    e.preventDefault();
+    seekVideo(0);
+  } else if (e.code === 'End') {
+    e.preventDefault();
+    seekVideo(AppState.duration || DOM.video.duration || 8.5);
   } else if (e.code === 'ArrowLeft') {
     e.preventDefault();
     seekVideo((DOM.video.currentTime || AppState.currentTime) - (e.shiftKey ? 1.0 : 1/30));
@@ -2741,9 +2773,6 @@ window.addEventListener('keydown', (e) => {
     closeFullscreen();
   }
 });
-
-DOM.skipBack.addEventListener('click', () => seekVideo((DOM.video.currentTime || AppState.currentTime) - 1));
-DOM.skipFwd.addEventListener('click', () => seekVideo((DOM.video.currentTime || AppState.currentTime) + 1));
 
 function seekVideo(time) {
   const max = AppState.duration || DOM.video.duration || 8.5;
@@ -2792,7 +2821,7 @@ function onTimeUpdate(t) {
   const dur = AppState.duration || DOM.video.duration || 8.5;
   renderTimecode(t, dur);
 
-  if (dur > 0) {
+  if (dur > 0 && DOM.timelineInner) {
     const progress = Math.max(0, Math.min(1, t / dur));
     const trackWidth = DOM.timelineInner.offsetWidth || DOM.timelineInner.clientWidth || 1;
     DOM.playhead.style.left = `${progress * trackWidth}px`;
@@ -2817,7 +2846,7 @@ let isScrubbing = false;
 
 function handleTimelineScrub(e) {
   const dur = AppState.duration || DOM.video.duration || 8.5;
-  if (!dur) return;
+  if (!dur || !DOM.timelineInner) return;
   const rect = DOM.timelineInner.getBoundingClientRect();
   const clickX = e.clientX - rect.left;
   const progress = Math.max(0, Math.min(1, clickX / rect.width));
@@ -2847,7 +2876,6 @@ const endTimelineScrub = (e) => {
 DOM.timelineWrapper.addEventListener('pointerup', endTimelineScrub);
 DOM.timelineWrapper.addEventListener('pointercancel', endTimelineScrub);
 
-// Click on empty space in timeline stack clears selection
 DOM.timelineInner.addEventListener('click', (e) => {
   if (e.target === DOM.timelineInner || e.target === DOM.timelineRuler || e.target.id === 'tracksStack') {
     deselectAllTrackItems();
@@ -2858,12 +2886,16 @@ DOM.timelineInner.addEventListener('click', (e) => {
 function applyTimelineZoom(newZoom) {
   const clamped = Math.max(100, Math.min(400, newZoom));
   AppState.timelineZoom = clamped;
-  DOM.timelineZoom.value = clamped;
-  DOM.timelineInner.style.width = `${clamped}%`;
-  DOM.zoomValBadge.textContent = `${(clamped / 100).toFixed(1)}x`;
+  if (DOM.timelineZoom) DOM.timelineZoom.value = clamped;
+  if (DOM.zoomValBadge) DOM.zoomValBadge.textContent = `${(clamped / 100).toFixed(1)}x`;
   
-  drawWaveformCanvas();
+  if (DOM.timelineInner) {
+    DOM.timelineInner.style.width = `${clamped}%`;
+    DOM.timelineInner.style.minWidth = `${clamped}%`;
+  }
+  
   buildTimelineRuler();
+  drawWaveformCanvas();
   onTimeUpdate(DOM.video.currentTime || AppState.currentTime);
 }
 
@@ -2871,11 +2903,13 @@ DOM.timelineZoom.addEventListener('input', (e) => {
   applyTimelineZoom(parseInt(e.target.value));
 });
 
-DOM.zoomInBtn.addEventListener('click', () => {
+DOM.zoomInBtn.addEventListener('click', (e) => {
+  e.preventDefault();
   applyTimelineZoom(AppState.timelineZoom + 25);
 });
 
-DOM.zoomOutBtn.addEventListener('click', () => {
+DOM.zoomOutBtn.addEventListener('click', (e) => {
+  e.preventDefault();
   applyTimelineZoom(AppState.timelineZoom - 25);
 });
 
@@ -2883,6 +2917,7 @@ DOM.zoomOutBtn.addEventListener('click', () => {
 DOM.playbackSpeedSelect.addEventListener('change', (e) => {
   const speed = parseFloat(e.target.value) || 1.0;
   DOM.video.playbackRate = speed;
+  if (DOM.fsVideoClone) DOM.fsVideoClone.playbackRate = speed;
   DOM.statusTxt.textContent = `SPEED: ${speed}x`;
 });
 
@@ -2894,6 +2929,7 @@ function openFullscreen() {
   if (DOM.video.src) {
     DOM.fsVideoClone.src = DOM.video.src;
     DOM.fsVideoClone.currentTime = DOM.video.currentTime;
+    DOM.fsVideoClone.playbackRate = DOM.video.playbackRate || 1.0;
     if (!DOM.video.paused) DOM.fsVideoClone.play().catch(() => {});
   } else if (DOM.video.srcObject) {
     DOM.fsVideoClone.srcObject = DOM.video.srcObject;
