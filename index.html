@@ -1513,7 +1513,7 @@ const AppState = {
     glowRadius: 12,
     glowColorA: '#E52E42',
     glowColorB: '#A81827',
-    strokeOn: false,
+    strokeOn: true,
     strokeWidth: 2,
     strokeColor: '#000000',
     gradOn: false,
@@ -1525,7 +1525,7 @@ const AppState = {
     boxBgOpacity: 85,
     motion: 'none',
     scope: 'sentence',
-    activeWordColor: '#E52E42',
+    activeWordColor: '#FFFFFF',
     dimInactive: false
   },
   snap: true
@@ -2679,9 +2679,9 @@ function applyPresetByName(preset, styleOption) {
     AppState.style.motion = 'none';
     AppState.style.activeWordColor = '#E52E42';
   } else {
-    // Default
+    // Default Premiere Pro Standard Static Subtitle
     AppState.style.fontFamily = 'Poppins';
-    AppState.style.fontSize = 28;
+    AppState.style.fontSize = 26;
     AppState.style.casing = 'none';
     AppState.style.textColor = '#FFFFFF';
     AppState.style.strokeOn = true;
@@ -2689,12 +2689,21 @@ function applyPresetByName(preset, styleOption) {
     AppState.style.strokeColor = '#000000';
     AppState.style.glowOn = false;
     AppState.style.motion = 'none';
-    AppState.style.activeWordColor = '#E52E42';
+    AppState.style.scope = 'sentence';
+    AppState.style.activeWordColor = '#FFFFFF';
+    AppState.style.dimInactive = false;
   }
 
-  if (styleOption === 'filmcom') AppState.style.motion = 'filmcom_pop';
-  if (styleOption === 'glow') AppState.style.glowOn = true;
-  if (styleOption === 'karaoke') AppState.style.motion = 'karaoke';
+  if (styleOption === 'filmcom') {
+    AppState.style.motion = 'filmcom_pop';
+    AppState.style.activeWordColor = '#E52E42';
+  } else if (styleOption === 'glow') {
+    AppState.style.glowOn = true;
+    AppState.style.activeWordColor = '#E52E42';
+  } else if (styleOption === 'karaoke') {
+    AppState.style.motion = 'karaoke';
+    AppState.style.activeWordColor = '#E52E42';
+  }
 
   // Sync inspector inputs
   if (document.getElementById('fontFamilySelect')) document.getElementById('fontFamilySelect').value = AppState.style.fontFamily;
@@ -3157,19 +3166,20 @@ DOM.gridToggle.addEventListener('click', () => {
   DOM.gridToggle.classList.toggle('bg-[#22222D]', isHidden);
 });
 
-// ==================== LIVE CAPTION OVERLAY RENDERING ====================
+// ==================== LIVE CAPTION OVERLAY RENDERING (STATIC PREMIERE PRO DEFAULT) ====================
 function renderLiveCaptionOverlay(currentTime) {
   DOM.capOverlay.innerHTML = '';
   if (DOM.fsCapOverlay) DOM.fsCapOverlay.innerHTML = '';
 
-  const windowTime = 0.35;
-  const activeWords = AppState.words.filter(w => currentTime >= (w.start - windowTime) && currentTime <= (w.end + windowTime));
+  // Exact block-based matching: find active caption segment on timeline
+  const activeBlock = AppState.words.find(w => currentTime >= w.start && currentTime <= w.end);
   
-  if (!activeWords.length) {
+  if (!activeBlock) {
     DOM.capOverlayContainer.style.display = 'none';
     if (DOM.fsCapOverlayContainer) DOM.fsCapOverlayContainer.style.display = 'none';
     return;
   }
+
   DOM.capOverlayContainer.style.display = 'flex';
   DOM.capOverlayContainer.style.bottom = `${AppState.style.posY}%`;
 
@@ -3178,26 +3188,83 @@ function renderLiveCaptionOverlay(currentTime) {
     DOM.fsCapOverlayContainer.style.bottom = `${AppState.style.posY}%`;
   }
   
+  // Format casing according to user setting
+  let displayTxt = activeBlock.text;
+  if (AppState.style.casing === 'caps') displayTxt = displayTxt.toUpperCase();
+  else if (AppState.style.casing === 'lower') displayTxt = displayTxt.toLowerCase();
+  else if (AppState.style.casing === 'title') displayTxt = displayTxt.charAt(0).toUpperCase() + displayTxt.slice(1);
+
+  const isKinetic = (AppState.style.motion && AppState.style.motion !== 'none') || (AppState.style.scope === 'word' && AppState.style.activeWordColor !== AppState.style.textColor);
+
+  if (!isKinetic) {
+    // 100% STATIC, CLEAN SUBTITLE BLOCK (Premiere Pro Default Standard - Zero Word Jumps, Zero Auto-Coloring)
+    const blockDiv = document.createElement('div');
+    blockDiv.className = 'static-subtitle-block select-none pointer-events-none';
+    blockDiv.style.fontFamily = `"${AppState.style.fontFamily || 'Poppins'}", "Montserrat", sans-serif`;
+    blockDiv.style.fontSize = `${AppState.style.fontSize}px`;
+    blockDiv.style.fontWeight = '500';
+    blockDiv.style.lineHeight = AppState.style.lineHeight || '1.3';
+    blockDiv.style.letterSpacing = `${AppState.style.letterSpacing || 0}px`;
+    blockDiv.style.color = AppState.style.textColor || '#FFFFFF';
+    blockDiv.style.whiteSpace = 'pre-line';
+    blockDiv.style.textAlign = 'center';
+    blockDiv.style.transition = 'none';
+    blockDiv.style.transform = 'none';
+    blockDiv.style.animation = 'none';
+    
+    // Readability stroke & drop shadow
+    if (AppState.style.strokeOn) {
+      blockDiv.style.webkitTextStroke = `${AppState.style.strokeWidth || 2}px ${AppState.style.strokeColor || '#000000'}`;
+      blockDiv.style.paintOrder = 'stroke fill';
+    } else {
+      blockDiv.style.webkitTextStroke = '0px transparent';
+    }
+    
+    if (AppState.style.glowOn) {
+      const r = AppState.style.glowRadius || 18;
+      const gA = AppState.style.glowColorA || '#E52E42';
+      blockDiv.style.textShadow = `0 4px 15px rgba(0, 0, 0, 0.85), 0 0 ${r}px ${gA}`;
+    } else {
+      blockDiv.style.textShadow = '0 2px 8px rgba(0, 0, 0, 0.85)';
+    }
+
+    if (AppState.style.boxBgOn) {
+      blockDiv.style.backgroundColor = AppState.style.boxBgColor || '#000000';
+      blockDiv.style.borderRadius = '4px';
+      blockDiv.style.padding = '4px 14px';
+    }
+
+    blockDiv.textContent = displayTxt;
+
+    DOM.capOverlay.appendChild(blockDiv);
+    if (DOM.fsCapOverlay) DOM.fsCapOverlay.appendChild(blockDiv.cloneNode(true));
+    return;
+  }
+
+  // OPT-IN KINETIC MODE (Active ONLY if user manually selected a motion/preset from Inspector)
+  const wordsList = (activeBlock.rawWords && activeBlock.rawWords.length) 
+    ? activeBlock.rawWords 
+    : displayTxt.split(/\s+/).map((t, idx) => ({ text: t, id: `${activeBlock.id}_${idx}` }));
+
   const wrapper = document.createElement('div');
   wrapper.className = 'flex flex-wrap justify-center items-center gap-1.5';
-  
-  activeWords.forEach((w) => {
-    const isCurrent = currentTime >= w.start && currentTime <= w.end;
+
+  wordsList.forEach((w) => {
+    const isCurrent = (w.start !== undefined && w.end !== undefined) ? (currentTime >= w.start && currentTime <= w.end) : true;
     const span = document.createElement('span');
     
-    let displayTxt = w.text;
-    if (AppState.style.casing === 'caps') displayTxt = displayTxt.toUpperCase();
-    else if (AppState.style.casing === 'lower') displayTxt = displayTxt.toLowerCase();
-    else if (AppState.style.casing === 'title') displayTxt = displayTxt.charAt(0).toUpperCase() + displayTxt.slice(1);
+    let wordText = w.text;
+    if (AppState.style.casing === 'caps') wordText = wordText.toUpperCase();
+    else if (AppState.style.casing === 'lower') wordText = wordText.toLowerCase();
     
-    span.textContent = displayTxt;
-    span.style.fontFamily = AppState.style.fontFamily;
+    span.textContent = wordText;
+    span.style.fontFamily = `"${AppState.style.fontFamily}", sans-serif`;
     span.style.fontSize = `${AppState.style.fontSize}px`;
-    span.style.lineHeight = AppState.style.lineHeight;
-    span.style.letterSpacing = `${AppState.style.letterSpacing}px`;
-    span.style.fontWeight = '800';
+    span.style.lineHeight = AppState.style.lineHeight || '1.2';
+    span.style.letterSpacing = `${AppState.style.letterSpacing || 0}px`;
+    span.style.fontWeight = '700';
     span.style.display = 'inline-block';
-    span.style.transition = 'all 0.12s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+    span.style.whiteSpace = 'pre-line';
 
     if (AppState.style.gradOn && !isCurrent) {
       span.style.background = `linear-gradient(${AppState.style.gradAngle}deg, ${AppState.style.gradColor1}, ${AppState.style.gradColor2})`;
@@ -3218,42 +3285,26 @@ function renderLiveCaptionOverlay(currentTime) {
     if (AppState.style.glowOn) {
       const r = AppState.style.glowRadius || 18;
       const gA = AppState.style.glowColorA || '#E52E42';
-      const gB = AppState.style.glowColorB || '#800A16';
-      span.style.textShadow = `0 4px 15px rgba(0, 0, 0, 0.85), 0 0 ${r}px ${gA}, 0 0 ${r * 2}px ${gB}`;
+      span.style.textShadow = `0 4px 15px rgba(0, 0, 0, 0.85), 0 0 ${r}px ${gA}`;
     } else {
-      span.style.textShadow = `0 3px 10px rgba(0, 0, 0, 0.7)`;
+      span.style.textShadow = '0 3px 10px rgba(0, 0, 0, 0.7)';
     }
 
-    if (AppState.style.boxBgOn) {
-      span.style.backgroundColor = AppState.style.boxBgColor;
-      span.style.borderRadius = '4px';
-      span.style.padding = '2px 8px';
-    }
-
-    if (isCurrent) {
+    if (isCurrent && AppState.style.motion !== 'none') {
       if (AppState.style.motion === 'filmcom_pop') {
         span.className = 'anim-filmcom-pop';
         span.style.transform = 'scale(1.08)';
-        span.style.textShadow = `0 4px 12px rgba(0,0,0,0.85), 0 0 25px rgba(229, 46, 66, 0.6)`;
       } else if (AppState.style.motion === 'mogrt_bounce') {
         span.className = 'anim-mogrt-bounce';
         span.style.transform = 'scale(1.12)';
-        if (AppState.style.glowOn) {
-          span.style.textShadow = `0 4px 18px rgba(0, 0, 0, 0.9), 0 0 25px #E52E42, 0 0 50px rgba(229, 46, 66, 0.6)`;
-        }
       } else if (AppState.style.motion === 'pop') {
         span.className = 'anim-pop';
         span.style.transform = 'scale(1.08)';
       } else if (AppState.style.motion === 'karaoke') {
         span.style.transform = 'scale(1.05)';
-      } else if (AppState.style.motion === 'slideup') {
-        span.className = 'anim-slideup';
-      } else if (AppState.style.motion === 'wiggle') {
-        span.className = 'anim-wiggle';
       }
     } else if (AppState.style.dimInactive) {
-      span.style.opacity = '0.82';
-      span.style.transform = 'scale(0.96)';
+      span.style.opacity = '0.75';
     }
 
     wrapper.appendChild(span);
@@ -3848,45 +3899,55 @@ DOM.startRenderBtn.addEventListener('click', async () => {
       ctx.fillRect(0, 0, renderCanvas.width, renderCanvas.height);
     }
 
-    const activeWords = AppState.words.filter(w => t >= w.start - 0.35 && t <= w.end + 0.35);
-    if (activeWords.length) {
+    const activeBlock = AppState.words.find(w => t >= w.start && t <= w.end);
+    if (activeBlock) {
       const scaleFactor = renderCanvas.width / 360;
       const fontSizePx = AppState.style.fontSize * scaleFactor;
       
-      ctx.font = `800 ${fontSizePx}px "${AppState.style.fontFamily}", sans-serif`;
+      ctx.font = `600 ${fontSizePx}px "${AppState.style.fontFamily || 'Poppins'}", "Montserrat", sans-serif`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
 
-      const fullText = activeWords.map(w => {
-        if (AppState.style.casing === 'caps') return w.text.toUpperCase();
-        if (AppState.style.casing === 'lower') return w.text.toLowerCase();
-        return w.text;
-      }).join(' ');
+      let fullText = activeBlock.text;
+      if (AppState.style.casing === 'caps') fullText = fullText.toUpperCase();
+      else if (AppState.style.casing === 'lower') fullText = fullText.toLowerCase();
+      else if (AppState.style.casing === 'title') fullText = fullText.charAt(0).toUpperCase() + fullText.slice(1);
 
-      if (AppState.style.glowOn) {
-        ctx.shadowColor = AppState.style.glowColorA || '#E52E42';
-        ctx.shadowBlur = (AppState.style.glowRadius || 18) * scaleFactor;
-        ctx.shadowOffsetY = 4 * scaleFactor;
-      } else {
-        ctx.shadowColor = 'rgba(0, 0, 0, 0.75)';
-        ctx.shadowBlur = 10 * scaleFactor;
-        ctx.shadowOffsetY = 4 * scaleFactor;
-      }
+      const posX = renderCanvas.width / 2;
+      const posY = renderCanvas.height * (1 - (AppState.style.posY / 100));
 
-      if (AppState.style.strokeOn) {
-        ctx.strokeStyle = AppState.style.strokeColor;
-        ctx.lineWidth = AppState.style.strokeWidth * scaleFactor * 2;
-        ctx.lineJoin = 'round';
-        ctx.strokeText(fullText, posX, posY);
-      }
+      const lines = fullText.split('\n');
+      const lineHeightPx = fontSizePx * 1.3;
+      const totalBlockHeight = (lines.length - 1) * lineHeightPx;
+      const startY = posY - (totalBlockHeight / 2);
 
-      ctx.fillStyle = AppState.style.textColor;
-      ctx.fillText(fullText, posX, posY);
-      
-      // Reset shadow for next frame
-      ctx.shadowColor = 'transparent';
-      ctx.shadowBlur = 0;
-      ctx.shadowOffsetY = 0;
+      lines.forEach((lineText, lineIdx) => {
+        const curY = startY + (lineIdx * lineHeightPx);
+
+        if (AppState.style.strokeOn) {
+          ctx.strokeStyle = AppState.style.strokeColor || '#000000';
+          ctx.lineWidth = (AppState.style.strokeWidth || 2) * scaleFactor * 1.5;
+          ctx.lineJoin = 'round';
+          ctx.strokeText(lineText, posX, curY);
+        }
+
+        if (AppState.style.glowOn) {
+          ctx.shadowColor = AppState.style.glowColorA || '#E52E42';
+          ctx.shadowBlur = (AppState.style.glowRadius || 18) * scaleFactor;
+          ctx.shadowOffsetY = 4 * scaleFactor;
+        } else {
+          ctx.shadowColor = 'rgba(0, 0, 0, 0.85)';
+          ctx.shadowBlur = 6 * scaleFactor;
+          ctx.shadowOffsetY = 2 * scaleFactor;
+        }
+
+        ctx.fillStyle = AppState.style.textColor || '#FFFFFF';
+        ctx.fillText(lineText, posX, curY);
+        
+        ctx.shadowColor = 'transparent';
+        ctx.shadowBlur = 0;
+        ctx.shadowOffsetY = 0;
+      });
     }
 
     const pct = Math.min(100, Math.floor((currentFrame / totalFrames) * 100));
