@@ -226,6 +226,17 @@
       box-shadow: 0 0 10px rgba(229, 46, 66, 0.5) !important;
     }
 
+    @keyframes filmcomPop {
+      0% { transform: scale(0.85); opacity: 0; }
+      60% { transform: scale(1.08); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    @keyframes mogrtElasticBounce {
+      0% { transform: scale(0.65) translateY(6px); opacity: 0; }
+      55% { transform: scale(1.15) translateY(-2px); opacity: 1; }
+      80% { transform: scale(0.97) translateY(0); opacity: 1; }
+      100% { transform: scale(1.08) translateY(0); opacity: 1; }
+    }
     @keyframes popBounce {
       0% { transform: scale(0.88); opacity: 0; }
       65% { transform: scale(1.08); opacity: 1; }
@@ -241,6 +252,8 @@
       75% { transform: rotate(2deg) scale(1.04); }
     }
 
+    .anim-filmcom-pop { animation: filmcomPop 0.18s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+    .anim-mogrt-bounce { animation: mogrtElasticBounce 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
     .anim-pop { animation: popBounce 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
     .anim-slideup { animation: slideUpFade 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
     .anim-wiggle { animation: wiggleJitter 0.18s ease-in-out infinite; }
@@ -984,6 +997,23 @@
       <div data-page="presets" class="hidden space-y-3">
         <p class="font-technical-mono text-[10px] text-[#B0B2C3] font-bold uppercase tracking-wider">SHADITZ BRAND PRESET MATRIX:</p>
         <div class="grid grid-cols-2 gap-2.5" id="presetsGrid">
+          <div class="template-card col-span-2 border-[#E52E42] bg-[#181820]" data-preset="filmcom_basic">
+            <div class="flex items-center justify-between">
+              <div class="font-brand-display text-sm text-white tracking-wider uppercase" style="-webkit-text-stroke: 1px #000; text-shadow: 0 4px 12px rgba(0,0,0,0.85), 0 0 25px rgba(229, 46, 66, 0.45);">
+                Filmcom Basic Text (Viral Punch)
+              </div>
+              <span class="px-1.5 py-0.5 rounded bg-[#E52E42] text-white font-technical-mono text-[9px] font-bold">FILMCOM</span>
+            </div>
+            <span class="font-technical-mono text-[10px] text-[#E52E42] block mt-1 font-semibold text-left">Anton/Bebas · 2px Stroke · 0 4px 12px Shadow & Red Glow · Kinetic Pop</span>
+          </div>
+
+          <div class="template-card" data-preset="mogrt_master">
+            <div class="font-brand-display text-sm text-white uppercase tracking-wider" style="-webkit-text-stroke: 1.5px #000; text-shadow: 0 0 15px rgba(229, 46, 66, 0.9);">
+              MOGRT GLOW
+            </div>
+            <span class="font-technical-mono text-[9px] text-[#E52E42] block mt-1 font-semibold">115% Elastic Aura</span>
+          </div>
+
           <div class="template-card active" data-preset="shaditz_signature">
             <div class="font-brand-display text-sm text-white uppercase tracking-wider" style="-webkit-text-stroke: 1.5px #000;">
               SHADITZ CHERRY
@@ -1019,16 +1049,30 @@
         <div>
           <label class="block font-technical-mono text-[10px] font-bold text-[#B0B2C3] mb-1 uppercase tracking-wider">MOTION ENGINE</label>
           <div class="grid grid-cols-2 gap-2" id="motionGrid">
+            <button data-motion="filmcom_pop" class="motion-btn p-2.5 rounded-lg bg-[#181820] border border-[var(--border)] text-left transition-all">
+              <div class="font-bold text-xs text-white flex items-center gap-1.5">
+                <i class="ph-bold ph-lightning text-[#E52E42]"></i> Filmcom Pop
+              </div>
+              <p class="font-technical-mono text-[9px] text-[#B0B2C3] mt-0.5 font-medium">Snappy kinetic easing</p>
+            </button>
+
+            <button data-motion="mogrt_bounce" class="motion-btn p-2.5 rounded-lg bg-[#181820] border border-[var(--border)] text-left transition-all">
+              <div class="font-bold text-xs text-white flex items-center gap-1.5">
+                <i class="ph-bold ph-arrows-out-simple text-[#E52E42]"></i> MOGRT Elastic
+              </div>
+              <p class="font-technical-mono text-[9px] text-[#B0B2C3] mt-0.5 font-medium">115% snap bounce</p>
+            </button>
+
             <button data-motion="pop" class="motion-btn active p-2.5 rounded-lg bg-[#181820] border border-[#E52E42] text-left transition-all">
               <div class="font-bold text-xs text-white flex items-center gap-1.5">
-                <i class="ph-bold ph-arrows-out-simple text-[#E52E42]"></i> Pop / Bounce
+                <i class="ph-bold ph-sparkle text-[#E52E42]"></i> Pop / Bounce
               </div>
               <p class="font-technical-mono text-[9px] text-[#B0B2C3] mt-0.5 font-medium">Scale punch</p>
             </button>
 
             <button data-motion="karaoke" class="motion-btn p-2.5 rounded-lg bg-[#181820] border border-[var(--border)] text-left transition-all">
               <div class="font-bold text-xs text-white flex items-center gap-1.5">
-                <i class="ph-bold ph-sparkle text-[#E52E42]"></i> Karaoke Red
+                <i class="ph-bold ph-circle-dashed text-[#E52E42]"></i> Karaoke Red
               </div>
               <p class="font-technical-mono text-[9px] text-[#B0B2C3] mt-0.5 font-medium">Cherry pulse</p>
             </button>
@@ -1308,12 +1352,11 @@ const AppState = {
     boxBgOn: false,
     boxBgColor: '#0A0A0C',
     boxBgOpacity: 85,
-    motion: 'pop',
+    motion: 'mogrt_bounce',
     scope: 'word',
     activeWordColor: '#E52E42',
     dimInactive: true
   },
-  timelineZoom: 100,
   snap: true
 };
 
@@ -2732,8 +2775,12 @@ function renderLiveCaptionOverlay(currentTime) {
     }
 
     if (AppState.style.glowOn) {
-      const r = AppState.style.glowRadius;
-      span.style.textShadow = `0 0 ${r}px ${AppState.style.glowColorA}, 0 0 ${r * 2}px ${AppState.style.glowColorB}`;
+      const r = AppState.style.glowRadius || 18;
+      const gA = AppState.style.glowColorA || '#E52E42';
+      const gB = AppState.style.glowColorB || '#800A16';
+      span.style.textShadow = `0 4px 15px rgba(0, 0, 0, 0.85), 0 0 ${r}px ${gA}, 0 0 ${r * 2}px ${gB}`;
+    } else {
+      span.style.textShadow = `0 3px 10px rgba(0, 0, 0, 0.7)`;
     }
 
     if (AppState.style.boxBgOn) {
@@ -2743,7 +2790,17 @@ function renderLiveCaptionOverlay(currentTime) {
     }
 
     if (isCurrent) {
-      if (AppState.style.motion === 'pop') {
+      if (AppState.style.motion === 'filmcom_pop') {
+        span.className = 'anim-filmcom-pop';
+        span.style.transform = 'scale(1.08)';
+        span.style.textShadow = `0 4px 12px rgba(0,0,0,0.85), 0 0 25px rgba(229, 46, 66, 0.6)`;
+      } else if (AppState.style.motion === 'mogrt_bounce') {
+        span.className = 'anim-mogrt-bounce';
+        span.style.transform = 'scale(1.12)';
+        if (AppState.style.glowOn) {
+          span.style.textShadow = `0 4px 18px rgba(0, 0, 0, 0.9), 0 0 25px #E52E42, 0 0 50px rgba(229, 46, 66, 0.6)`;
+        }
+      } else if (AppState.style.motion === 'pop') {
         span.className = 'anim-pop';
         span.style.transform = 'scale(1.08)';
       } else if (AppState.style.motion === 'karaoke') {
@@ -2754,7 +2811,7 @@ function renderLiveCaptionOverlay(currentTime) {
         span.className = 'anim-wiggle';
       }
     } else if (AppState.style.dimInactive) {
-      span.style.opacity = '0.8';
+      span.style.opacity = '0.82';
       span.style.transform = 'scale(0.96)';
     }
 
@@ -3197,21 +3254,31 @@ document.getElementById('glowOn').addEventListener('change', (e) => {
 });
 
 const PRESETS = {
+  filmcom_basic: {
+    fontFamily: 'Anton', fontSize: 38, casing: 'caps', textColor: '#FFFFFF', activeWordColor: '#E52E42',
+    strokeOn: true, strokeWidth: 2, strokeColor: '#000000', glowOn: true, glowRadius: 25,
+    glowColorA: 'rgba(229, 46, 66, 0.45)', glowColorB: 'rgba(0, 0, 0, 0.85)', motion: 'filmcom_pop', dimInactive: true
+  },
+  mogrt_master: {
+    fontFamily: 'Anton', fontSize: 40, casing: 'caps', textColor: '#FFFFFF', activeWordColor: '#E52E42',
+    strokeOn: true, strokeWidth: 3, strokeColor: '#000000', glowOn: true, glowRadius: 18,
+    glowColorA: '#E52E42', glowColorB: '#800A16', motion: 'mogrt_bounce', dimInactive: true
+  },
   shaditz_signature: {
     fontFamily: 'Anton', fontSize: 38, casing: 'caps', textColor: '#FFFFFF', activeWordColor: '#E52E42',
-    strokeOn: true, strokeWidth: 3, strokeColor: '#000000', glowOn: false, motion: 'pop'
+    strokeOn: true, strokeWidth: 3, strokeColor: '#000000', glowOn: false, motion: 'pop', dimInactive: false
   },
   hormozi: {
     fontFamily: 'Bebas Neue', fontSize: 42, casing: 'caps', textColor: '#FFFFFF', activeWordColor: '#fde047',
-    strokeOn: true, strokeWidth: 3, strokeColor: '#000000', glowOn: false, motion: 'pop'
+    strokeOn: true, strokeWidth: 3, strokeColor: '#000000', glowOn: false, motion: 'pop', dimInactive: false
   },
   monolithic: {
     fontFamily: 'Anton', fontSize: 34, casing: 'caps', textColor: '#FFFFFF', activeWordColor: '#FFFFFF',
-    strokeOn: true, strokeWidth: 3, strokeColor: '#E52E42', glowOn: false, motion: 'karaoke'
+    strokeOn: true, strokeWidth: 3, strokeColor: '#E52E42', glowOn: false, motion: 'karaoke', dimInactive: false
   },
   minimal: {
     fontFamily: 'Plus Jakarta Sans', fontSize: 28, casing: 'none', textColor: '#FFFFFF', activeWordColor: '#E52E42',
-    strokeOn: false, glowOn: false, motion: 'slideup'
+    strokeOn: false, glowOn: false, motion: 'slideup', dimInactive: false
   }
 };
 
@@ -3228,7 +3295,18 @@ document.querySelectorAll('[data-preset]').forEach(card => {
       document.getElementById('strokeOn').checked = AppState.style.strokeOn;
       document.getElementById('strokeWidth').value = AppState.style.strokeWidth;
       document.getElementById('strokeWVal').textContent = `${AppState.style.strokeWidth}px`;
+      document.getElementById('strokeColor').value = AppState.style.strokeColor;
       document.getElementById('glowOn').checked = AppState.style.glowOn;
+      document.getElementById('activeWordColor').value = AppState.style.activeWordColor;
+      
+      // Sync motion buttons
+      document.querySelectorAll('[data-motion]').forEach(b => {
+        const isMatch = b.dataset.motion === AppState.style.motion;
+        b.classList.toggle('active', isMatch);
+        b.classList.toggle('border-[#E52E42]', isMatch);
+        b.classList.toggle('border-[var(--border)]', !isMatch);
+      });
+
       renderLiveCaptionOverlay(DOM.video.currentTime || AppState.currentTime);
       DOM.statusTxt.textContent = `PRESET: ${presetName.toUpperCase()}`;
     }
@@ -3344,8 +3422,15 @@ DOM.startRenderBtn.addEventListener('click', async () => {
         return w.text;
       }).join(' ');
 
-      const posX = renderCanvas.width / 2;
-      const posY = renderCanvas.height * (1 - (AppState.style.posY / 100));
+      if (AppState.style.glowOn) {
+        ctx.shadowColor = AppState.style.glowColorA || '#E52E42';
+        ctx.shadowBlur = (AppState.style.glowRadius || 18) * scaleFactor;
+        ctx.shadowOffsetY = 4 * scaleFactor;
+      } else {
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.75)';
+        ctx.shadowBlur = 10 * scaleFactor;
+        ctx.shadowOffsetY = 4 * scaleFactor;
+      }
 
       if (AppState.style.strokeOn) {
         ctx.strokeStyle = AppState.style.strokeColor;
@@ -3356,6 +3441,11 @@ DOM.startRenderBtn.addEventListener('click', async () => {
 
       ctx.fillStyle = AppState.style.textColor;
       ctx.fillText(fullText, posX, posY);
+      
+      // Reset shadow for next frame
+      ctx.shadowColor = 'transparent';
+      ctx.shadowBlur = 0;
+      ctx.shadowOffsetY = 0;
     }
 
     const pct = Math.min(100, Math.floor((currentFrame / totalFrames) * 100));
