@@ -1888,11 +1888,14 @@ function buildVideoTrackFilmstrip(asset) {
     return;
   }
 
+  const innerTrackWidth = DOM.timelineInner ? DOM.timelineInner.clientWidth : (DOM.timelineWrapper.clientWidth * (AppState.timelineZoom || 1));
+
   AppState.videoSegments.forEach((seg, segIdx) => {
     const leftPct = (seg.start / dur) * 100;
-    const widthPct = Math.max(1.0, ((seg.end - seg.start) / dur) * 100);
+    const widthPct = Math.max(0.1, ((seg.end - seg.start) / dur) * 100);
     const segDur = seg.end - seg.start;
-    const numThumbs = Math.max(1, Math.round((widthPct / 100) * 8));
+    const segPixelWidth = (widthPct / 100) * innerTrackWidth;
+    const numThumbs = Math.max(1, Math.min(120, Math.floor(segPixelWidth / 130)));
 
     const segEl = document.createElement('div');
     segEl.className = `video-clip-segment ${AppState.selectedTrackItem.type === 'video' && AppState.selectedTrackItem.index === segIdx ? 'selected-track-item' : ''}`;
@@ -1990,23 +1993,40 @@ function buildVideoTrackFilmstrip(asset) {
 function buildTimelineRuler() {
   const dur = AppState.duration || DOM.video.duration || 8.5;
   const ruler = DOM.timelineRuler;
-  if (!ruler) return;
+  if (!ruler || !DOM.timelineInner) return;
   ruler.innerHTML = '';
   
-  const zoom = AppState.timelineZoom || 100;
-  let stepSec = 1;
-  if (zoom >= 300) stepSec = 0.5;
-  else if (zoom >= 200) stepSec = 1;
-  else stepSec = dur <= 10 ? 1 : dur <= 30 ? 2 : 5;
-
+  const trackWidth = DOM.timelineInner.clientWidth || (DOM.timelineWrapper.clientWidth * (AppState.timelineZoom || 1));
+  const pixelsPerSec = trackWidth / Math.max(0.1, dur);
+  
+  // Standard frame and second intervals: from 1 frame (~0.033s) to 5 minutes
+  const intervals = [
+    1/30, 2/30, 5/30, 10/30, 0.5, 1, 2, 5, 10, 15, 30, 60, 120, 300
+  ];
+  
+  // Target tick spacing: 80px to 140px apart
+  const targetStep = 90 / Math.max(1, pixelsPerSec);
+  const stepSec = intervals.find(inv => inv >= targetStep) || intervals[intervals.length - 1];
+  
   const marks = Math.floor(dur / stepSec);
-  for (let i = 0; i <= marks; i++) {
-    const sec = i * stepSec;
+  const finalStep = marks > 600 ? (dur / 600) : stepSec;
+  const totalTicks = Math.floor(dur / finalStep);
+
+  for (let i = 0; i <= totalTicks; i++) {
+    const sec = i * finalStep;
     const pct = (sec / dur) * 100;
     const mark = document.createElement('div');
-    mark.className = 'absolute top-0 bottom-0 border-l border-[var(--border)] pl-1 pointer-events-none';
+    mark.className = 'absolute top-0 bottom-0 border-l border-[var(--border)] pl-1.5 flex items-center pointer-events-none select-none';
     mark.style.left = `${pct}%`;
-    mark.innerHTML = `<span class="font-semibold text-[#9DA0B5]">${formatTimecode(sec).substring(3, 8)}</span>`;
+    
+    let timeLabel = '';
+    if (finalStep < 0.5) {
+      timeLabel = formatTimecode(sec).substring(3, 11); // MM:SS:FF
+    } else {
+      timeLabel = formatTimecode(sec).substring(3, 8); // MM:SS
+    }
+    
+    mark.innerHTML = `<span class="font-semibold text-[#9DA0B5] text-[9px] whitespace-nowrap">${timeLabel}</span>`;
     ruler.appendChild(mark);
   }
 }
@@ -2020,16 +2040,17 @@ function buildTimelineTracks() {
   
   AppState.words.forEach((w, idx) => {
     const leftPct = (w.start / dur) * 100;
-    const widthPct = Math.max(1.0, ((w.end - w.start) / dur) * 100);
+    const widthPct = Math.max(0.1, ((w.end - w.start) / dur) * 100);
     
     const seg = document.createElement('div');
     seg.className = `caption-segment font-technical-mono ${AppState.selectedTrackItem.type === 'caption' && AppState.selectedTrackItem.index === idx ? 'selected-seg' : ''}`;
     seg.style.left = `${leftPct}%`;
     seg.style.width = `${widthPct}%`;
+    seg.setAttribute('data-word-idx', idx);
     seg.innerHTML = `
-      <div class="handle handle-left"></div>
-      <span class="truncate seg-text">${w.text}</span>
-      <div class="handle handle-right"></div>
+      <div class="handle handle-left" title="Drag to trim start"></div>
+      <span class="seg-text" title="${w.text}">${w.text}</span>
+      <div class="handle handle-right" title="Drag to trim end"></div>
     `;
     
     seg.addEventListener('click', (ev) => {
@@ -2043,8 +2064,65 @@ function buildTimelineTracks() {
       editCaptionInline(idx);
     });
 
+    // Attach Frame-Accurate Trim Dragging on Left & Right handles
+    attachTrimHandles(seg, w, idx);
+
     ct.appendChild(seg);
   });
+}
+
+function attachTrimHandles(seg, word, idx) {
+  const leftHandle = seg.querySelector('.handle-left');
+  const rightHandle = seg.querySelector('.handle-right');
+
+  const onTrimStart = (side, e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    const dur = AppState.duration || DOM.video.duration || 8.5;
+    const startX = e.clientX;
+    const origStart = word.start;
+    const origEnd = word.end;
+    const trackWidth = DOM.timelineInner ? DOM.timelineInner.clientWidth : DOM.timelineWrapper.clientWidth;
+
+    const onTrimMove = (moveEvent) => {
+      const deltaX = moveEvent.clientX - startX;
+      const deltaTime = (deltaX / trackWidth) * dur;
+
+      if (side === 'left') {
+        const minBoundary = idx > 0 ? AppState.words[idx - 1].start : 0;
+        const newStart = Math.max(minBoundary, Math.min(origEnd - 0.05, origStart + deltaTime));
+        word.start = newStart;
+        seg.style.left = `${(word.start / dur) * 100}%`;
+        seg.style.width = `${((word.end - word.start) / dur) * 100}%`;
+        seekVideo(word.start);
+      } else {
+        const maxBoundary = idx < AppState.words.length - 1 ? AppState.words[idx + 1].end : dur;
+        const newEnd = Math.max(word.start + 0.05, Math.min(maxBoundary, origEnd + deltaTime));
+        word.end = newEnd;
+        seg.style.width = `${((word.end - word.start) / dur) * 100}%`;
+        seekVideo(word.end);
+      }
+
+      renderLiveCaptionOverlay(DOM.video.currentTime || AppState.currentTime);
+      DOM.statusTxt.textContent = `TRIM [${word.text}]: ${formatTimecode(word.start).substring(3, 11)} → ${formatTimecode(word.end).substring(3, 11)}`;
+    };
+
+    const onTrimEnd = () => {
+      window.removeEventListener('pointermove', onTrimMove);
+      window.removeEventListener('pointerup', onTrimEnd);
+      window.removeEventListener('pointercancel', onTrimEnd);
+      buildTranscriptPanel();
+      buildTimelineTracks();
+      DOM.statusTxt.textContent = 'TRIM APPLIED';
+    };
+
+    window.addEventListener('pointermove', onTrimMove);
+    window.addEventListener('pointerup', onTrimEnd);
+    window.addEventListener('pointercancel', onTrimEnd);
+  };
+
+  if (leftHandle) leftHandle.addEventListener('pointerdown', (e) => onTrimStart('left', e));
+  if (rightHandle) rightHandle.addEventListener('pointerdown', (e) => onTrimStart('right', e));
 }
 
 function editCaptionInline(index) {
@@ -2889,8 +2967,20 @@ function onTimeUpdate(t) {
 
   if (dur > 0 && DOM.timelineInner) {
     const progress = Math.max(0, Math.min(1, t / dur));
-    const trackWidth = DOM.timelineInner.offsetWidth || DOM.timelineInner.clientWidth || 1;
-    DOM.playhead.style.left = `${progress * trackWidth}px`;
+    const trackWidth = DOM.timelineInner.offsetWidth || DOM.timelineInner.scrollWidth || 1;
+    const playheadPx = progress * trackWidth;
+    DOM.playhead.style.left = `${playheadPx}px`;
+
+    // Auto-scroll timeline container during playback so playhead is always centered & in view
+    if (AppState.isPlaying && AppState.timelineZoom > 1 && DOM.timelineWrapper) {
+      const wrapWidth = DOM.timelineWrapper.clientWidth;
+      const currentScroll = DOM.timelineWrapper.scrollLeft;
+      const margin = wrapWidth * 0.25;
+      
+      if (playheadPx > currentScroll + wrapWidth - margin || playheadPx < currentScroll + margin) {
+        DOM.timelineWrapper.scrollLeft = Math.max(0, playheadPx - wrapWidth / 2);
+      }
+    }
   }
 
   // Real-time Active Caption Segment highlight on the timeline track
@@ -2921,7 +3011,7 @@ function handleTimelineScrub(e) {
 }
 
 DOM.timelineWrapper.addEventListener('pointerdown', (e) => {
-  if (e.target.closest('button') || e.target.closest('input')) return;
+  if (e.target.closest('button') || e.target.closest('input') || e.target.closest('.handle')) return;
   isScrubbing = true;
   DOM.timelineWrapper.setPointerCapture(e.pointerId);
   handleTimelineScrub(e);
@@ -2948,35 +3038,39 @@ DOM.timelineInner.addEventListener('click', (e) => {
   }
 });
 
-// ==================== INTERACTIVE TIMELINE ZOOM CONTROLS ====================
+// ==================== ULTRA-PRECISION TIMELINE ZOOM CONTROLS (1x to 100x) ====================
 function applyTimelineZoom(newZoom) {
-  const clamped = Math.max(100, Math.min(400, newZoom));
+  const clamped = Math.max(1, Math.min(100, Math.round(newZoom)));
   AppState.timelineZoom = clamped;
   if (DOM.timelineZoom) DOM.timelineZoom.value = clamped;
-  if (DOM.zoomValBadge) DOM.zoomValBadge.textContent = `${(clamped / 100).toFixed(1)}x`;
+  if (DOM.zoomValBadge) DOM.zoomValBadge.textContent = `${clamped}x`;
   
   if (DOM.timelineInner) {
-    DOM.timelineInner.style.width = `${clamped}%`;
-    DOM.timelineInner.style.minWidth = `${clamped}%`;
+    const widthPct = clamped * 100;
+    DOM.timelineInner.style.width = `${widthPct}%`;
+    DOM.timelineInner.style.minWidth = `${widthPct}%`;
   }
   
   buildTimelineRuler();
+  buildVideoTrackFilmstrip(null);
   drawWaveformCanvas();
   onTimeUpdate(DOM.video.currentTime || AppState.currentTime);
 }
 
 DOM.timelineZoom.addEventListener('input', (e) => {
-  applyTimelineZoom(parseInt(e.target.value));
+  applyTimelineZoom(parseInt(e.target.value) || 1);
 });
 
 DOM.zoomInBtn.addEventListener('click', (e) => {
   e.preventDefault();
-  applyTimelineZoom(AppState.timelineZoom + 25);
+  const step = AppState.timelineZoom < 5 ? 1 : (AppState.timelineZoom < 20 ? 2 : (AppState.timelineZoom < 50 ? 5 : 10));
+  applyTimelineZoom(AppState.timelineZoom + step);
 });
 
 DOM.zoomOutBtn.addEventListener('click', (e) => {
   e.preventDefault();
-  applyTimelineZoom(AppState.timelineZoom - 25);
+  const step = AppState.timelineZoom <= 5 ? 1 : (AppState.timelineZoom <= 20 ? 2 : (AppState.timelineZoom <= 50 ? 5 : 10));
+  applyTimelineZoom(AppState.timelineZoom - step);
 });
 
 // ==================== PLAYBACK SPEED CONTROL ====================
